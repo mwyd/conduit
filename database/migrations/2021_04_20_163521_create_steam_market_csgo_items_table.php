@@ -14,10 +14,10 @@ class CreateSteamMarketCsgoItemsTable extends Migration
     public function up()
     {
         Schema::create('steam_market_csgo_items', function (Blueprint $table) {
-            $table->string('hash_name')->index();
+            $table->string('hash_name')->primary();
             $table->mediumInteger('volume');
             $table->mediumInteger('price');
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->timestamps();
         });
     }
