@@ -30,7 +30,7 @@ class SteamMarketCsgoItemController extends Controller
             $orderBy = $request->input('order_by', 'updated_at');
             $orderDir = $request->input('order_dir', 'desc');
 
-            $items = SteamMarketCsgoItem::selectRaw('hash_name, volume, round(price / ?, 2) as sell_price, icon, updated_at', [100])
+            $items = SteamMarketCsgoItem::select('hash_name', 'volume', 'price', 'icon', 'updated_at')
                         ->where('hash_name', 'like', "%$search%")
                         ->offset($offset)
                         ->limit($limit)

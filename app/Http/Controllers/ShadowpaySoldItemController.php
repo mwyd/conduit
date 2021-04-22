@@ -21,28 +21,23 @@ class ShadowpaySoldItemController extends Controller
             $request->validate([
                 'offset' => 'gte:0|numeric',
                 'limit' => 'gt:0|lte:50|numeric',
-                'order_by' => Rule::in(['sold', 'price', 'date']),
+                'order_by' => Rule::in(['sold', 'avg_sell_price', 'last_sold']),
                 'order_dir' => Rule::in(['desc', 'asc']),
             ]);
 
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 50);
             $search = $request->input('search', '');
+            $orderBy = $request->input('order_by', 'sold');
             $orderDir = $request->input('order_dir', 'desc');
-
-            $orderBy = match($request->input('order_by')) {
-                'price' => 'avg_sell_price',
-                'date' => 'last_sold',
-                default => 'sold'
-            };
 
             $items = ShadowpaySoldItem::select(
                             DB::raw(
                                 'hash_name, ' .
                                 'count(hash_name) as sold, ' . 
-                                'round(avg(discount)) as avg_discount, ' . 
-                                'round(avg(sell_price) / 100, 2) as avg_sell_price, '. 
-                                'round(avg(steam_price) / 100, 2) as avg_steam_price, ' . 
+                                'round(avg(discount), 2) as avg_discount, ' . 
+                                'round(avg(sell_price), 2) as avg_sell_price, '. 
+                                'round(avg(steam_price), 2) as avg_steam_price, ' . 
                                 'max(sold_at) as last_sold'
                             )
                         )

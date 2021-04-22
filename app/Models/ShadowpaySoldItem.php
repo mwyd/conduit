@@ -26,9 +26,9 @@ class ShadowpaySoldItem extends Model
 
     protected $casts = [
         'discount' => 'integer',
-        'sell_price' => 'integer',
-        'steam_price' => 'integer',
-        'avg_discount' => 'integer',
+        'sell_price' => 'float',
+        'steam_price' => 'float',
+        'avg_discount' => 'float',
         'avg_sell_price' => 'float',
         'avg_steam_price' => 'float',
         'sold_at' => 'date:Y-m-d\TH:i:s.u\Z',
