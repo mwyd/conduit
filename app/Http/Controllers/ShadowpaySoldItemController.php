@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\SteamMarketCsgoItem;
+use Illuminate\Support\Facades\DB;
+use App\Models\ShadowpaySoldItem;
 
-class SteamMarketCsgoItemController extends Controller
+class ShadowpaySoldItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,18 +21,33 @@ class SteamMarketCsgoItemController extends Controller
             $request->validate([
                 'offset' => 'gte:0|numeric',
                 'limit' => 'gt:0|lte:50|numeric',
-                'order_by' => Rule::in(['updated_at', 'volume', 'price']),
+                'order_by' => Rule::in(['sold', 'price', 'date']),
                 'order_dir' => Rule::in(['desc', 'asc']),
             ]);
 
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 50);
             $search = $request->input('search', '');
-            $orderBy = $request->input('order_by', 'updated_at');
             $orderDir = $request->input('order_dir', 'desc');
 
-            $items = SteamMarketCsgoItem::selectRaw('hash_name, volume, round(price / ?, 2) as sell_price, icon, updated_at', [100])
+            $orderBy = match($request->input('order_by')) {
+                'price' => 'avg_sell_price',
+                'date' => 'last_sold',
+                default => 'sold'
+            };
+
+            $items = ShadowpaySoldItem::select(
+                            DB::raw(
+                                'hash_name, ' .
+                                'count(hash_name) as sold, ' . 
+                                'round(avg(discount)) as avg_discount, ' . 
+                                'round(avg(sell_price) / 100, 2) as avg_sell_price, '. 
+                                'round(avg(steam_price) / 100, 2) as avg_steam_price, ' . 
+                                'max(sold_at) as last_sold'
+                            )
+                        )
                         ->where('hash_name', 'like', "%$search%")
+                        ->groupBy('hash_name')
                         ->offset($offset)
                         ->limit($limit)
                         ->orderBy($orderBy, $orderDir)
@@ -58,7 +74,7 @@ class SteamMarketCsgoItemController extends Controller
     {
         try
         {
-            $data = SteamMarketCsgoItem::create($request->all());
+            $data = ShadowpaySoldItem::create($request->all());
             $response = response()->apiSuccess($data, 201);
         }
         catch(\Exception $e)
@@ -76,11 +92,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($hashName)
+    public function show($transactionId)
     {
         try
         {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
+            $item = ShadowpaySoldItem::findOrFail($transactionId);
             $response = response()->apiSuccess($item, 200);
         }
         catch(\Exception $e)
@@ -99,11 +115,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $hashName)
+    public function update(Request $request, $transactionId)
     {
         try
         {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
+            $item = ShadowpaySoldItem::findOrFail($transactionId);
             $item->update($request->all());
 
             $response = response()->apiSuccess($item, 200);
@@ -123,11 +139,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($hashName)
+    public function destroy($transactionId)
     {
         try
         {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
+            $item = ShadowpaySoldItem::findOrFail($transactionId);
             $item->delete();
 
             $response = response()->apiSuccess($item, 200);

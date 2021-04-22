@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SteamMarketCsgoItemController;
-use App\Http\Middleware\ApiTokenAuthorized;
+use App\Http\Controllers\ShadowpaySoldItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware(['api'])->group(function() {
     Route::resource('steam-market-csgo-items', SteamMarketCsgoItemController::class);
+    Route::resource('shadowpay-sold-items', ShadowpaySoldItemController::class);
 });

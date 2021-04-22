@@ -10,7 +10,7 @@ if(!function_exists('exceptionToHttpCode'))
         $err = match($exception::class) {
             ValidationException::class => ['message' => 'wrong_params', 'code' => 422],
             ModelNotFoundException::class => ['message' => 'not_found', 'code' => 404],
-            default => ['message' => 'internal_error', 'code' => 500]
+            default => ['message' => config('app.debug') ? $exception->getMessage() : 'internal_error', 'code' => 500]
         };
         
         return $err;

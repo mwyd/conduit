@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\RestApiKey;
 
 class ApiTokenAuthorized
 {
@@ -16,7 +17,14 @@ class ApiTokenAuthorized
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->header('token') !== '123') return response()->apiFail('unauthorized', 401);
+        try
+        {
+            RestApiKey::findOrFail($request->header('token'));
+        }
+        catch(\Exception $e)
+        {
+            return response()->apiFail('unauthorized', 401);
+        }
 
         return $next($request);
     }
