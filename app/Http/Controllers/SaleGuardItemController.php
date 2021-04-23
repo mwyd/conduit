@@ -32,6 +32,7 @@ class SaleGuardItemController extends Controller
 
             $items = SaleGuardItem::select('*')
                         ->where('hash_name', 'like', "%$search%")
+                        ->where('user_id', $request->input('user_id'))
                         ->offset($offset)
                         ->limit($limit)
                         ->orderBy($orderBy, $orderDir)
@@ -76,11 +77,11 @@ class SaleGuardItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($itemId)
+    public function show(Request $request, $itemId)
     {
         try
         {
-            $item = SaleGuardItem::findOrFail($itemId);
+            $item = SaleGuardItem::where('user_id', $request->input('user_id'))->findOrFail($itemId);
             $response = response()->apiSuccess($item, 200);
         }
         catch(\Exception $e)
@@ -103,7 +104,7 @@ class SaleGuardItemController extends Controller
     {
         try
         {
-            $item = SaleGuardItem::findOrFail($itemId);
+            $item = SaleGuardItem::where('user_id', $request->input('user_id'))->findOrFail($itemId);
             $item->update($request->all());
 
             $response = response()->apiSuccess($item, 200);
@@ -123,11 +124,11 @@ class SaleGuardItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($itemId)
+    public function destroy(Request $request, $itemId)
     {
         try
         {
-            $item = SaleGuardItem::findOrFail($itemId);
+            $item = SaleGuardItem::where('user_id', $request->input('user_id'))->findOrFail($itemId);
             $item->delete();
 
             $response = response()->apiSuccess($item, 200);
