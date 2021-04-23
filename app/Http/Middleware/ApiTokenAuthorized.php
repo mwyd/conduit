@@ -19,7 +19,8 @@ class ApiTokenAuthorized
     {
         try
         {
-            RestApiKey::findOrFail($request->header('token'));
+            $token = RestApiKey::findOrFail(hash('md5', $request->header('token')));
+            $request->merge(['user_id' => $token->user_id]);
         }
         catch(\Exception $e)
         {

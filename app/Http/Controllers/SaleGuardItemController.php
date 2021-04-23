@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\SteamMarketCsgoItem;
+use App\Models\SaleGuardItem;
 
-class SteamMarketCsgoItemController extends Controller
+class SaleGuardItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class SteamMarketCsgoItemController extends Controller
             $request->validate([
                 'offset' => 'gte:0|numeric',
                 'limit' => 'gt:0|lte:50|numeric',
-                'order_by' => Rule::in(['updated_at', 'volume', 'price']),
+                'order_by' => Rule::in(['updated_at', 'minimum_price', 'maximum_price']),
                 'order_dir' => Rule::in(['desc', 'asc']),
             ]);
 
@@ -30,7 +30,7 @@ class SteamMarketCsgoItemController extends Controller
             $orderBy = $request->input('order_by', 'updated_at');
             $orderDir = $request->input('order_dir', 'desc');
 
-            $items = SteamMarketCsgoItem::select('*')
+            $items = SaleGuardItem::select('*')
                         ->where('hash_name', 'like', "%$search%")
                         ->offset($offset)
                         ->limit($limit)
@@ -58,7 +58,7 @@ class SteamMarketCsgoItemController extends Controller
     {
         try
         {
-            $data = SteamMarketCsgoItem::create($request->all());
+            $data = SaleGuardItem::create($request->all());
             $response = response()->apiSuccess($data, 201);
         }
         catch(\Exception $e)
@@ -76,11 +76,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($hashName)
+    public function show($itemId)
     {
         try
         {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
+            $item = SaleGuardItem::findOrFail($itemId);
             $response = response()->apiSuccess($item, 200);
         }
         catch(\Exception $e)
@@ -99,11 +99,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $hashName)
+    public function update(Request $request, $itemId)
     {
         try
         {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
+            $item = SaleGuardItem::findOrFail($itemId);
             $item->update($request->all());
 
             $response = response()->apiSuccess($item, 200);
@@ -123,11 +123,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($hashName)
+    public function destroy($itemId)
     {
         try
         {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
+            $item = SaleGuardItem::findOrFail($itemId);
             $item->delete();
 
             $response = response()->apiSuccess($item, 200);

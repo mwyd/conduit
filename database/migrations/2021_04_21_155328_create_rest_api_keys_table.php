@@ -14,7 +14,7 @@ class CreateRestApiKeysTable extends Migration
     public function up()
     {
         Schema::create('rest_api_keys', function (Blueprint $table) {
-            $table->string('secret', 16)->primary();
+            $table->string('secret', 32)->primary();
             $table->mediumInteger('user_id')->unique();
             $table->timestamps();
         });
