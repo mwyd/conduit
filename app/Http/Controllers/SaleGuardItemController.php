@@ -15,38 +15,28 @@ class SaleGuardItemController extends Controller
      */
     public function index(Request $request)
     {
-        try
-        {
-            $request->validate([
-                'offset' => 'gte:0|numeric',
-                'limit' => 'gt:0|lte:50|numeric',
-                'order_by' => Rule::in(['updated_at', 'minimum_price', 'maximum_price']),
-                'order_dir' => Rule::in(['desc', 'asc']),
-            ]);
+        $request->validate([
+            'offset' => 'gte:0|numeric',
+            'limit' => 'gt:0|lte:50|numeric',
+            'order_by' => Rule::in(['updated_at', 'minimum_price', 'maximum_price']),
+            'order_dir' => Rule::in(['desc', 'asc']),
+        ]);
 
-            $offset = $request->input('offset', 0);
-            $limit = $request->input('limit', 50);
-            $search = $request->input('search', '');
-            $orderBy = $request->input('order_by', 'updated_at');
-            $orderDir = $request->input('order_dir', 'desc');
+        $offset = $request->input('offset', 0);
+        $limit = $request->input('limit', 50);
+        $search = $request->input('search', '');
+        $orderBy = $request->input('order_by', 'updated_at');
+        $orderDir = $request->input('order_dir', 'desc');
 
-            $items = SaleGuardItem::select('*')
-                        ->where('hash_name', 'like', "%$search%")
-                        ->where('user_id', $request->input('user_id'))
-                        ->offset($offset)
-                        ->limit($limit)
-                        ->orderBy($orderBy, $orderDir)
-                        ->get();
+        $items = SaleGuardItem::select('*')
+                    ->where('hash_name', 'like', "%$search%")
+                    ->where('user_id', $request->user()->id)
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->orderBy($orderBy, $orderDir)
+                    ->get();
 
-            $response = response()->apiSuccess($items, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        return response()->apiSuccess($items, 200);
     }
 
     /**
@@ -57,18 +47,9 @@ class SaleGuardItemController extends Controller
      */
     public function store(Request $request)
     {
-        try
-        {
-            $data = SaleGuardItem::create($request->all());
-            $response = response()->apiSuccess($data, 201);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        $data = array_merge($request->all(), ['user_id' => $request->user()->id]);
+        $data = SaleGuardItem::create($data);
+        return response()->apiSuccess($data, 201);
     }
 
     /**
@@ -79,18 +60,8 @@ class SaleGuardItemController extends Controller
      */
     public function show(Request $request, $itemId)
     {
-        try
-        {
-            $item = SaleGuardItem::where('user_id', $request->input('user_id'))->findOrFail($itemId);
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        $item = SaleGuardItem::where('user_id', $request->user()->id)->findOrFail($itemId);
+        return response()->apiSuccess($item, 200);
     }
 
     /**
@@ -102,20 +73,10 @@ class SaleGuardItemController extends Controller
      */
     public function update(Request $request, $itemId)
     {
-        try
-        {
-            $item = SaleGuardItem::where('user_id', $request->input('user_id'))->findOrFail($itemId);
-            $item->update($request->all());
+        $item = SaleGuardItem::where('user_id', $request->user()->id)->findOrFail($itemId);
+        $item->update($request->all());
 
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-        
-        return $response;
+        return response()->apiSuccess($item, 200);
     }
 
     /**
@@ -126,19 +87,9 @@ class SaleGuardItemController extends Controller
      */
     public function destroy(Request $request, $itemId)
     {
-        try
-        {
-            $item = SaleGuardItem::where('user_id', $request->input('user_id'))->findOrFail($itemId);
-            $item->delete();
+        $item = SaleGuardItem::where('user_id', $request->user()->id)->findOrFail($itemId);
+        $item->delete();
 
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-        
-        return $response;
+        return response()->apiSuccess($item, 200);
     }
 }

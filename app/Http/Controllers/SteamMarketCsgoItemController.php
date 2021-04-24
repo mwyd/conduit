@@ -15,37 +15,27 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function index(Request $request)
     {
-        try
-        {
-            $request->validate([
-                'offset' => 'gte:0|numeric',
-                'limit' => 'gt:0|lte:50|numeric',
-                'order_by' => Rule::in(['updated_at', 'volume', 'price']),
-                'order_dir' => Rule::in(['desc', 'asc']),
-            ]);
+        $request->validate([
+            'offset' => 'gte:0|numeric',
+            'limit' => 'gt:0|lte:50|numeric',
+            'order_by' => Rule::in(['updated_at', 'volume', 'price']),
+            'order_dir' => Rule::in(['desc', 'asc']),
+        ]);
 
-            $offset = $request->input('offset', 0);
-            $limit = $request->input('limit', 50);
-            $search = $request->input('search', '');
-            $orderBy = $request->input('order_by', 'updated_at');
-            $orderDir = $request->input('order_dir', 'desc');
+        $offset = $request->input('offset', 0);
+        $limit = $request->input('limit', 50);
+        $search = $request->input('search', '');
+        $orderBy = $request->input('order_by', 'updated_at');
+        $orderDir = $request->input('order_dir', 'desc');
 
-            $items = SteamMarketCsgoItem::select('*')
-                        ->where('hash_name', 'like', "%$search%")
-                        ->offset($offset)
-                        ->limit($limit)
-                        ->orderBy($orderBy, $orderDir)
-                        ->get();
+        $items = SteamMarketCsgoItem::select('*')
+                    ->where('hash_name', 'like', "%$search%")
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->orderBy($orderBy, $orderDir)
+                    ->get();
 
-            $response = response()->apiSuccess($items, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        return response()->apiSuccess($items, 200);
     }
 
     /**
@@ -56,18 +46,10 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function store(Request $request)
     {
-        try
-        {
-            $data = SteamMarketCsgoItem::create($request->all());
-            $response = response()->apiSuccess($data, 201);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        if(!$request->user()->tokenCan('api:post')) abort(403, 'forbidden');
+        
+        $data = SteamMarketCsgoItem::create($request->all());
+        return response()->apiSuccess($data, 201);
     }
 
     /**
@@ -78,18 +60,8 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function show($hashName)
     {
-        try
-        {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        $item = SteamMarketCsgoItem::findOrFail($hashName);
+        return response()->apiSuccess($item, 200);
     }
 
     /**
@@ -101,20 +73,12 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function update(Request $request, $hashName)
     {
-        try
-        {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
-            $item->update($request->all());
+        if(!$request->user()->tokenCan('api:put')) abort(403, 'forbidden');
 
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-        
-        return $response;
+        $item = SteamMarketCsgoItem::findOrFail($hashName);
+        $item->update($request->all());
+
+        return response()->apiSuccess($item, 200);
     }
 
     /**
@@ -123,21 +87,13 @@ class SteamMarketCsgoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($hashName)
+    public function destroy(Request $request, $hashName)
     {
-        try
-        {
-            $item = SteamMarketCsgoItem::findOrFail($hashName);
-            $item->delete();
+        if(!$request->user()->tokenCan('api:delete')) abort(403, 'forbidden');
 
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-        
-        return $response;
+        $item = SteamMarketCsgoItem::findOrFail($hashName);
+        $item->delete();
+
+        return response()->apiSuccess($item, 200);
     }
 }

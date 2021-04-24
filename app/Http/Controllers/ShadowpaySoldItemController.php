@@ -16,47 +16,37 @@ class ShadowpaySoldItemController extends Controller
      */
     public function index(Request $request)
     {
-        try
-        {
-            $request->validate([
-                'offset' => 'gte:0|numeric',
-                'limit' => 'gt:0|lte:50|numeric',
-                'order_by' => Rule::in(['sold', 'avg_sell_price', 'last_sold']),
-                'order_dir' => Rule::in(['desc', 'asc']),
-            ]);
+        $request->validate([
+            'offset' => 'gte:0|numeric',
+            'limit' => 'gt:0|lte:50|numeric',
+            'order_by' => Rule::in(['sold', 'avg_sell_price', 'last_sold']),
+            'order_dir' => Rule::in(['desc', 'asc']),
+        ]);
 
-            $offset = $request->input('offset', 0);
-            $limit = $request->input('limit', 50);
-            $search = $request->input('search', '');
-            $orderBy = $request->input('order_by', 'sold');
-            $orderDir = $request->input('order_dir', 'desc');
+        $offset = $request->input('offset', 0);
+        $limit = $request->input('limit', 50);
+        $search = $request->input('search', '');
+        $orderBy = $request->input('order_by', 'sold');
+        $orderDir = $request->input('order_dir', 'desc');
 
-            $items = ShadowpaySoldItem::select(
-                            DB::raw(
-                                'hash_name, ' .
-                                'count(hash_name) as sold, ' . 
-                                'round(avg(discount), 2) as avg_discount, ' . 
-                                'round(avg(sell_price), 2) as avg_sell_price, '. 
-                                'round(avg(steam_price), 2) as avg_steam_price, ' . 
-                                'max(sold_at) as last_sold'
-                            )
+        $items = ShadowpaySoldItem::select(
+                        DB::raw(
+                            'hash_name, ' .
+                            'count(hash_name) as sold, ' . 
+                            'round(avg(discount), 2) as avg_discount, ' . 
+                            'round(avg(sell_price), 2) as avg_sell_price, '. 
+                            'round(avg(steam_price), 2) as avg_steam_price, ' . 
+                            'max(sold_at) as last_sold'
                         )
-                        ->where('hash_name', 'like', "%$search%")
-                        ->groupBy('hash_name')
-                        ->offset($offset)
-                        ->limit($limit)
-                        ->orderBy($orderBy, $orderDir)
-                        ->get();
+                    )
+                    ->where('hash_name', 'like', "%$search%")
+                    ->groupBy('hash_name')
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->orderBy($orderBy, $orderDir)
+                    ->get();
 
-            $response = response()->apiSuccess($items, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        return response()->apiSuccess($items, 200);
     }
 
     /**
@@ -67,18 +57,10 @@ class ShadowpaySoldItemController extends Controller
      */
     public function store(Request $request)
     {
-        try
-        {
-            $data = ShadowpaySoldItem::create($request->all());
-            $response = response()->apiSuccess($data, 201);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
+        if(!$request->user()->tokenCan('api:post')) abort(403, 'forbidden');
 
-        return $response;
+        $data = ShadowpaySoldItem::create($request->all());
+        return response()->apiSuccess($data, 201);
     }
 
     /**
@@ -89,18 +71,8 @@ class ShadowpaySoldItemController extends Controller
      */
     public function show($transactionId)
     {
-        try
-        {
-            $item = ShadowpaySoldItem::findOrFail($transactionId);
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-
-        return $response;
+        $item = ShadowpaySoldItem::findOrFail($transactionId);
+        return response()->apiSuccess($item, 200);
     }
 
     /**
@@ -112,20 +84,12 @@ class ShadowpaySoldItemController extends Controller
      */
     public function update(Request $request, $transactionId)
     {
-        try
-        {
-            $item = ShadowpaySoldItem::findOrFail($transactionId);
-            $item->update($request->all());
+        if(!$request->user()->tokenCan('api:put')) abort(403, 'forbidden');
 
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-        
-        return $response;
+        $item = ShadowpaySoldItem::findOrFail($transactionId);
+        $item->update($request->all());
+
+        return response()->apiSuccess($item, 200);
     }
 
     /**
@@ -134,21 +98,13 @@ class ShadowpaySoldItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($transactionId)
+    public function destroy(Request $request, $transactionId)
     {
-        try
-        {
-            $item = ShadowpaySoldItem::findOrFail($transactionId);
-            $item->delete();
+        if(!$request->user()->tokenCan('api:delete')) abort(403, 'forbidden');
 
-            $response = response()->apiSuccess($item, 200);
-        }
-        catch(\Exception $e)
-        {
-            $err = exceptionToHttpCode($e);
-            $response = response()->apiFail($err['message'], $err['code']);
-        }
-        
-        return $response;
+        $item = ShadowpaySoldItem::findOrFail($transactionId);
+        $item->delete();
+
+        return response()->apiSuccess($item, 200);
     }
 }
