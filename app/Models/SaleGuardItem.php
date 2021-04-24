@@ -13,6 +13,10 @@ class SaleGuardItem extends Model
     
     protected $primaryKey = 'item_id';
 
+    protected $hidden = [
+        'user_id'
+    ];
+
     protected $fillable = [
         'item_id',
         'user_id',
