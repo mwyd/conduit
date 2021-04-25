@@ -6,6 +6,7 @@ use App\Http\Controllers\SteamMarketCsgoItemController;
 use App\Http\Controllers\ShadowpaySoldItemController;
 use App\Http\Controllers\SaleGuardItemController;
 use App\Http\Controllers\ShadowpayBotPresetController;
+use App\Http\Controllers\ShadowpayBotConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('shadowpay-sold-items', ShadowpaySoldItemController::class);
     Route::resource('sale-guard-items', SaleGuardItemController::class);
     Route::resource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
+    Route::resource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
 });
