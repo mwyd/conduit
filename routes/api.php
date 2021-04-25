@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SteamMarketCsgoItemController;
 use App\Http\Controllers\ShadowpaySoldItemController;
 use App\Http\Controllers\SaleGuardItemController;
+use App\Http\Controllers\ShadowpayBotPresetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,5 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('steam-market-csgo-items', SteamMarketCsgoItemController::class);
     Route::resource('shadowpay-sold-items', ShadowpaySoldItemController::class);
     Route::resource('sale-guard-items', SaleGuardItemController::class);
+    Route::resource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
 });
