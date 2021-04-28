@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\ShadowpayBotConfig;
-
-use function Psy\sh;
+use Illuminate\Support\Facades\Validator;
 
 class ShadowpayBotConfigController extends Controller
 {
@@ -47,15 +46,17 @@ class ShadowpayBotConfigController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'config' => 'json'
+        $user = $request->user();
+        $request->merge([
+            'user_id' => $user->id,
+            'config' => json_decode($request->config, true)
         ]);
 
-        $user = $request->user();
-        $data = array_merge($request->all(), ['user_id' => $user->id]);
-        $data['config'] = json_decode($data['config']);
+        $request->validate([
+            'config' => 'array'
+        ]);
 
-        $data = ShadowpayBotConfig::updateOrCreate(['user_id' => $user->id], $data);
+        $data = ShadowpayBotConfig::updateOrCreate(['user_id' => $user->id], $request->all());
         return response()->apiSuccess($data, 201);
     }
 
@@ -80,11 +81,14 @@ class ShadowpayBotConfigController extends Controller
      */
     public function update(Request $request, $configId)
     {
+        $request->merge([
+            'config' => json_decode($request->config, true)
+        ]);
+        
         $request->validate([
-            'config' => 'json'
+            'config' => 'array'
         ]);
 
-        $request->merge(['config' => json_decode($request->config)]);
         $item = ShadowpayBotConfig::where('user_id', $request->user()->id)->findOrFail($configId);
         $item->update($request->all());
 

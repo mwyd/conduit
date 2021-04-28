@@ -45,14 +45,16 @@ class ShadowpayBotPresetController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'preset' => 'json'
+        $request->merge([
+            'user_id' => $request->user()->id,
+            'preset' => json_decode($request->preset, true)
         ]);
 
-        $data = array_merge($request->all(), ['user_id' => $request->user()->id]);
-        $data['preset'] = json_decode($data['preset']);
+        $request->validate([
+            'preset' => 'array'
+        ]);
 
-        $data = ShadowpayBotPreset::create($data);
+        $data = ShadowpayBotPreset::create($request->all());
         return response()->apiSuccess($data, 201);
     }
 
@@ -77,11 +79,15 @@ class ShadowpayBotPresetController extends Controller
      */
     public function update(Request $request, $presetId)
     {
-        $request->validate([
-            'preset' => 'json'
+        $request->merge([
+            'preset' => json_decode($request->preset, true)
         ]);
 
-        $request->merge(['preset' => json_decode($request->preset)]);
+        $request->validate([
+            'preset' => 'array'
+        ]);
+
+        
         $item = ShadowpayBotPreset::where('user_id', $request->user()->id)->findOrFail($presetId);
         $item->update($request->all());
 

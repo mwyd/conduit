@@ -19,14 +19,14 @@ use App\Http\Controllers\ShadowpayBotConfigController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('steam-market-csgo-items', SteamMarketCsgoItemController::class);
     Route::resource('shadowpay-sold-items', ShadowpaySoldItemController::class);
     Route::resource('sale-guard-items', SaleGuardItemController::class);
     Route::resource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
     Route::resource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
+
+    Route::get('/user', function(Request $request) {
+        return response()->apiSuccess(['name' => $request->user()->name], 200);
+    });
 });
