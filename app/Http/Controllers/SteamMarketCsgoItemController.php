@@ -46,9 +46,12 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function store(Request $request)
     {
-        if(!$request->user()->tokenCan('api:post')) abort(403, 'forbidden');
-        
+        $user = $request->user();
+
+        if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
+   
         $data = SteamMarketCsgoItem::create($request->all());
+
         return response()->apiSuccess($data, 201);
     }
 
@@ -61,6 +64,7 @@ class SteamMarketCsgoItemController extends Controller
     public function show($hashName)
     {
         $item = SteamMarketCsgoItem::findOrFail($hashName);
+
         return response()->apiSuccess($item, 200);
     }
 
@@ -73,7 +77,9 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function update(Request $request, $hashName)
     {
-        if(!$request->user()->tokenCan('api:put')) abort(403, 'forbidden');
+        $user = $request->user();
+
+        if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
 
         $item = SteamMarketCsgoItem::findOrFail($hashName);
         $item->update($request->all());
@@ -89,7 +95,9 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function destroy(Request $request, $hashName)
     {
-        if(!$request->user()->tokenCan('api:delete')) abort(403, 'forbidden');
+        $user = $request->user();
+
+        if(!$user->tokenCan('api:delete')) abort(403, 'forbidden');
 
         $item = SteamMarketCsgoItem::findOrFail($hashName);
         $item->delete();

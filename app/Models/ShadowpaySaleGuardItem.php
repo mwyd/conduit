@@ -5,28 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SaleGuardItem extends Model
+class ShadowpaySaleGuardItem extends Model
 {
     use HasFactory;
-
-    public $incrementing = false;
-    
-    protected $primaryKey = 'item_id';
 
     protected $hidden = [
         'user_id'
     ];
 
     protected $fillable = [
-        'item_id',
         'user_id',
-        'hash_name',
-        'minimum_price',
-        'maximum_price'
+        'item'
     ];
 
     protected $casts = [
-        'minimum_price' => 'float',
-        'maximum_price' => 'float'
+        'item' => 'array'
     ];
 }

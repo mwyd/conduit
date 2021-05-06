@@ -22,13 +22,15 @@ class ShadowpayBotPresetController extends Controller
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
+        $user = $request->user();
+
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 50);
         $orderBy = $request->input('order_by', 'updated_at');
         $orderDir = $request->input('order_dir', 'desc');
 
         $items = ShadowpayBotPreset::select('*')
-                    ->where('user_id', $request->user()->id)
+                    ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -45,8 +47,10 @@ class ShadowpayBotPresetController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $request->user();
+
         $request->merge([
-            'user_id' => $request->user()->id,
+            'user_id' => $user->id,
             'preset' => json_decode($request->preset, true)
         ]);
 
@@ -55,6 +59,7 @@ class ShadowpayBotPresetController extends Controller
         ]);
 
         $data = ShadowpayBotPreset::create($request->all());
+
         return response()->apiSuccess($data, 201);
     }
 
@@ -66,7 +71,11 @@ class ShadowpayBotPresetController extends Controller
      */
     public function show(Request $request, $presetId)
     {
-        $item = ShadowpayBotPreset::where('user_id', $request->user()->id)->findOrFail($presetId);
+        $user = $request->user();
+
+        $item = ShadowpayBotPreset::where('user_id', $user->id)
+                    ->findOrFail($presetId);
+
         return response()->apiSuccess($item, 200);
     }
 
@@ -79,6 +88,8 @@ class ShadowpayBotPresetController extends Controller
      */
     public function update(Request $request, $presetId)
     {
+        $user = $request->user();
+
         $request->merge([
             'preset' => json_decode($request->preset, true)
         ]);
@@ -88,7 +99,9 @@ class ShadowpayBotPresetController extends Controller
         ]);
 
         
-        $item = ShadowpayBotPreset::where('user_id', $request->user()->id)->findOrFail($presetId);
+        $item = ShadowpayBotPreset::where('user_id', $user->id)
+                    ->findOrFail($presetId);
+
         $item->update($request->all());
 
         return response()->apiSuccess($item, 200);
@@ -102,7 +115,11 @@ class ShadowpayBotPresetController extends Controller
      */
     public function destroy(Request $request, $presetId)
     {
-        $item = ShadowpayBotPreset::where('user_id', $request->user()->id)->findOrFail($presetId);
+        $user = $request->user();
+
+        $item = ShadowpayBotPreset::where('user_id', $user->id)
+                    ->findOrFail($presetId);
+                    
         $item->delete();
 
         return response()->apiSuccess($item, 200);

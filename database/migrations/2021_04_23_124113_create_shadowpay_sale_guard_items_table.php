@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSaleGuardItemsTable extends Migration
+class CreateShadowpaySaleGuardItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSaleGuardItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sale_guard_items', function (Blueprint $table) {
-            $table->integer('item_id')->primary();
+        Schema::create('shadowpay_sale_guard_items', function (Blueprint $table) {
+            $table->id();
             $table->mediumInteger('user_id');
-            $table->string('hash_name');
-            $table->decimal('minimum_price', 7, 2, true);
-            $table->decimal('maximum_price', 7, 2, true);
+            $table->json('item');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSaleGuardItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale_guard_items');
+        Schema::dropIfExists('shadowpay_sale_guard_items');
     }
 }

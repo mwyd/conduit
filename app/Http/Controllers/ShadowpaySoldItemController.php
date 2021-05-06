@@ -57,9 +57,12 @@ class ShadowpaySoldItemController extends Controller
      */
     public function store(Request $request)
     {
-        if(!$request->user()->tokenCan('api:post')) abort(403, 'forbidden');
+        $user = $request->user();
+
+        if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
 
         $data = ShadowpaySoldItem::create($request->all());
+
         return response()->apiSuccess($data, 201);
     }
 
@@ -72,6 +75,7 @@ class ShadowpaySoldItemController extends Controller
     public function show($transactionId)
     {
         $item = ShadowpaySoldItem::findOrFail($transactionId);
+
         return response()->apiSuccess($item, 200);
     }
 
@@ -84,7 +88,9 @@ class ShadowpaySoldItemController extends Controller
      */
     public function update(Request $request, $transactionId)
     {
-        if(!$request->user()->tokenCan('api:put')) abort(403, 'forbidden');
+        $user = $request->user();
+
+        if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
 
         $item = ShadowpaySoldItem::findOrFail($transactionId);
         $item->update($request->all());
@@ -100,7 +106,9 @@ class ShadowpaySoldItemController extends Controller
      */
     public function destroy(Request $request, $transactionId)
     {
-        if(!$request->user()->tokenCan('api:delete')) abort(403, 'forbidden');
+        $user = $request->user();
+
+        if(!$user->tokenCan('api:delete')) abort(403, 'forbidden');
 
         $item = ShadowpaySoldItem::findOrFail($transactionId);
         $item->delete();

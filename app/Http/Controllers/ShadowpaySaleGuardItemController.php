@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\SaleGuardItem;
+use App\Models\ShadowpaySaleGuardItem;
 
-class SaleGuardItemController extends Controller
+class ShadowpaySaleGuardItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,19 +18,19 @@ class SaleGuardItemController extends Controller
         $request->validate([
             'offset' => 'gte:0|numeric',
             'limit' => 'gt:0|lte:50|numeric',
-            'order_by' => Rule::in(['updated_at', 'minimum_price', 'maximum_price']),
+            'order_by' => Rule::in(['updated_at']),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
+        $user = $request->user();
+
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 50);
-        $search = $request->input('search', '');
         $orderBy = $request->input('order_by', 'updated_at');
         $orderDir = $request->input('order_dir', 'desc');
 
-        $items = SaleGuardItem::select('*')
-                    ->where('hash_name', 'like', "%$search%")
-                    ->where('user_id', $request->user()->id)
+        $items = ShadowpaySaleGuardItem::select('*')
+                    ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -47,8 +47,19 @@ class SaleGuardItemController extends Controller
      */
     public function store(Request $request)
     {
-        $data = array_merge($request->all(), ['user_id' => $request->user()->id]);
-        $data = SaleGuardItem::create($data);
+        $user = $request->user();
+
+        $request->merge([
+            'user_id' => $user->id,
+            'item' => json_decode($request->item, true)
+        ]);
+
+        $request->validate([
+            'item' => 'array'
+        ]);
+
+        $data = ShadowpaySaleGuardItem::create($request->all());
+
         return response()->apiSuccess($data, 201);
     }
 
@@ -60,7 +71,11 @@ class SaleGuardItemController extends Controller
      */
     public function show(Request $request, $itemId)
     {
-        $item = SaleGuardItem::where('user_id', $request->user()->id)->findOrFail($itemId);
+        $user = $request->user();
+
+        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
+                    ->findOrFail($itemId);
+
         return response()->apiSuccess($item, 200);
     }
 
@@ -73,7 +88,19 @@ class SaleGuardItemController extends Controller
      */
     public function update(Request $request, $itemId)
     {
-        $item = SaleGuardItem::where('user_id', $request->user()->id)->findOrFail($itemId);
+        $user = $request->user();
+
+        $request->merge([
+            'item' => json_decode($request->item, true)
+        ]);
+
+        $request->validate([
+            'item' => 'array'
+        ]);
+
+        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
+                    ->findOrFail($itemId);
+
         $item->update($request->all());
 
         return response()->apiSuccess($item, 200);
@@ -87,7 +114,11 @@ class SaleGuardItemController extends Controller
      */
     public function destroy(Request $request, $itemId)
     {
-        $item = SaleGuardItem::where('user_id', $request->user()->id)->findOrFail($itemId);
+        $user = $request->user();
+
+        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
+                    ->findOrFail($itemId);
+                    
         $item->delete();
 
         return response()->apiSuccess($item, 200);
