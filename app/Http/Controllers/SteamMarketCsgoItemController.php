@@ -50,6 +50,13 @@ class SteamMarketCsgoItemController extends Controller
 
         if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
    
+        $request->validate([
+            'hash_name' => 'required|string',
+            'volume' => 'required|integer',
+            'price' => 'required|numeric',
+            'icon' => 'required|string'
+        ]);
+
         $data = SteamMarketCsgoItem::create($request->all());
 
         return response()->apiSuccess($data, 201);
@@ -80,6 +87,13 @@ class SteamMarketCsgoItemController extends Controller
         $user = $request->user();
 
         if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
+
+        $request->validate([
+            'hash_name' => 'string',
+            'volume' => 'integer',
+            'price' => 'numeric',
+            'icon' => 'string'
+        ]);
 
         $item = SteamMarketCsgoItem::findOrFail($hashName);
         $item->update($request->all());

@@ -61,6 +61,15 @@ class ShadowpaySoldItemController extends Controller
 
         if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
 
+        $request->validate([
+            'transaction_id' => 'required|string',
+            'hash_name' => 'required|string',
+            'discount' => 'required|integer',
+            'sell_price' => 'numeric',
+            'steam_price' => 'numeric',
+            'sold_at' => 'required|date'
+        ]);
+
         $data = ShadowpaySoldItem::create($request->all());
 
         return response()->apiSuccess($data, 201);
@@ -91,6 +100,15 @@ class ShadowpaySoldItemController extends Controller
         $user = $request->user();
 
         if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
+
+        $request->validate([
+            'transaction_id' => 'string',
+            'hash_name' => 'string',
+            'discount' => 'integer',
+            'sell_price' => 'numeric',
+            'steam_price' => 'numeric',
+            'sold_at' => 'date'
+        ]);
 
         $item = ShadowpaySoldItem::findOrFail($transactionId);
         $item->update($request->all());

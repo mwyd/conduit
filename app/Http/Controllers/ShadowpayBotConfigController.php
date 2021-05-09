@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\ShadowpayBotConfig;
-use Illuminate\Support\Facades\Validator;
 
 class ShadowpayBotConfigController extends Controller
 {
@@ -56,10 +55,12 @@ class ShadowpayBotConfigController extends Controller
         ]);
 
         $request->validate([
-            'config' => 'array'
+            'config' => 'required|array'
         ]);
 
-        $data = ShadowpayBotConfig::updateOrCreate(['user_id' => $user->id], $request->all());
+        $data = ShadowpayBotConfig::updateOrCreate([
+                    'user_id' => $user->id
+                ], $request->all());
 
         return response()->apiSuccess($data, 201);
     }

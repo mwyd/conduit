@@ -55,7 +55,7 @@ class ShadowpayBotPresetController extends Controller
         ]);
 
         $request->validate([
-            'preset' => 'array'
+            'preset' => 'required|array'
         ]);
 
         $data = ShadowpayBotPreset::create($request->all());
@@ -97,7 +97,6 @@ class ShadowpayBotPresetController extends Controller
         $request->validate([
             'preset' => 'array'
         ]);
-
         
         $item = ShadowpayBotPreset::where('user_id', $user->id)
                     ->findOrFail($presetId);

@@ -55,7 +55,7 @@ class ShadowpaySaleGuardItemController extends Controller
         ]);
 
         $request->validate([
-            'item' => 'array'
+            'item' => 'required|array'
         ]);
 
         $data = ShadowpaySaleGuardItem::create($request->all());
