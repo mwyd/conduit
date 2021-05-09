@@ -7,6 +7,7 @@ use App\Http\Controllers\ShadowpaySoldItemController;
 use App\Http\Controllers\ShadowpaySaleGuardItemController;
 use App\Http\Controllers\ShadowpayBotPresetController;
 use App\Http\Controllers\ShadowpayBotConfigController;
+use App\Http\Controllers\ShadowpayFriendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class);
     Route::resource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
     Route::resource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
+    Route::resource('shadowpay-friends', ShadowpayFriendController::class);
 
     Route::post('/steam-market-csgo-items', [SteamMarketCsgoItemController::class, 'store']);
     Route::put('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'update']);
@@ -41,6 +43,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::delete('/shadowpay-sold-items/{transactionId}', [ShadowpaySoldItemController::class, 'destroy']);
 
     Route::get('/user', function(Request $request) {
-        return response()->apiSuccess(['name' => $request->user()->name], 200);
+        return response()->apiSuccess($request->user(), 200);
     });
 });
