@@ -8,6 +8,7 @@ use App\Http\Controllers\ShadowpaySaleGuardItemController;
 use App\Http\Controllers\ShadowpayBotPresetController;
 use App\Http\Controllers\ShadowpayBotConfigController;
 use App\Http\Controllers\ShadowpayFriendController;
+use App\Http\Controllers\CsgoBlueGemItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
     Route::resource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
     Route::resource('shadowpay-friends', ShadowpayFriendController::class);
+    Route::resource('csgo-blue-gem-items', CsgoBlueGemItemController::class);
 
     Route::post('/steam-market-csgo-items', [SteamMarketCsgoItemController::class, 'store']);
     Route::put('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'update']);

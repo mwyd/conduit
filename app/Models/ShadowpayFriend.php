@@ -10,7 +10,8 @@ class ShadowpayFriend extends Model
     use HasFactory;
 
     protected $hidden = [
-        'user_id'
+        'user_id',
+        'updated_at'
     ];
 
     protected $fillable = [

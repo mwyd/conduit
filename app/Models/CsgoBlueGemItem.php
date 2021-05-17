@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShadowpayBotConfig extends Model
+class CsgoBlueGemItem extends Model
 {
     use HasFactory;
 
     protected $hidden = [
-        'user_id',
         'created_at',
         'updated_at'
     ];
 
     protected $fillable = [
-        'user_id',
-        'config'
+        'item_type',
+        'paint_seed',
+        'gem_type'
     ];
 
     protected $casts = [
-        'config' => 'array'
+        'paint_seed' => 'integer'
     ];
 }
