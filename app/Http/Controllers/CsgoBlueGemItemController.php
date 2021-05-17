@@ -19,7 +19,7 @@ class CsgoBlueGemItemController extends Controller
             'offset' => 'gte:0|numeric',
             'limit' => 'gt:0|lte:50|numeric',
             'paint_seed' => 'numeric',
-            'gem_type' => Rule::in(['blue', 'gold']),
+            'gem_type' => Rule::in(['blue', 'gold', 'tier 2', 'tier 3']),
             'order_by' => Rule::in(['updated_at', 'item_type', 'paint_seed']),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
