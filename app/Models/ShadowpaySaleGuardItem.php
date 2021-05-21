@@ -16,10 +16,14 @@ class ShadowpaySaleGuardItem extends Model
 
     protected $fillable = [
         'user_id',
-        'item'
+        'shadowpay_item_id',
+        'min_price',
+        'max_price'
     ];
 
     protected $casts = [
-        'item' => 'array'
+        'shadowpay_item_id' => 'integer',
+        'min_price' => 'float',
+        'max_price' => 'float'
     ];
 }

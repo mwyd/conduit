@@ -18,7 +18,7 @@ class ShadowpaySaleGuardItemController extends Controller
         $request->validate([
             'offset' => 'gte:0|numeric',
             'limit' => 'gt:0|lte:50|numeric',
-            'order_by' => Rule::in(['updated_at']),
+            'order_by' => Rule::in(['updated_at', 'shadowpay_item_id', 'min_price', 'max_price']),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
@@ -50,12 +50,13 @@ class ShadowpaySaleGuardItemController extends Controller
         $user = $request->user();
 
         $request->merge([
-            'user_id' => $user->id,
-            'item' => json_decode($request->item, true)
+            'user_id' => $user->id
         ]);
 
         $request->validate([
-            'item' => 'required|array'
+            'shadowpay_item_id' => 'required|numeric',
+            'min_price' => 'required|numeric',
+            'max_price' => 'required|numeric'
         ]);
 
         $data = ShadowpaySaleGuardItem::create($request->all());
@@ -90,12 +91,10 @@ class ShadowpaySaleGuardItemController extends Controller
     {
         $user = $request->user();
 
-        $request->merge([
-            'item' => json_decode($request->item, true)
-        ]);
-
         $request->validate([
-            'item' => 'array'
+            'shadowpay_item_id' => 'numeric',
+            'min_price' => 'numeric',
+            'max_price' => 'numeric'
         ]);
 
         $item = ShadowpaySaleGuardItem::where('user_id', $user->id)

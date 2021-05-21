@@ -16,7 +16,9 @@ class CreateShadowpaySaleGuardItemsTable extends Migration
         Schema::create('shadowpay_sale_guard_items', function (Blueprint $table) {
             $table->id();
             $table->mediumInteger('user_id');
-            $table->json('item');
+            $table->integer('shadowpay_item_id')->unique();
+            $table->decimal('min_price', 7, 2);
+            $table->decimal('max_price', 7, 2);
             $table->timestamps();
         });
     }
