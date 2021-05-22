@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SteamMarketCsgoItem;
 
 class ShadowpaySoldItem extends Model
 {
@@ -34,4 +35,9 @@ class ShadowpaySoldItem extends Model
         'sold_at' => 'date:Y-m-d\TH:i:s.u\Z',
         'last_sold' => 'date:Y-m-d\TH:i:s.u\Z'
     ];
+
+    public function steamMarketCsgoItem() 
+    {
+        return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
+    }
 }

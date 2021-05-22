@@ -19,7 +19,14 @@ class ShadowpaySoldItemController extends Controller
         $request->validate([
             'offset' => 'gte:0|numeric',
             'limit' => 'gt:0|lte:50|numeric',
-            'order_by' => Rule::in(['sold', 'avg_sell_price', 'last_sold']),
+            'order_by' => Rule::in([
+                'hash_name',
+                'sold', 
+                'avg_discount', 
+                'avg_sell_price', 
+                'avg_steam_price', 
+                'last_sold'
+            ]),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
@@ -40,6 +47,7 @@ class ShadowpaySoldItemController extends Controller
                         )
                     )
                     ->where('hash_name', 'like', "%$search%")
+                    ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
                     ->offset($offset)
                     ->limit($limit)
