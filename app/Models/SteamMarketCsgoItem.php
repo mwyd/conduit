@@ -14,6 +14,10 @@ class SteamMarketCsgoItem extends Model
     protected $keyType = 'string';
     protected $primaryKey = 'hash_name';
 
+    protected $hidden = [
+        'created_at'
+    ];
+
     protected $fillable = [
         'hash_name',
         'volume',
