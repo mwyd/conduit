@@ -27,12 +27,16 @@ class ShadowpaySoldItemController extends Controller
                 'avg_steam_price', 
                 'last_sold'
             ]),
+            'date_start' => 'date',
+            'date_end' => 'date',
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 50);
         $search = $request->input('search', '');
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
         $orderBy = $request->input('order_by', 'sold');
         $orderDir = $request->input('order_dir', 'desc');
 
@@ -46,6 +50,12 @@ class ShadowpaySoldItemController extends Controller
                             'max(sold_at) as last_sold'
                         )
                     )
+                    ->when($dateStart, function($query, $dateStart) {
+                        return $query->where('sold_at', '>=', $dateStart);
+                    })
+                    ->when($dateEnd, function($query, $dateEnd) {
+                        return $query->where('sold_at', '<=', $dateEnd);
+                    })
                     ->where('hash_name', 'like', "%$search%")
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
@@ -91,7 +101,8 @@ class ShadowpaySoldItemController extends Controller
      */
     public function show($transactionId)
     {
-        $item = ShadowpaySoldItem::findOrFail($transactionId);
+        $item = ShadowpaySoldItem::with('steamMarketCsgoItem')
+                    ->findOrFail($transactionId);
 
         return response()->apiSuccess($item, 200);
     }
