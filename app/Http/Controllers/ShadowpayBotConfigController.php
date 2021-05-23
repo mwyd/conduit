@@ -16,8 +16,8 @@ class ShadowpayBotConfigController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|numeric',
-            'limit' => 'gt:0|lte:50|numeric',
+            'offset' => 'gte:0|integer',
+            'limit' => 'gt:0|lte:50|integer',
             'order_by' => Rule::in(['updated_at']),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);

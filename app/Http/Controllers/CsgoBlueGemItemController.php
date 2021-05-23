@@ -16,30 +16,41 @@ class CsgoBlueGemItemController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|numeric',
-            'limit' => 'gt:0|lte:50|numeric',
-            'paint_seed' => 'numeric',
-            'gem_type' => Rule::in(['blue', 'gold', 'tier 2', 'tier 3']),
-            'order_by' => Rule::in(['updated_at', 'item_type', 'paint_seed']),
+            'offset' => 'gte:0|integer',
+            'limit' => 'gt:0|lte:50|integer',
+            'paint_seed' => 'integer',
+            'gem_type' => Rule::in([
+                'blue', 
+                'gold', 
+                'tier 2', 
+                'tier 3'
+            ]),
+            'order_by' => Rule::in([
+                'updated_at', 
+                'item_type', 
+                'paint_seed'
+            ]),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 50);
-        $search = $request->input('search', '');
+        $search = $request->input('search');
         $paintSeed = $request->input('paint_seed');
         $gemType = $request->input('gem_type');
         $orderBy = $request->input('order_by', 'paint_seed');
         $orderDir = $request->input('order_dir', 'desc');
 
         $items = CsgoBlueGemItem::select('*')
+                    ->when($search, function($query, $search) {
+                        return $query->where('item_type', 'like', "%$search%");
+                    })
                     ->when($paintSeed, function($query, $paintSeed) {
                         return $query->where('paint_seed', $paintSeed);
                     })
                     ->when($gemType, function($query, $gemType) {
                         return $query->where('gem_type', $gemType);
                     })
-                    ->where('item_type', 'like', "%$search%")
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)

@@ -17,8 +17,8 @@ class ShadowpaySoldItemController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|numeric',
-            'limit' => 'gt:0|lte:50|numeric',
+            'offset' => 'gte:0|integer',
+            'limit' => 'gt:0|lte:50|integer',
             'order_by' => Rule::in([
                 'hash_name',
                 'sold', 
@@ -34,7 +34,7 @@ class ShadowpaySoldItemController extends Controller
 
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 50);
-        $search = $request->input('search', '');
+        $search = $request->input('search');
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
         $orderBy = $request->input('order_by', 'sold');
@@ -50,13 +50,15 @@ class ShadowpaySoldItemController extends Controller
                             'max(sold_at) as last_sold'
                         )
                     )
+                    ->when($search, function($query, $search) {
+                        return $query->where('hash_name', 'like', "%$search%");
+                    })
                     ->when($dateStart, function($query, $dateStart) {
                         return $query->where('sold_at', '>=', $dateStart);
                     })
                     ->when($dateEnd, function($query, $dateEnd) {
                         return $query->where('sold_at', '<=', $dateEnd);
                     })
-                    ->where('hash_name', 'like', "%$search%")
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
                     ->offset($offset)

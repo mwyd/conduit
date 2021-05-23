@@ -16,20 +16,27 @@ class SteamMarketCsgoItemController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|numeric',
-            'limit' => 'gt:0|lte:50|numeric',
-            'order_by' => Rule::in(['updated_at', 'volume', 'price']),
+            'offset' => 'gte:0|integer',
+            'limit' => 'gt:0|lte:50|integer',
+            'order_by' => Rule::in([
+                'hash_name',
+                'updated_at', 
+                'volume', 
+                'price'
+            ]),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 50);
-        $search = $request->input('search', '');
+        $search = $request->input('search');
         $orderBy = $request->input('order_by', 'updated_at');
         $orderDir = $request->input('order_dir', 'desc');
 
         $items = SteamMarketCsgoItem::select('*')
-                    ->where('hash_name', 'like', "%$search%")
+                    ->when($search, function($query, $search) {
+                        return $query->where('hash_name', 'like', "%$search%");
+                    })
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)

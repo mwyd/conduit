@@ -16,9 +16,14 @@ class ShadowpaySaleGuardItemController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|numeric',
-            'limit' => 'gt:0|lte:50|numeric',
-            'order_by' => Rule::in(['updated_at', 'shadowpay_item_id', 'min_price', 'max_price']),
+            'offset' => 'gte:0|integer',
+            'limit' => 'gt:0|lte:50|integer',
+            'order_by' => Rule::in([
+                'updated_at', 
+                'shadowpay_item_id', 
+                'min_price', 
+                'max_price'
+            ]),
             'order_dir' => Rule::in(['desc', 'asc']),
         ]);
 
