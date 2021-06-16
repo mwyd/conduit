@@ -11,28 +11,29 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|integer',
-            'limit' => 'gt:0|lte:50|integer',
-            'order_by' => Rule::in([
+            'offset'        => 'integer|min:0',
+            'limit'         => 'integer|between:0,50',
+            'order_by'      => Rule::in([
                 'updated_at', 
                 'shadowpay_item_id', 
                 'min_price', 
                 'max_price'
             ]),
-            'order_dir' => Rule::in(['desc', 'asc']),
+            'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
         $user = $request->user();
 
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 50);
-        $orderBy = $request->input('order_by', 'updated_at');
-        $orderDir = $request->input('order_dir', 'desc');
+        $offset     = $request->input('offset', 0);
+        $limit      = $request->input('limit', 50);
+        $orderBy    = $request->input('order_by', 'updated_at');
+        $orderDir   = $request->input('order_dir', 'desc');
 
         $items = ShadowpaySaleGuardItem::select('*')
                     ->where('user_id', $user->id)
@@ -55,13 +56,13 @@ class ShadowpaySaleGuardItemController extends Controller
         $user = $request->user();
 
         $request->merge([
-            'user_id' => $user->id
+            'user_id'   => $user->id
         ]);
 
         $request->validate([
             'shadowpay_item_id' => 'required|numeric',
-            'min_price' => 'required|numeric',
-            'max_price' => 'required|numeric'
+            'min_price'         => 'required|numeric',
+            'max_price'         => 'required|numeric'
         ]);
 
         $data = ShadowpaySaleGuardItem::create($request->all());
@@ -72,7 +73,8 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $itemId)
@@ -89,7 +91,7 @@ class ShadowpaySaleGuardItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $itemId)
@@ -98,8 +100,8 @@ class ShadowpaySaleGuardItemController extends Controller
 
         $request->validate([
             'shadowpay_item_id' => 'numeric',
-            'min_price' => 'numeric',
-            'max_price' => 'numeric'
+            'min_price'         => 'numeric',
+            'max_price'         => 'numeric'
         ]);
 
         $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
@@ -113,7 +115,8 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $itemId)

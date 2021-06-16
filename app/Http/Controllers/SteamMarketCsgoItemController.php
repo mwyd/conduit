@@ -11,27 +11,28 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|integer',
-            'limit' => 'gt:0|lte:50|integer',
-            'order_by' => Rule::in([
+            'offset'        => 'integer|min:0',
+            'limit'         => 'integer|between:0,50',
+            'order_by'      => Rule::in([
                 'hash_name',
                 'updated_at', 
                 'volume', 
                 'price'
             ]),
-            'order_dir' => Rule::in(['desc', 'asc']),
+            'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 50);
-        $search = $request->input('search');
-        $orderBy = $request->input('order_by', 'updated_at');
-        $orderDir = $request->input('order_dir', 'desc');
+        $offset     = $request->input('offset', 0);
+        $limit      = $request->input('limit', 50);
+        $search     = $request->input('search');
+        $orderBy    = $request->input('order_by', 'updated_at');
+        $orderDir   = $request->input('order_dir', 'desc');
 
         $items = SteamMarketCsgoItem::select('*')
                     ->when($search, function($query, $search) {
@@ -59,9 +60,9 @@ class SteamMarketCsgoItemController extends Controller
    
         $request->validate([
             'hash_name' => 'required|string',
-            'volume' => 'required|integer',
-            'price' => 'required|numeric',
-            'icon' => 'required|string'
+            'volume'    => 'required|integer',
+            'price'     => 'required|numeric',
+            'icon'      => 'required|string'
         ]);
 
         $data = SteamMarketCsgoItem::create($request->all());
@@ -72,7 +73,7 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
     public function show($hashName)
@@ -86,7 +87,7 @@ class SteamMarketCsgoItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $hashName)
@@ -97,9 +98,9 @@ class SteamMarketCsgoItemController extends Controller
 
         $request->validate([
             'hash_name' => 'string',
-            'volume' => 'integer',
-            'price' => 'numeric',
-            'icon' => 'string'
+            'volume'    => 'integer',
+            'price'     => 'numeric',
+            'icon'      => 'string'
         ]);
 
         $item = SteamMarketCsgoItem::findOrFail($hashName);
@@ -111,7 +112,8 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $hashName)

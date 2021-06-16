@@ -23,7 +23,7 @@ class ShadowpaySaleGuardItem extends Model
 
     protected $casts = [
         'shadowpay_item_id' => 'integer',
-        'min_price' => 'float',
-        'max_price' => 'float'
+        'min_price'         => 'float',
+        'max_price'         => 'float'
     ];
 }

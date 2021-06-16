@@ -11,23 +11,24 @@ class ShadowpayFriendController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|integer',
-            'limit' => 'gt:0|lte:50|integer',
-            'order_by' => Rule::in(['updated_at', 'name']),
-            'order_dir' => Rule::in(['desc', 'asc']),
+            'offset'        => 'integer|min:0',
+            'limit'         => 'integer|between:0,50',
+            'order_by'      => Rule::in(['updated_at', 'name']),
+            'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
         $user = $request->user();
 
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 50);
-        $orderBy = $request->input('order_by', 'name');
-        $orderDir = $request->input('order_dir', 'asc');
+        $offset     = $request->input('offset', 0);
+        $limit      = $request->input('limit', 50);
+        $orderBy    = $request->input('order_by', 'name');
+        $orderDir   = $request->input('order_dir', 'asc');
 
         $items = ShadowpayFriend::select('*')
                     ->where('user_id', $user->id)
@@ -50,12 +51,12 @@ class ShadowpayFriendController extends Controller
         $user = $request->user();
 
         $request->merge([
-            'user_id' => $user->id
+            'user_id'   => $user->id
         ]);
 
         $request->validate([
-            'name' => 'required|string',
-            'shadowpay_id' => 'required|integer'
+            'name'          => 'required|string',
+            'shadowpay_id'  => 'required|integer'
         ]);
 
         $data = ShadowpayFriend::create($request->all());
@@ -66,7 +67,8 @@ class ShadowpayFriendController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $shadowpayId)
@@ -83,7 +85,7 @@ class ShadowpayFriendController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $shadowpayId)
@@ -91,8 +93,8 @@ class ShadowpayFriendController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'name' => 'string',
-            'shadowpay_id' => 'integer'
+            'name'          => 'string',
+            'shadowpay_id'  => 'integer'
         ]);
         
         $item = ShadowpayFriend::where('user_id', $user->id)
@@ -106,7 +108,8 @@ class ShadowpayFriendController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $shadowpayId)

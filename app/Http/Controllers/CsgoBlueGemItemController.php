@@ -11,35 +11,37 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|integer',
-            'limit' => 'gt:0|lte:50|integer',
-            'paint_seed' => 'integer',
-            'gem_type' => Rule::in([
+            'offset'        => 'integer|min:0',
+            'limit'         => 'integer|between:0,50',
+            'paint_seed'    => 'integer',
+            'gem_type'      => Rule::in([
                 'blue', 
                 'gold', 
                 'tier 2', 
                 'tier 3'
             ]),
-            'order_by' => Rule::in([
+            'order_by'      => Rule::in([
                 'updated_at', 
                 'item_type', 
                 'paint_seed'
             ]),
-            'order_dir' => Rule::in(['desc', 'asc']),
+            'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 50);
-        $search = $request->input('search');
-        $paintSeed = $request->input('paint_seed');
-        $gemType = $request->input('gem_type');
-        $orderBy = $request->input('order_by', 'paint_seed');
-        $orderDir = $request->input('order_dir', 'desc');
+        $offset     = $request->input('offset', 0);
+        $limit      = $request->input('limit', 50);
+        $orderBy    = $request->input('order_by', 'paint_seed');
+        $orderDir   = $request->input('order_dir', 'desc');
+
+        $search     = $request->input('search');
+        $paintSeed  = $request->input('paint_seed');
+        $gemType    = $request->input('gem_type');
 
         $items = CsgoBlueGemItem::select('*')
                     ->when($search, function($query, $search) {
@@ -72,9 +74,9 @@ class CsgoBlueGemItemController extends Controller
         if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
    
         $request->validate([
-            'item_type' => 'required|string',
-            'paint_seed' => 'required|integer',
-            'gem_type' => 'required|string'
+            'item_type'     => 'required|string',
+            'paint_seed'    => 'required|integer',
+            'gem_type'      => 'required|string'
         ]);
 
         $data = CsgoBlueGemItem::create($request->all());
@@ -109,9 +111,9 @@ class CsgoBlueGemItemController extends Controller
         if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
 
         $request->validate([
-            'item_type' => 'string',
-            'paint_seed' => 'integer',
-            'gem_type' => 'string'
+            'item_type'     => 'string',
+            'paint_seed'    => 'integer',
+            'gem_type'      => 'string'
         ]);
 
         $item = CsgoBlueGemItem::findOrFail($id);
@@ -123,6 +125,7 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

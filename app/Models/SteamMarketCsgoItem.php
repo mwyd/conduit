@@ -9,10 +9,10 @@ class SteamMarketCsgoItem extends Model
 {
     use HasFactory;
 
-    public $incrementing = false;
+    public $incrementing    = false;
     
-    protected $keyType = 'string';
-    protected $primaryKey = 'hash_name';
+    protected $keyType      = 'string';
+    protected $primaryKey   = 'hash_name';
 
     protected $hidden = [
         'created_at'
@@ -26,7 +26,7 @@ class SteamMarketCsgoItem extends Model
     ];
 
     protected $casts = [
-        'volume' => 'integer',
-        'price' => 'float',
+        'volume'    => 'integer',
+        'price'     => 'float',
     ];
 }
