@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 use App\Models\ShadowpaySoldItem;
 
 class ShadowpaySoldItemController extends Controller
@@ -12,14 +11,15 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $request->validate([
-            'offset' => 'gte:0|integer',
-            'limit' => 'gt:0|lte:50|integer',
-            'order_by' => Rule::in([
+            'offset'        => 'integer|min:0',
+            'limit'         => 'integer|between:0,50',
+            'order_by'      => Rule::in([
                 'hash_name',
                 'sold', 
                 'avg_discount', 
@@ -27,37 +27,46 @@ class ShadowpaySoldItemController extends Controller
                 'avg_steam_price', 
                 'last_sold'
             ]),
-            'date_start' => 'date',
-            'date_end' => 'date',
-            'order_dir' => Rule::in(['desc', 'asc']),
+            'order_dir'     => Rule::in(['desc', 'asc']),
+            'date_start'    => 'date',
+            'date_end'      => 'date',
+            'price_from'    => 'numeric',
+            'price_to'      => 'numeric'
         ]);
 
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 50);
-        $search = $request->input('search');
-        $dateStart = $request->input('date_start');
-        $dateEnd = $request->input('date_end');
-        $orderBy = $request->input('order_by', 'sold');
-        $orderDir = $request->input('order_dir', 'desc');
+        $offset     = $request->input('offset', 0);
+        $limit      = $request->input('limit', 50);
+        $orderBy    = $request->input('order_by', 'sold');
+        $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = ShadowpaySoldItem::select(
-                        DB::raw(
-                            'hash_name, ' .
-                            'count(hash_name) as sold, ' . 
-                            'round(avg(discount), 2) as avg_discount, ' . 
-                            'round(avg(sell_price), 2) as avg_sell_price, '. 
-                            'round(avg(steam_price), 2) as avg_steam_price, ' . 
-                            'max(sold_at) as last_sold'
-                        )
+        $search     = $request->input('search');
+        $dateStart  = $request->input('date_start');
+        $dateEnd    = $request->input('date_end');
+        $priceFrom  = $request->input('price_from');
+        $priceTo    = $request->input('price_to');
+
+        $items = ShadowpaySoldItem::selectRaw(
+                        'hash_name, ' .
+                        'count(hash_name) as sold, ' . 
+                        'round(avg(discount), 2) as avg_discount, ' . 
+                        'round(avg(sell_price), 2) as avg_sell_price, '. 
+                        'round(avg(steam_price), 2) as avg_steam_price, ' . 
+                        'max(sold_at) as last_sold'
                     )
                     ->when($search, function($query, $search) {
                         return $query->where('hash_name', 'like', "%$search%");
                     })
                     ->when($dateStart, function($query, $dateStart) {
-                        return $query->where('sold_at', '>=', $dateStart);
+                        return $query->whereDate('sold_at', '>=', $dateStart);
                     })
                     ->when($dateEnd, function($query, $dateEnd) {
-                        return $query->where('sold_at', '<=', $dateEnd);
+                        return $query->whereDate('sold_at', '<=', $dateEnd);
+                    })
+                    ->when($priceFrom, function($query, $priceFrom) {
+                        return $query->having('avg_steam_price', '>=', $priceFrom);
+                    })
+                    ->when($priceTo, function($query, $priceTo) {
+                        return $query->having('avg_steam_price', '<=', $priceTo);
                     })
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
@@ -82,12 +91,12 @@ class ShadowpaySoldItemController extends Controller
         if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
 
         $request->validate([
-            'transaction_id' => 'required|string',
-            'hash_name' => 'required|string',
-            'discount' => 'required|integer',
-            'sell_price' => 'numeric',
-            'steam_price' => 'numeric',
-            'sold_at' => 'required|date'
+            'transaction_id'    => 'required|string',
+            'hash_name'         => 'required|string',
+            'discount'          => 'required|integer',
+            'sell_price'        => 'numeric',
+            'steam_price'       => 'numeric',
+            'sold_at'           => 'required|date'
         ]);
 
         $data = ShadowpaySoldItem::create($request->all());
@@ -98,7 +107,7 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $transactionId
      * @return \Illuminate\Http\Response
      */
     public function show($transactionId)
@@ -113,7 +122,7 @@ class ShadowpaySoldItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $transactionId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $transactionId)
@@ -123,12 +132,12 @@ class ShadowpaySoldItemController extends Controller
         if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
 
         $request->validate([
-            'transaction_id' => 'string',
-            'hash_name' => 'string',
-            'discount' => 'integer',
-            'sell_price' => 'numeric',
-            'steam_price' => 'numeric',
-            'sold_at' => 'date'
+            'transaction_id'    => 'string',
+            'hash_name'         => 'string',
+            'discount'          => 'integer',
+            'sell_price'        => 'numeric',
+            'steam_price'       => 'numeric',
+            'sold_at'           => 'date'
         ]);
 
         $item = ShadowpaySoldItem::findOrFail($transactionId);
@@ -140,7 +149,8 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $transactionId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $transactionId)
