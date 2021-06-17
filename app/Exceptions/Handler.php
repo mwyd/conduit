@@ -49,13 +49,15 @@ class Handler extends ExceptionHandler
 
         if($request->expectsJson())
         {
-            $view = match($e::class) {
-                ValidationException::class => response()->apiFail('wrong_params', 422),
-                ModelNotFoundException::class => response()->apiFail('not_found', 404),
-                AuthenticationException::class => response()->apiFail('unauthorized', 401),
-                HttpException::class => response()->apiFail($e->getMessage(), $e->getStatusCode()),
-                default => response()->apiFail(config('app.debug') ? $e->getMessage() : 'internal_error', 500)
+            $message = match($e::class) {
+                ValidationException::class      => ['wrong_params', 422],
+                ModelNotFoundException::class   => ['not_found', 404],
+                AuthenticationException::class  => ['unauthorized', 401],
+                HttpException::class            => [$e->getMessage(), $e->getStatusCode()],
+                default                         => [config('app.debug') ? $e->getMessage() : 'internal_error', 500]
             };
+
+            $view = response()->apiFail(...$message);
         }
 
         return $view;
