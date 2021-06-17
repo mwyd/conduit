@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\ShadowpaySoldItem;
+use Carbon\Carbon;
 
 class ShadowpaySoldItemController extends Controller
 {
@@ -40,10 +41,10 @@ class ShadowpaySoldItemController extends Controller
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'sold');
         $orderDir   = $request->input('order_dir', 'desc');
+        $dateStart  = $request->input('date_start', (new Carbon)->subWeek()->format('Y-m-d H:i:s'));
+        $dateEnd    = $request->input('date_end');
 
         $search     = $request->input('search');
-        $dateStart  = $request->input('date_start');
-        $dateEnd    = $request->input('date_end');
         $priceFrom  = $request->input('price_from');
         $priceTo    = $request->input('price_to');
         $minSold    = $request->input('min_sold');
