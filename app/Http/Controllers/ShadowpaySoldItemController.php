@@ -32,7 +32,8 @@ class ShadowpaySoldItemController extends Controller
             'date_end'      => 'date',
             'price_from'    => 'numeric',
             'price_to'      => 'numeric',
-            'min_sold'      => 'integer'
+            'min_sold'      => 'integer',
+            'max_sold'      => 'integer'
         ]);
 
         $offset     = $request->input('offset', 0);
@@ -46,6 +47,7 @@ class ShadowpaySoldItemController extends Controller
         $priceFrom  = $request->input('price_from');
         $priceTo    = $request->input('price_to');
         $minSold    = $request->input('min_sold');
+        $maxSold    = $request->input('max_sold');
 
         $items = ShadowpaySoldItem::selectRaw(
                         'hash_name, ' .
@@ -72,6 +74,9 @@ class ShadowpaySoldItemController extends Controller
                     })
                     ->when($minSold, function($query, $minSold) {
                         return $query->having('sold', '>=', $minSold);
+                    })
+                    ->when($maxSold, function($query, $maxSold) {
+                        return $query->having('sold', '<=', $maxSold);
                     })
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
