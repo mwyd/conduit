@@ -41,7 +41,7 @@ class ShadowpaySoldItemController extends Controller
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'sold');
         $orderDir   = $request->input('order_dir', 'desc');
-        $dateStart  = $request->input('date_start', (new Carbon)->subWeek()->format('Y-m-d H:i:s'));
+        $dateStart  = $request->input('date_start', (new Carbon)->subWeek());
         $dateEnd    = $request->input('date_end');
 
         $search     = $request->input('search');
@@ -62,7 +62,7 @@ class ShadowpaySoldItemController extends Controller
                         return $query->where('hash_name', 'like', "%$search%");
                     })
                     ->when($dateStart, function($query, $dateStart) {
-                        return $query->whereDate('sold_at', '>=', $dateStart);
+                        return $query->whereDate('sold_at', '>', $dateStart);
                     })
                     ->when($dateEnd, function($query, $dateEnd) {
                         return $query->whereDate('sold_at', '<=', $dateEnd);
