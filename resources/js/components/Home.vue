@@ -368,7 +368,7 @@ export default {
 .home__content {
     max-width: 1024px;
     margin: 0 auto;
-    padding-top: 100px;
+    padding-top: 101px;
     padding-bottom: 20px;
     grid-gap: 20px;
     flex-wrap: wrap;
