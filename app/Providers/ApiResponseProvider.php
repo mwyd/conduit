@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
 
-class RestApiProvider extends ServiceProvider
+class ApiResponseProvider extends ServiceProvider
 {
     /**
      * Register services.
