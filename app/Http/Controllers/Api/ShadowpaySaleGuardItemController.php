@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\SteamMarketCsgoItem;
+use App\Http\Controllers\Controller;
+use App\Models\ShadowpaySaleGuardItem;
 
-class SteamMarketCsgoItemController extends Controller
+class ShadowpaySaleGuardItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,24 +21,23 @@ class SteamMarketCsgoItemController extends Controller
             'offset'        => 'integer|min:0',
             'limit'         => 'integer|between:0,50',
             'order_by'      => Rule::in([
-                'hash_name',
                 'updated_at', 
-                'volume', 
-                'price'
+                'shadowpay_item_id', 
+                'min_price', 
+                'max_price'
             ]),
             'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
+        $user = $request->user();
+
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
-        $search     = $request->input('search');
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = SteamMarketCsgoItem::select('*')
-                    ->when($search, function($query, $search) {
-                        return $query->where('hash_name', 'like', "%$search%");
-                    })
+        $items = ShadowpaySaleGuardItem::select('*')
+                    ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -54,16 +54,19 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('api-create');
-   
-        $request->validate([
-            'hash_name' => 'required|string',
-            'volume'    => 'required|integer',
-            'price'     => 'required|numeric',
-            'icon'      => 'required|string'
+        $user = $request->user();
+
+        $request->merge([
+            'user_id'   => $user->id
         ]);
 
-        $data = SteamMarketCsgoItem::create($request->all());
+        $request->validate([
+            'shadowpay_item_id' => 'required|numeric',
+            'min_price'         => 'required|numeric',
+            'max_price'         => 'required|numeric'
+        ]);
+
+        $data = ShadowpaySaleGuardItem::create($request->all());
 
         return response()->apiSuccess($data, 201);
     }
@@ -71,12 +74,16 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $hashName
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
-    public function show($hashName)
+    public function show(Request $request, $itemId)
     {
-        $item = SteamMarketCsgoItem::findOrFail($hashName);
+        $user = $request->user();
+
+        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
+                    ->findOrFail($itemId);
 
         return response()->apiSuccess($item, 200);
     }
@@ -85,21 +92,22 @@ class SteamMarketCsgoItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $hashName
+     * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $hashName)
+    public function update(Request $request, $itemId)
     {
-        $this->authorize('api-update');
+        $user = $request->user();
 
         $request->validate([
-            'hash_name' => 'string',
-            'volume'    => 'integer',
-            'price'     => 'numeric',
-            'icon'      => 'string'
+            'shadowpay_item_id' => 'numeric',
+            'min_price'         => 'numeric',
+            'max_price'         => 'numeric'
         ]);
 
-        $item = SteamMarketCsgoItem::findOrFail($hashName);
+        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
+                    ->findOrFail($itemId);
+
         $item->update($request->all());
 
         return response()->apiSuccess($item, 200);
@@ -108,14 +116,17 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string  $hashName
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
-    public function destroy($hashName)
+    public function destroy(Request $request, $itemId)
     {
-        $this->authorize('api-delete');
+        $user = $request->user();
 
-        $item = SteamMarketCsgoItem::findOrFail($hashName);
+        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
+                    ->findOrFail($itemId);
+                    
         $item->delete();
 
         return response()->apiSuccess($item, 200);

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\ShadowpayBotPreset;
+use App\Http\Controllers\Controller;
+use App\Models\ShadowpayBotConfig;
 
-class ShadowpayBotPresetController extends Controller
+class ShadowpayBotConfigController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,7 +31,7 @@ class ShadowpayBotPresetController extends Controller
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = ShadowpayBotPreset::select('*')
+        $items = ShadowpayBotConfig::select('*')
                     ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
@@ -52,14 +53,16 @@ class ShadowpayBotPresetController extends Controller
 
         $request->merge([
             'user_id'   => $user->id,
-            'preset'    => json_decode($request->preset, true)
+            'config'    => json_decode($request->config, true)
         ]);
 
         $request->validate([
-            'preset'    => 'required|array'
+            'config'    => 'required|array'
         ]);
 
-        $data = ShadowpayBotPreset::create($request->all());
+        $data = ShadowpayBotConfig::updateOrCreate([
+                    'user_id' => $user->id
+                ], $request->all());
 
         return response()->apiSuccess($data, 201);
     }
@@ -68,15 +71,15 @@ class ShadowpayBotPresetController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $presetId
+     * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $presetId)
+    public function show(Request $request, $configId)
     {
         $user = $request->user();
 
-        $item = ShadowpayBotPreset::where('user_id', $user->id)
-                    ->findOrFail($presetId);
+        $item = ShadowpayBotConfig::where('user_id', $user->id)
+                    ->findOrFail($configId);
 
         return response()->apiSuccess($item, 200);
     }
@@ -85,23 +88,23 @@ class ShadowpayBotPresetController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $presetId
+     * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $presetId)
+    public function update(Request $request, $configId)
     {
         $user = $request->user();
 
         $request->merge([
-            'preset'    => json_decode($request->preset, true)
-        ]);
-
-        $request->validate([
-            'preset'    => 'array'
+            'config'    => json_decode($request->config, true)
         ]);
         
-        $item = ShadowpayBotPreset::where('user_id', $user->id)
-                    ->findOrFail($presetId);
+        $request->validate([
+            'config'    => 'array'
+        ]);
+
+        $item = ShadowpayBotConfig::where('user_id', $user->id)
+                    ->findOrFail($configId);
 
         $item->update($request->all());
 
@@ -112,15 +115,15 @@ class ShadowpayBotPresetController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $presetId
+     * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $presetId)
+    public function destroy(Request $request, $configId)
     {
         $user = $request->user();
 
-        $item = ShadowpayBotPreset::where('user_id', $user->id)
-                    ->findOrFail($presetId);
+        $item = ShadowpayBotConfig::where('user_id', $user->id)
+                    ->findOrFail($configId);
                     
         $item->delete();
 

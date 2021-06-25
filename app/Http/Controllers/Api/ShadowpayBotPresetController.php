@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\ShadowpaySaleGuardItem;
+use App\Http\Controllers\Controller;
+use App\Models\ShadowpayBotPreset;
 
-class ShadowpaySaleGuardItemController extends Controller
+class ShadowpayBotPresetController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,12 +20,7 @@ class ShadowpaySaleGuardItemController extends Controller
         $request->validate([
             'offset'        => 'integer|min:0',
             'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in([
-                'updated_at', 
-                'shadowpay_item_id', 
-                'min_price', 
-                'max_price'
-            ]),
+            'order_by'      => Rule::in(['updated_at']),
             'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
@@ -35,7 +31,7 @@ class ShadowpaySaleGuardItemController extends Controller
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = ShadowpaySaleGuardItem::select('*')
+        $items = ShadowpayBotPreset::select('*')
                     ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
@@ -56,16 +52,15 @@ class ShadowpaySaleGuardItemController extends Controller
         $user = $request->user();
 
         $request->merge([
-            'user_id'   => $user->id
+            'user_id'   => $user->id,
+            'preset'    => json_decode($request->preset, true)
         ]);
 
         $request->validate([
-            'shadowpay_item_id' => 'required|numeric',
-            'min_price'         => 'required|numeric',
-            'max_price'         => 'required|numeric'
+            'preset'    => 'required|array'
         ]);
 
-        $data = ShadowpaySaleGuardItem::create($request->all());
+        $data = ShadowpayBotPreset::create($request->all());
 
         return response()->apiSuccess($data, 201);
     }
@@ -74,15 +69,15 @@ class ShadowpaySaleGuardItemController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $itemId
+     * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $itemId)
+    public function show(Request $request, $presetId)
     {
         $user = $request->user();
 
-        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
-                    ->findOrFail($itemId);
+        $item = ShadowpayBotPreset::where('user_id', $user->id)
+                    ->findOrFail($presetId);
 
         return response()->apiSuccess($item, 200);
     }
@@ -91,21 +86,23 @@ class ShadowpaySaleGuardItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $itemId
+     * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $itemId)
+    public function update(Request $request, $presetId)
     {
         $user = $request->user();
 
-        $request->validate([
-            'shadowpay_item_id' => 'numeric',
-            'min_price'         => 'numeric',
-            'max_price'         => 'numeric'
+        $request->merge([
+            'preset'    => json_decode($request->preset, true)
         ]);
 
-        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
-                    ->findOrFail($itemId);
+        $request->validate([
+            'preset'    => 'array'
+        ]);
+        
+        $item = ShadowpayBotPreset::where('user_id', $user->id)
+                    ->findOrFail($presetId);
 
         $item->update($request->all());
 
@@ -116,15 +113,15 @@ class ShadowpaySaleGuardItemController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $itemId
+     * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $itemId)
+    public function destroy(Request $request, $presetId)
     {
         $user = $request->user();
 
-        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
-                    ->findOrFail($itemId);
+        $item = ShadowpayBotPreset::where('user_id', $user->id)
+                    ->findOrFail($presetId);
                     
         $item->delete();
 

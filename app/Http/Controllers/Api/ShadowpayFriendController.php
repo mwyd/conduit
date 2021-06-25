@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\ShadowpayBotConfig;
+use App\Http\Controllers\Controller;
+use App\Models\ShadowpayFriend;
 
-class ShadowpayBotConfigController extends Controller
+class ShadowpayFriendController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +20,7 @@ class ShadowpayBotConfigController extends Controller
         $request->validate([
             'offset'        => 'integer|min:0',
             'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in(['updated_at']),
+            'order_by'      => Rule::in(['updated_at', 'name']),
             'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
@@ -27,10 +28,10 @@ class ShadowpayBotConfigController extends Controller
 
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'updated_at');
-        $orderDir   = $request->input('order_dir', 'desc');
+        $orderBy    = $request->input('order_by', 'name');
+        $orderDir   = $request->input('order_dir', 'asc');
 
-        $items = ShadowpayBotConfig::select('*')
+        $items = ShadowpayFriend::select('*')
                     ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
@@ -51,17 +52,15 @@ class ShadowpayBotConfigController extends Controller
         $user = $request->user();
 
         $request->merge([
-            'user_id'   => $user->id,
-            'config'    => json_decode($request->config, true)
+            'user_id'   => $user->id
         ]);
 
         $request->validate([
-            'config'    => 'required|array'
+            'name'          => 'required|string',
+            'shadowpay_id'  => 'required|integer'
         ]);
 
-        $data = ShadowpayBotConfig::updateOrCreate([
-                    'user_id' => $user->id
-                ], $request->all());
+        $data = ShadowpayFriend::create($request->all());
 
         return response()->apiSuccess($data, 201);
     }
@@ -70,15 +69,15 @@ class ShadowpayBotConfigController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $configId
+     * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $configId)
+    public function show(Request $request, $shadowpayId)
     {
         $user = $request->user();
 
-        $item = ShadowpayBotConfig::where('user_id', $user->id)
-                    ->findOrFail($configId);
+        $item = ShadowpayFriend::where('user_id', $user->id)
+                    ->findOrFail($shadowpayId);
 
         return response()->apiSuccess($item, 200);
     }
@@ -87,23 +86,20 @@ class ShadowpayBotConfigController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $configId
+     * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $configId)
+    public function update(Request $request, $shadowpayId)
     {
         $user = $request->user();
 
-        $request->merge([
-            'config'    => json_decode($request->config, true)
+        $request->validate([
+            'name'          => 'string',
+            'shadowpay_id'  => 'integer'
         ]);
         
-        $request->validate([
-            'config'    => 'array'
-        ]);
-
-        $item = ShadowpayBotConfig::where('user_id', $user->id)
-                    ->findOrFail($configId);
+        $item = ShadowpayFriend::where('user_id', $user->id)
+                    ->findOrFail($shadowpayId);
 
         $item->update($request->all());
 
@@ -114,15 +110,15 @@ class ShadowpayBotConfigController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $configId
+     * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $configId)
+    public function destroy(Request $request, $shadowpayId)
     {
         $user = $request->user();
 
-        $item = ShadowpayBotConfig::where('user_id', $user->id)
-                    ->findOrFail($configId);
+        $item = ShadowpayFriend::where('user_id', $user->id)
+                    ->findOrFail($shadowpayId);
                     
         $item->delete();
 

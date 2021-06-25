@@ -2,13 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SteamMarketCsgoItemController;
-use App\Http\Controllers\ShadowpaySoldItemController;
-use App\Http\Controllers\ShadowpaySaleGuardItemController;
-use App\Http\Controllers\ShadowpayBotPresetController;
-use App\Http\Controllers\ShadowpayBotConfigController;
-use App\Http\Controllers\ShadowpayFriendController;
-use App\Http\Controllers\CsgoBlueGemItemController;
+use App\Http\Controllers\Api\SteamMarketCsgoItemController;
+use App\Http\Controllers\Api\ShadowpaySoldItemController;
+use App\Http\Controllers\Api\ShadowpaySaleGuardItemController;
+use App\Http\Controllers\Api\ShadowpayBotPresetController;
+use App\Http\Controllers\Api\ShadowpayBotConfigController;
+use App\Http\Controllers\Api\ShadowpayFriendController;
+use App\Http\Controllers\Api\CsgoBlueGemItemController;
 
 /*
 |--------------------------------------------------------------------------

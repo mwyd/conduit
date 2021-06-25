@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Models\ShadowpayFriend;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use App\Models\SteamMarketCsgoItem;
 
-class ShadowpayFriendController extends Controller
+class SteamMarketCsgoItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,19 +20,25 @@ class ShadowpayFriendController extends Controller
         $request->validate([
             'offset'        => 'integer|min:0',
             'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in(['updated_at', 'name']),
+            'order_by'      => Rule::in([
+                'hash_name',
+                'updated_at', 
+                'volume', 
+                'price'
+            ]),
             'order_dir'     => Rule::in(['desc', 'asc'])
         ]);
 
-        $user = $request->user();
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'name');
-        $orderDir   = $request->input('order_dir', 'asc');
+        $search     = $request->input('search');
+        $orderBy    = $request->input('order_by', 'updated_at');
+        $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = ShadowpayFriend::select('*')
-                    ->where('user_id', $user->id)
+        $items = SteamMarketCsgoItem::select('*')
+                    ->when($search, function($query, $search) {
+                        return $query->where('hash_name', 'like', "%$search%");
+                    })
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -48,18 +55,16 @@ class ShadowpayFriendController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
-
-        $request->merge([
-            'user_id'   => $user->id
-        ]);
-
+        $this->authorize('api-create');
+   
         $request->validate([
-            'name'          => 'required|string',
-            'shadowpay_id'  => 'required|integer'
+            'hash_name' => 'required|string',
+            'volume'    => 'required|integer',
+            'price'     => 'required|numeric',
+            'icon'      => 'required|string'
         ]);
 
-        $data = ShadowpayFriend::create($request->all());
+        $data = SteamMarketCsgoItem::create($request->all());
 
         return response()->apiSuccess($data, 201);
     }
@@ -67,16 +72,12 @@ class ShadowpayFriendController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $shadowpayId
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $shadowpayId)
+    public function show($hashName)
     {
-        $user = $request->user();
-
-        $item = ShadowpayFriend::where('user_id', $user->id)
-                    ->findOrFail($shadowpayId);
+        $item = SteamMarketCsgoItem::findOrFail($hashName);
 
         return response()->apiSuccess($item, 200);
     }
@@ -85,21 +86,21 @@ class ShadowpayFriendController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $shadowpayId
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $shadowpayId)
+    public function update(Request $request, $hashName)
     {
-        $user = $request->user();
+        $this->authorize('api-update');
 
         $request->validate([
-            'name'          => 'string',
-            'shadowpay_id'  => 'integer'
+            'hash_name' => 'string',
+            'volume'    => 'integer',
+            'price'     => 'numeric',
+            'icon'      => 'string'
         ]);
-        
-        $item = ShadowpayFriend::where('user_id', $user->id)
-                    ->findOrFail($shadowpayId);
 
+        $item = SteamMarketCsgoItem::findOrFail($hashName);
         $item->update($request->all());
 
         return response()->apiSuccess($item, 200);
@@ -108,17 +109,14 @@ class ShadowpayFriendController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $shadowpayId
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $shadowpayId)
+    public function destroy($hashName)
     {
-        $user = $request->user();
+        $this->authorize('api-delete');
 
-        $item = ShadowpayFriend::where('user_id', $user->id)
-                    ->findOrFail($shadowpayId);
-                    
+        $item = SteamMarketCsgoItem::findOrFail($hashName);
         $item->delete();
 
         return response()->apiSuccess($item, 200);
