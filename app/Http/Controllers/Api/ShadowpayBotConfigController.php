@@ -31,14 +31,14 @@ class ShadowpayBotConfigController extends Controller
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = ShadowpayBotConfig::select('*')
+        $configs = ShadowpayBotConfig::select('*')
                     ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
                     ->get();
 
-        return response()->apiSuccess($items, 200);
+        return response()->apiSuccess($configs, 200);
     }
 
     /**
@@ -60,28 +60,26 @@ class ShadowpayBotConfigController extends Controller
             'config'    => 'required|array'
         ]);
 
-        $data = ShadowpayBotConfig::updateOrCreate([
+        $config = ShadowpayBotConfig::updateOrCreate([
                     'user_id' => $user->id
                 ], $request->all());
 
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($config, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $configId)
+    public function show($configId)
     {
-        $user = $request->user();
+        $config = ShadowpayBotConfig::findOrFail($configId);
 
-        $item = ShadowpayBotConfig::where('user_id', $user->id)
-                    ->findOrFail($configId);
+        $this->authorize('view', $config);
 
-        return response()->apiSuccess($item, 200);
+        return response()->apiSuccess($config, 200);
     }
 
     /**
@@ -93,8 +91,6 @@ class ShadowpayBotConfigController extends Controller
      */
     public function update(Request $request, $configId)
     {
-        $user = $request->user();
-
         $request->merge([
             'config'    => json_decode($request->config, true)
         ]);
@@ -103,30 +99,29 @@ class ShadowpayBotConfigController extends Controller
             'config'    => 'array'
         ]);
 
-        $item = ShadowpayBotConfig::where('user_id', $user->id)
-                    ->findOrFail($configId);
+        $config = ShadowpayBotConfig::findOrFail($configId);
 
-        $item->update($request->all());
+        $this->authorize('update', $config);
 
-        return response()->apiSuccess($item, 200);
+        $config->update($request->all());
+
+        return response()->apiSuccess($config, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $configId)
+    public function destroy($configId)
     {
-        $user = $request->user();
-
-        $item = ShadowpayBotConfig::where('user_id', $user->id)
-                    ->findOrFail($configId);
+        $config = ShadowpayBotConfig::findOrFail($configId);
                     
-        $item->delete();
+        $this->authorize('delete', $config);
 
-        return response()->apiSuccess($item, 200);
+        $config->delete();
+
+        return response()->apiSuccess($config, 200);
     }
 }

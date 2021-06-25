@@ -31,14 +31,14 @@ class ShadowpayBotPresetController extends Controller
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
-        $items = ShadowpayBotPreset::select('*')
+        $presets = ShadowpayBotPreset::select('*')
                     ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
                     ->get();
 
-        return response()->apiSuccess($items, 200);
+        return response()->apiSuccess($presets, 200);
     }
 
     /**
@@ -60,26 +60,24 @@ class ShadowpayBotPresetController extends Controller
             'preset'    => 'required|array'
         ]);
 
-        $data = ShadowpayBotPreset::create($request->all());
+        $preset = ShadowpayBotPreset::create($request->all());
 
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($preset, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $presetId)
+    public function show($presetId)
     {
-        $user = $request->user();
+        $preset = ShadowpayBotPreset::findOrFail($presetId);
 
-        $item = ShadowpayBotPreset::where('user_id', $user->id)
-                    ->findOrFail($presetId);
+        $this->authorize('view', $preset);
 
-        return response()->apiSuccess($item, 200);
+        return response()->apiSuccess($preset, 200);
     }
 
     /**
@@ -91,8 +89,6 @@ class ShadowpayBotPresetController extends Controller
      */
     public function update(Request $request, $presetId)
     {
-        $user = $request->user();
-
         $request->merge([
             'preset'    => json_decode($request->preset, true)
         ]);
@@ -101,30 +97,29 @@ class ShadowpayBotPresetController extends Controller
             'preset'    => 'array'
         ]);
         
-        $item = ShadowpayBotPreset::where('user_id', $user->id)
-                    ->findOrFail($presetId);
+        $preset = ShadowpayBotPreset::findOrFail($presetId);
 
-        $item->update($request->all());
+        $this->authorize('update', $preset);
 
-        return response()->apiSuccess($item, 200);
+        $preset->update($request->all());
+
+        return response()->apiSuccess($preset, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $presetId)
+    public function destroy($presetId)
     {
-        $user = $request->user();
+        $preset = ShadowpayBotPreset::findOrFail($presetId);
 
-        $item = ShadowpayBotPreset::where('user_id', $user->id)
-                    ->findOrFail($presetId);
+        $this->authorize('delete', $preset);
                     
-        $item->delete();
+        $preset->delete();
 
-        return response()->apiSuccess($item, 200);
+        return response()->apiSuccess($preset, 200);
     }
 }

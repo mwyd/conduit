@@ -5,6 +5,14 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\ShadowpayBotConfig;
+use App\Policies\ShadowpayBotConfigPolicy;
+use App\Models\ShadowpayBotPreset;
+use App\Policies\ShadowpayBotPresetPolicy;
+use App\Models\ShadowpayFriend;
+use App\Policies\ShadowpayFriendPolicy;
+use App\Models\ShadowpaySaleGuardItem;
+use App\Policies\ShadowpaySaleGuardItemPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,7 +22,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        ShadowpayBotConfig::class       => ShadowpayBotConfigPolicy::class,
+        ShadowpayBotPreset::class       => ShadowpayBotPresetPolicy::class,
+        ShadowpayFriend::class          => ShadowpayFriendPolicy::class,
+        ShadowpaySaleGuardItem::class   => ShadowpaySaleGuardItemPolicy::class
     ];
 
     /**

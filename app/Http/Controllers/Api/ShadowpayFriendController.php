@@ -31,14 +31,14 @@ class ShadowpayFriendController extends Controller
         $orderBy    = $request->input('order_by', 'name');
         $orderDir   = $request->input('order_dir', 'asc');
 
-        $items = ShadowpayFriend::select('*')
+        $friends = ShadowpayFriend::select('*')
                     ->where('user_id', $user->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
                     ->get();
 
-        return response()->apiSuccess($items, 200);
+        return response()->apiSuccess($friends, 200);
     }
 
     /**
@@ -60,26 +60,24 @@ class ShadowpayFriendController extends Controller
             'shadowpay_id'  => 'required|integer'
         ]);
 
-        $data = ShadowpayFriend::create($request->all());
+        $friend = ShadowpayFriend::create($request->all());
 
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($friend, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $shadowpayId)
+    public function show($shadowpayId)
     {
-        $user = $request->user();
+        $friend = ShadowpayFriend::findOrFail($shadowpayId);
 
-        $item = ShadowpayFriend::where('user_id', $user->id)
-                    ->findOrFail($shadowpayId);
+        $this->authorize('view', $friend);
 
-        return response()->apiSuccess($item, 200);
+        return response()->apiSuccess($friend, 200);
     }
 
     /**
@@ -91,37 +89,34 @@ class ShadowpayFriendController extends Controller
      */
     public function update(Request $request, $shadowpayId)
     {
-        $user = $request->user();
-
         $request->validate([
             'name'          => 'string',
             'shadowpay_id'  => 'integer'
         ]);
         
-        $item = ShadowpayFriend::where('user_id', $user->id)
-                    ->findOrFail($shadowpayId);
+        $friend = ShadowpayFriend::findOrFail($shadowpayId);
 
-        $item->update($request->all());
+        $this->authorize('update', $friend);
 
-        return response()->apiSuccess($item, 200);
+        $friend->update($request->all());
+
+        return response()->apiSuccess($friend, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $shadowpayId)
+    public function destroy($shadowpayId)
     {
-        $user = $request->user();
+        $friend = ShadowpayFriend::findOrFail($shadowpayId);
 
-        $item = ShadowpayFriend::where('user_id', $user->id)
-                    ->findOrFail($shadowpayId);
+        $this->authorize('delete', $friend);
                     
-        $item->delete();
+        $friend->delete();
 
-        return response()->apiSuccess($item, 200);
+        return response()->apiSuccess($friend, 200);
     }
 }

@@ -66,24 +66,22 @@ class ShadowpaySaleGuardItemController extends Controller
             'max_price'         => 'required|numeric'
         ]);
 
-        $data = ShadowpaySaleGuardItem::create($request->all());
+        $item = ShadowpaySaleGuardItem::create($request->all());
 
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($item, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $itemId)
+    public function show($itemId)
     {
-        $user = $request->user();
+        $item = ShadowpaySaleGuardItem::findOrFail($itemId);
 
-        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
-                    ->findOrFail($itemId);
+        $this->authorize('view', $item);
 
         return response()->apiSuccess($item, 200);
     }
@@ -97,16 +95,15 @@ class ShadowpaySaleGuardItemController extends Controller
      */
     public function update(Request $request, $itemId)
     {
-        $user = $request->user();
-
         $request->validate([
             'shadowpay_item_id' => 'numeric',
             'min_price'         => 'numeric',
             'max_price'         => 'numeric'
         ]);
 
-        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
-                    ->findOrFail($itemId);
+        $item = ShadowpaySaleGuardItem::findOrFail($itemId);
+
+        $this->authorize('update', $item);
 
         $item->update($request->all());
 
@@ -116,16 +113,14 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $itemId)
+    public function destroy($itemId)
     {
-        $user = $request->user();
+        $item = ShadowpaySaleGuardItem::findOrFail($itemId);
 
-        $item = ShadowpaySaleGuardItem::where('user_id', $user->id)
-                    ->findOrFail($itemId);
+        $this->authorize('delete', $item);
                     
         $item->delete();
 
