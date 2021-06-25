@@ -69,9 +69,7 @@ class CsgoBlueGemItemController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
+        $this->authorize('api-create');
    
         $request->validate([
             'item_type'     => 'required|string',
@@ -106,9 +104,7 @@ class CsgoBlueGemItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
+        $this->authorize('api-update');
 
         $request->validate([
             'item_type'     => 'string',
@@ -125,15 +121,12 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:delete')) abort(403, 'forbidden');
+        $this->authorize('api-delete');
 
         $item = CsgoBlueGemItem::findOrFail($id);
         $item->delete();

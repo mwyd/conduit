@@ -54,9 +54,7 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
+        $this->authorize('api-create');
    
         $request->validate([
             'hash_name' => 'required|string',
@@ -92,9 +90,7 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function update(Request $request, $hashName)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
+        $this->authorize('api-update');
 
         $request->validate([
             'hash_name' => 'string',
@@ -112,15 +108,12 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $hashName)
+    public function destroy($hashName)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:delete')) abort(403, 'forbidden');
+        $this->authorize('api-delete');
 
         $item = SteamMarketCsgoItem::findOrFail($hashName);
         $item->delete();

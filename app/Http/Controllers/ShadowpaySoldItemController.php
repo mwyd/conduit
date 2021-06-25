@@ -97,9 +97,7 @@ class ShadowpaySoldItemController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:post')) abort(403, 'forbidden');
+        $this->authorize('api-create');
 
         $request->validate([
             'transaction_id'    => 'required|string',
@@ -138,9 +136,7 @@ class ShadowpaySoldItemController extends Controller
      */
     public function update(Request $request, $transactionId)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:put')) abort(403, 'forbidden');
+        $this->authorize('api-update');
 
         $request->validate([
             'transaction_id'    => 'string',
@@ -160,15 +156,12 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $transactionId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $transactionId)
+    public function destroy($transactionId)
     {
-        $user = $request->user();
-
-        if(!$user->tokenCan('api:delete')) abort(403, 'forbidden');
+        $this->authorize('api-delete');
 
         $item = ShadowpaySoldItem::findOrFail($transactionId);
         $item->delete();
