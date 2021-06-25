@@ -30,11 +30,11 @@ Route::get('/shadowpay-sold-items/{transactionId}', [ShadowpaySoldItemController
 
 // protected routes
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::resource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class);
-    Route::resource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
-    Route::resource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
-    Route::resource('shadowpay-friends', ShadowpayFriendController::class);
-    Route::resource('csgo-blue-gem-items', CsgoBlueGemItemController::class);
+    Route::apiResource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class);
+    Route::apiResource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
+    Route::apiResource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
+    Route::apiResource('shadowpay-friends', ShadowpayFriendController::class);
+    Route::apiResource('csgo-blue-gem-items', CsgoBlueGemItemController::class);
 
     Route::post('/steam-market-csgo-items', [SteamMarketCsgoItemController::class, 'store']);
     Route::put('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'update']);
