@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexShadowpaySoldItemRequest;
+use App\Http\Requests\UpsertShadowpaySoldItemRequest;
 use App\Models\ShadowpaySoldItem;
 use Carbon\Carbon;
 
@@ -13,31 +13,11 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexShadowpaySoldItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexShadowpaySoldItemRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in([
-                'hash_name',
-                'sold', 
-                'avg_discount', 
-                'avg_sell_price', 
-                'avg_steam_price', 
-                'last_sold'
-            ]),
-            'order_dir'     => Rule::in(['desc', 'asc']),
-            'date_start'    => 'date',
-            'date_end'      => 'date',
-            'price_from'    => 'numeric',
-            'price_to'      => 'numeric',
-            'min_sold'      => 'integer',
-            'max_sold'      => 'integer'
-        ]);
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'sold');
@@ -93,25 +73,16 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpaySoldItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertShadowpaySoldItemRequest $request)
     {
         $this->authorize('api-create');
 
-        $request->validate([
-            'transaction_id'    => 'required|string',
-            'hash_name'         => 'required|string',
-            'discount'          => 'required|integer',
-            'sell_price'        => 'numeric',
-            'steam_price'       => 'numeric',
-            'sold_at'           => 'required|date'
-        ]);
+        $item = ShadowpaySoldItem::create($request->validated());
 
-        $data = ShadowpaySoldItem::create($request->all());
-
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($item, 201);
     }
 
     /**
@@ -122,8 +93,7 @@ class ShadowpaySoldItemController extends Controller
      */
     public function show($transactionId)
     {
-        $item = ShadowpaySoldItem::with('steamMarketCsgoItem')
-                    ->findOrFail($transactionId);
+        $item = ShadowpaySoldItem::findOrFail($transactionId)->with('steamMarketCsgoItem');
 
         return response()->apiSuccess($item, 200);
     }
@@ -131,25 +101,16 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpaySoldItemRequest  $request
      * @param  int  $transactionId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $transactionId)
+    public function update(UpsertShadowpaySoldItemRequest $request, $transactionId)
     {
         $this->authorize('api-update');
 
-        $request->validate([
-            'transaction_id'    => 'string',
-            'hash_name'         => 'string',
-            'discount'          => 'integer',
-            'sell_price'        => 'numeric',
-            'steam_price'       => 'numeric',
-            'sold_at'           => 'date'
-        ]);
-
         $item = ShadowpaySoldItem::findOrFail($transactionId);
-        $item->update($request->all());
+        $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
     }

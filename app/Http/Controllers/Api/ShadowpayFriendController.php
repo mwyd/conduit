@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexShadowpayFriendRequest;
+use App\Http\Requests\UpsertShadowpayFriendRequest;
 use App\Models\ShadowpayFriend;
 
 class ShadowpayFriendController extends Controller
@@ -12,27 +13,18 @@ class ShadowpayFriendController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexShadowpayFriendRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexShadowpayFriendRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in(['updated_at', 'name']),
-            'order_dir'     => Rule::in(['desc', 'asc'])
-        ]);
-
-        $user = $request->user();
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'name');
         $orderDir   = $request->input('order_dir', 'asc');
 
         $friends = ShadowpayFriend::select('*')
-                    ->where('user_id', $user->id)
+                    ->where('user_id', $request->user()->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -44,23 +36,12 @@ class ShadowpayFriendController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpayFriendRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertShadowpayFriendRequest $request)
     {
-        $user = $request->user();
-
-        $request->merge([
-            'user_id'   => $user->id
-        ]);
-
-        $request->validate([
-            'name'          => 'required|string',
-            'shadowpay_id'  => 'required|integer'
-        ]);
-
-        $friend = ShadowpayFriend::create($request->all());
+        $friend = ShadowpayFriend::create(['user_id' => $request->user()->id] + $request->validated());
 
         return response()->apiSuccess($friend, 201);
     }
@@ -83,22 +64,17 @@ class ShadowpayFriendController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpayFriendRequest $request
      * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $shadowpayId)
+    public function update(UpsertShadowpayFriendRequest $request, $shadowpayId)
     {
-        $request->validate([
-            'name'          => 'string',
-            'shadowpay_id'  => 'integer'
-        ]);
-        
         $friend = ShadowpayFriend::findOrFail($shadowpayId);
 
         $this->authorize('update', $friend);
 
-        $friend->update($request->all());
+        $friend->update($request->validated());
 
         return response()->apiSuccess($friend, 200);
     }

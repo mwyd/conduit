@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexCsgoBlueGemItemRequest;
+use App\Http\Requests\UpsertCsgoBlueGemItemRequest;
 use App\Models\CsgoBlueGemItem;
 
 class CsgoBlueGemItemController extends Controller
@@ -12,29 +12,11 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexCsgoBlueGemItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexCsgoBlueGemItemRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'paint_seed'    => 'integer',
-            'gem_type'      => Rule::in([
-                'blue', 
-                'gold', 
-                'tier 2', 
-                'tier 3'
-            ]),
-            'order_by'      => Rule::in([
-                'updated_at', 
-                'item_type', 
-                'paint_seed'
-            ]),
-            'order_dir'     => Rule::in(['desc', 'asc'])
-        ]);
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'paint_seed');
@@ -65,22 +47,16 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertCsgoBlueGemItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertCsgoBlueGemItemRequest $request)
     {
         $this->authorize('api-create');
-   
-        $request->validate([
-            'item_type'     => 'required|string',
-            'paint_seed'    => 'required|integer',
-            'gem_type'      => 'required|string'
-        ]);
 
-        $data = CsgoBlueGemItem::create($request->all());
+        $item = CsgoBlueGemItem::create($request->validated());
 
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($item, 201);
     }
 
     /**
@@ -99,22 +75,16 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertCsgoBlueGemItemRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpsertCsgoBlueGemItemRequest $request, $id)
     {
         $this->authorize('api-update');
 
-        $request->validate([
-            'item_type'     => 'string',
-            'paint_seed'    => 'integer',
-            'gem_type'      => 'string'
-        ]);
-
         $item = CsgoBlueGemItem::findOrFail($id);
-        $item->update($request->all());
+        $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
     }

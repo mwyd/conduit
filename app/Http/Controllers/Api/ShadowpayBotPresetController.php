@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexShadowpayBotPresetRequest;
+use App\Http\Requests\UpsertShadowpayBotPresetRequest;
 use App\Models\ShadowpayBotPreset;
 
 class ShadowpayBotPresetController extends Controller
@@ -12,27 +12,18 @@ class ShadowpayBotPresetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexShadowpayBotPresetRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexShadowpayBotPresetRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in(['updated_at']),
-            'order_dir'     => Rule::in(['desc', 'asc'])
-        ]);
-
-        $user = $request->user();
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
         $presets = ShadowpayBotPreset::select('*')
-                    ->where('user_id', $user->id)
+                    ->where('user_id', $request->user()->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -44,23 +35,12 @@ class ShadowpayBotPresetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpayBotPresetRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertShadowpayBotPresetRequest $request)
     {
-        $user = $request->user();
-
-        $request->merge([
-            'user_id'   => $user->id,
-            'preset'    => json_decode($request->preset, true)
-        ]);
-
-        $request->validate([
-            'preset'    => 'required|array'
-        ]);
-
-        $preset = ShadowpayBotPreset::create($request->all());
+        $preset = ShadowpayBotPreset::create(['user_id' => $request->user()->id] + $request->validated());
 
         return response()->apiSuccess($preset, 201);
     }
@@ -83,25 +63,17 @@ class ShadowpayBotPresetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpayBotPresetRequest  $request
      * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $presetId)
-    {
-        $request->merge([
-            'preset'    => json_decode($request->preset, true)
-        ]);
-
-        $request->validate([
-            'preset'    => 'array'
-        ]);
-        
+    public function update(UpsertShadowpayBotPresetRequest $request, $presetId)
+    { 
         $preset = ShadowpayBotPreset::findOrFail($presetId);
 
         $this->authorize('update', $preset);
 
-        $preset->update($request->all());
+        $preset->update($request->validated());
 
         return response()->apiSuccess($preset, 200);
     }

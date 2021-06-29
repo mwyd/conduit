@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexSteamMarketCsgoItemRequest;
+use App\Http\Requests\UpsertSteamMarketCsgoItemRequest;
 use App\Models\SteamMarketCsgoItem;
 
 class SteamMarketCsgoItemController extends Controller
@@ -12,23 +12,11 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexSteamMarketCsgoItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexSteamMarketCsgoItemRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in([
-                'hash_name',
-                'updated_at', 
-                'volume', 
-                'price'
-            ]),
-            'order_dir'     => Rule::in(['desc', 'asc'])
-        ]);
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $search     = $request->input('search');
@@ -50,23 +38,16 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertSteamMarketCsgoItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertSteamMarketCsgoItemRequest $request)
     {
         $this->authorize('api-create');
-   
-        $request->validate([
-            'hash_name' => 'required|string',
-            'volume'    => 'required|integer',
-            'price'     => 'required|numeric',
-            'icon'      => 'required|string'
-        ]);
 
-        $data = SteamMarketCsgoItem::create($request->all());
+        $item = SteamMarketCsgoItem::create($request->validated());
 
-        return response()->apiSuccess($data, 201);
+        return response()->apiSuccess($item, 201);
     }
 
     /**
@@ -85,23 +66,16 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertSteamMarketCsgoItemRequest  $request
      * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $hashName)
+    public function update(UpsertSteamMarketCsgoItemRequest $request, $hashName)
     {
         $this->authorize('api-update');
 
-        $request->validate([
-            'hash_name' => 'string',
-            'volume'    => 'integer',
-            'price'     => 'numeric',
-            'icon'      => 'string'
-        ]);
-
         $item = SteamMarketCsgoItem::findOrFail($hashName);
-        $item->update($request->all());
+        $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
     }

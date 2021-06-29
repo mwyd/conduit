@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexShadowpayBotConfigRequest;
+use App\Http\Requests\UpsertShadowpayBotConfigRequest;
 use App\Models\ShadowpayBotConfig;
 
 class ShadowpayBotConfigController extends Controller
@@ -12,27 +12,18 @@ class ShadowpayBotConfigController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexShadowpayBotConfigRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexShadowpayBotConfigRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in(['updated_at']),
-            'order_dir'     => Rule::in(['desc', 'asc'])
-        ]);
-
-        $user = $request->user();
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
         $configs = ShadowpayBotConfig::select('*')
-                    ->where('user_id', $user->id)
+                    ->where('user_id', $request->user()->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -44,25 +35,12 @@ class ShadowpayBotConfigController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpayBotConfigRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertShadowpayBotConfigRequest $request)
     {
-        $user = $request->user();
-
-        $request->merge([
-            'user_id'   => $user->id,
-            'config'    => json_decode($request->config, true)
-        ]);
-
-        $request->validate([
-            'config'    => 'required|array'
-        ]);
-
-        $config = ShadowpayBotConfig::updateOrCreate([
-                    'user_id' => $user->id
-                ], $request->all());
+        $config = ShadowpayBotConfig::updateOrCreate(['user_id' => $request->user()->id], $request->validated());
 
         return response()->apiSuccess($config, 201);
     }
@@ -85,25 +63,17 @@ class ShadowpayBotConfigController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpayBotConfigRequest  $request
      * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $configId)
+    public function update(UpsertShadowpayBotConfigRequest $request, $configId)
     {
-        $request->merge([
-            'config'    => json_decode($request->config, true)
-        ]);
-        
-        $request->validate([
-            'config'    => 'array'
-        ]);
-
         $config = ShadowpayBotConfig::findOrFail($configId);
 
         $this->authorize('update', $config);
 
-        $config->update($request->all());
+        $config->update($request->validated());
 
         return response()->apiSuccess($config, 200);
     }

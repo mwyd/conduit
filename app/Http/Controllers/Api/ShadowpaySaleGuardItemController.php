@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexShadowpaySaleGuardItemRequest;
+use App\Http\Requests\UpsertShadowpaySaleGuardItemRequest;
 use App\Models\ShadowpaySaleGuardItem;
 
 class ShadowpaySaleGuardItemController extends Controller
@@ -12,32 +12,18 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\IndexShadowpaySaleGuardItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(IndexShadowpaySaleGuardItemRequest $request)
     {
-        $request->validate([
-            'offset'        => 'integer|min:0',
-            'limit'         => 'integer|between:0,50',
-            'order_by'      => Rule::in([
-                'updated_at', 
-                'shadowpay_item_id', 
-                'min_price', 
-                'max_price'
-            ]),
-            'order_dir'     => Rule::in(['desc', 'asc'])
-        ]);
-
-        $user = $request->user();
-
         $offset     = $request->input('offset', 0);
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'updated_at');
         $orderDir   = $request->input('order_dir', 'desc');
 
         $items = ShadowpaySaleGuardItem::select('*')
-                    ->where('user_id', $user->id)
+                    ->where('user_id', $request->user()->id)
                     ->offset($offset)
                     ->limit($limit)
                     ->orderBy($orderBy, $orderDir)
@@ -49,24 +35,12 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpaySaleGuardItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpsertShadowpaySaleGuardItemRequest $request)
     {
-        $user = $request->user();
-
-        $request->merge([
-            'user_id'   => $user->id
-        ]);
-
-        $request->validate([
-            'shadowpay_item_id' => 'required|numeric',
-            'min_price'         => 'required|numeric',
-            'max_price'         => 'required|numeric'
-        ]);
-
-        $item = ShadowpaySaleGuardItem::create($request->all());
+        $item = ShadowpaySaleGuardItem::create(['user_id' => $request->user()->id] + $request->validated());
 
         return response()->apiSuccess($item, 201);
     }
@@ -89,23 +63,17 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpsertShadowpaySaleGuardItemRequest  $request
      * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $itemId)
+    public function update(UpsertShadowpaySaleGuardItemRequest $request, $itemId)
     {
-        $request->validate([
-            'shadowpay_item_id' => 'numeric',
-            'min_price'         => 'numeric',
-            'max_price'         => 'numeric'
-        ]);
-
         $item = ShadowpaySaleGuardItem::findOrFail($itemId);
 
         $this->authorize('update', $item);
 
-        $item->update($request->all());
+        $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
     }
