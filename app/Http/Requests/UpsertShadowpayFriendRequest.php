@@ -31,8 +31,8 @@ class UpsertShadowpayFriendRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name'          => 'required|string',
-            'shadowpay_id'  => 'required|integer'
+            'name'                  => 'required|string',
+            'shadowpay_user_id'     => 'required|integer'
         ];
 
         if($this->method() == self::METHOD_PUT)

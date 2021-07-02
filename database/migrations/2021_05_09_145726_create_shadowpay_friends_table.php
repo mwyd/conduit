@@ -16,7 +16,7 @@ class CreateShadowpayFriendsTable extends Migration
         Schema::create('shadowpay_friends', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->mediumInteger('shadowpay_id');
+            $table->mediumInteger('shadowpay_user_id');
             $table->mediumInteger('user_id');
             $table->timestamps();
         });

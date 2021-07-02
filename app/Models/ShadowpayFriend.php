@@ -16,7 +16,7 @@ class ShadowpayFriend extends Model
 
     protected $fillable = [
         'name',
-        'shadowpay_id',
+        'shadowpay_user_id',
         'user_id'
     ];
 }
