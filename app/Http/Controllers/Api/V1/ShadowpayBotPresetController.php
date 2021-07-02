@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IndexShadowpayBotPresetRequest;
-use App\Http\Requests\UpsertShadowpayBotPresetRequest;
+use App\Http\Requests\Api\V1\IndexShadowpayBotPresetRequest;
+use App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest;
 use App\Models\ShadowpayBotPreset;
 
 class ShadowpayBotPresetController extends Controller

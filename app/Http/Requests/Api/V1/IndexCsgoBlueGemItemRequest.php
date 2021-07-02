@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use App\Http\Traits\ApiValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IndexShadowpayFriendRequest extends FormRequest
+class IndexCsgoBlueGemItemRequest extends FormRequest
 {
     use ApiValidationTrait;
 
@@ -35,7 +35,18 @@ class IndexShadowpayFriendRequest extends FormRequest
     public function rules()
     {
         return $this->apiPaginationRules() + [
-            'order_by'      => Rule::in(['updated_at', 'name'])
+            'paint_seed'    => 'sometimes|integer',
+            'gem_type'      => ['sometimes', Rule::in([
+                'blue', 
+                'gold', 
+                'tier 2', 
+                'tier 3'
+            ])],
+            'order_by'      => ['sometimes', Rule::in([
+                'updated_at', 
+                'item_type', 
+                'paint_seed'
+            ])]
         ];
     }
 }

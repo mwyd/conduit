@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use App\Http\Traits\ApiValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;

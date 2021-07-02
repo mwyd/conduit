@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IndexShadowpaySoldItemRequest;
-use App\Http\Requests\UpsertShadowpaySoldItemRequest;
+use App\Http\Requests\Api\V1\IndexShadowpaySoldItemRequest;
+use App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest;
 use App\Models\ShadowpaySoldItem;
 use Carbon\Carbon;
 

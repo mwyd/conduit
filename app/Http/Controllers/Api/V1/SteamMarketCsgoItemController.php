@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IndexSteamMarketCsgoItemRequest;
-use App\Http\Requests\UpsertSteamMarketCsgoItemRequest;
+use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
+use App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest;
 use App\Models\SteamMarketCsgoItem;
 
 class SteamMarketCsgoItemController extends Controller

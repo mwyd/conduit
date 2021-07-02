@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     state: () => ({
         conduit: {
-            apiUrl: 'http://localhost:8000/api',
+            apiUrl: 'http://localhost:8000/api/v1',
             apiEndpoints: Object.freeze({
                 SHADOWPAY_SOLD_ITEMS: '/shadowpay-sold-items'
             })

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpsertShadowpayFriendRequest extends FormRequest
+class UpsertShadowpayBotPresetRequest extends FormRequest
 {
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -24,6 +24,18 @@ class UpsertShadowpayFriendRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'preset'    => json_decode($this->preset, true)
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -31,13 +43,12 @@ class UpsertShadowpayFriendRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name'                  => 'required|string',
-            'shadowpay_user_id'     => 'required|integer'
+            'preset'    => 'required|array'
         ];
 
         if($this->method() == self::METHOD_PUT)
         {
-            foreach($rules as $key => $rule) $rules[$key] = str_replace('required', 'sometimes', $rule);
+            $rules['preset'] = str_replace('required', 'sometimes', $rules['preset']);
         }
 
         return $rules;

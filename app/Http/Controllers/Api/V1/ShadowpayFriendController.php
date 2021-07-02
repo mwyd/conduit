@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IndexShadowpayFriendRequest;
-use App\Http\Requests\UpsertShadowpayFriendRequest;
+use App\Http\Requests\Api\V1\IndexShadowpayFriendRequest;
+use App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest;
 use App\Models\ShadowpayFriend;
 
 class ShadowpayFriendController extends Controller

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpsertShadowpaySaleGuardItemRequest extends FormRequest
+class UpsertSteamMarketCsgoItemRequest extends FormRequest
 {
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -31,13 +31,13 @@ class UpsertShadowpaySaleGuardItemRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'shadowpay_offer_id'    => 'required|numeric',
-            'hash_name'             => 'required|string',
-            'min_price'             => 'required|numeric',
-            'max_price'             => 'required|numeric'
+            'hash_name' => 'required|string',
+            'volume'    => 'required|integer',
+            'price'     => 'required|numeric',
+            'icon'      => 'required|string'
         ];
 
-        if($this->method() == self::METHOD_PUT)
+        if($this->method() == self::METHOD_PUT) 
         {
             foreach($rules as $key => $rule) $rules[$key] = str_replace('required', 'sometimes', $rule);
         }

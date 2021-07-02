@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use App\Http\Traits\ApiValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IndexShadowpayBotConfigRequest extends FormRequest
+class IndexShadowpayBotPresetRequest extends FormRequest
 {
     use ApiValidationTrait;
 

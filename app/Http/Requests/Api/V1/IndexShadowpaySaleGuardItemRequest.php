@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use App\Http\Traits\ApiValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IndexShadowpayBotPresetRequest extends FormRequest
+class IndexShadowpaySaleGuardItemRequest extends FormRequest
 {
     use ApiValidationTrait;
 
@@ -35,7 +35,12 @@ class IndexShadowpayBotPresetRequest extends FormRequest
     public function rules()
     {
         return $this->apiPaginationRules() + [
-            'order_by'      => Rule::in(['updated_at'])
+            'order_by'      => Rule::in([
+                'updated_at', 
+                'shadowpay_item_id', 
+                'min_price', 
+                'max_price'
+            ]),
         ];
     }
 }

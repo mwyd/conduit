@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpsertShadowpayBotConfigRequest extends FormRequest
+class UpsertShadowpaySoldItemRequest extends FormRequest
 {
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -24,18 +24,6 @@ class UpsertShadowpayBotConfigRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'config'    => json_decode($this->config, true)
-        ]);
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -43,12 +31,17 @@ class UpsertShadowpayBotConfigRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'config'    => 'required|array'
+            'transaction_id'    => 'required|string',
+            'hash_name'         => 'required|string',
+            'discount'          => 'required|integer',
+            'sell_price'        => 'sometimes|nullable|numeric',
+            'steam_price'       => 'sometimes|nullable|numeric',
+            'sold_at'           => 'required|date'
         ];
 
-        if($this->method() == self::METHOD_PUT)
+        if($this->method() == self::METHOD_PUT) 
         {
-            $rules['config'] = str_replace('required', 'sometimes', $rules['config']);
+            foreach($rules as $key => $rule) $rules[$key] = str_replace('required', 'sometimes', $rule);
         }
 
         return $rules;
