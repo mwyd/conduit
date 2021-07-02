@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/shadowpay-sold-items', [ShadowpaySoldItemController::class, 'index']);
     Route::get('/shadowpay-sold-items/{transactionId}', [ShadowpaySoldItemController::class, 'show']);
+    Route::get('/shadowpay-sold-items/{hashName}/trend', [ShadowpaySoldItemController::class, 'showTrend']);
 
     // protected routes
     Route::middleware(['auth:sanctum'])->group(function() {

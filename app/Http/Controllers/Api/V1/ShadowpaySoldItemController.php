@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexShadowpaySoldItemRequest;
 use App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest;
+use App\Http\Requests\Api\V1\ShowTrendShadowpaySoldItemRequest;
 use App\Models\ShadowpaySoldItem;
 use Carbon\Carbon;
 
@@ -22,7 +23,7 @@ class ShadowpaySoldItemController extends Controller
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'sold');
         $orderDir   = $request->input('order_dir', 'desc');
-        $dateStart  = $request->input('date_start', (new Carbon)->subWeek());
+        $dateStart  = $request->input('date_start', Carbon::now()->subWeek());
         $dateEnd    = $request->input('date_end');
 
         $search     = $request->input('search');
@@ -96,6 +97,44 @@ class ShadowpaySoldItemController extends Controller
         $item = ShadowpaySoldItem::findOrFail($transactionId)->with('steamMarketCsgoItem');
 
         return response()->apiSuccess($item, 200);
+    }
+
+    /**
+     * Display trend of the specified resource.
+     *
+     * @param  \App\Http\Requests\Api\V1\ShowTrendShadowpaySoldItemRequest  $request
+     * @param  string  $hashName
+     * @return \Illuminate\Http\Response
+     */
+    public function showTrend(ShowTrendShadowpaySoldItemRequest $request, $hashName)
+    {
+        $offset     = $request->input('offset', 0);
+        $limit      = $request->input('limit', 50);
+        $orderBy    = $request->input('order_by', 'sold_at');
+        $orderDir   = $request->input('order_dir', 'asc');
+        $dateStart  = $request->input('date_start', Carbon::now()->subDays(30));
+        $dateEnd    = $request->input('date_end');
+
+        $trend = ShadowpaySoldItem::selectRaw(
+                        'date_format(sold_at, "%M %d") as date, ' .
+                        'count(hash_name) as sold, ' .
+                        'round(avg(sell_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
+                        'round(avg(steam_price), 2) as avg_steam_price'
+                    )
+                    ->when($dateStart, function($query, $dateStart) {
+                        return $query->whereDate('sold_at', '>', $dateStart);
+                    })
+                    ->when($dateEnd, function($query, $dateEnd) {
+                        return $query->whereDate('sold_at', '<=', $dateEnd);
+                    })
+                    ->where('hash_name', $hashName)
+                    ->groupBy('date')
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->orderBy($orderBy, $orderDir)
+                    ->get();
+
+        return response()->apiSuccess($trend, 200);
     }
 
     /**
