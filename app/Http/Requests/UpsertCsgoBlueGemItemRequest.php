@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpsertCsgoBlueGemItemRequest extends FormRequest
 {
@@ -31,9 +32,36 @@ class UpsertCsgoBlueGemItemRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'item_type'     => 'required|string',
             'paint_seed'    => 'required|integer',
-            'gem_type'      => 'required|string'
+            'item_type'     => ['required', Rule::in([
+                '★ Bayonet',
+                '★ Bowie Knife',
+                '★ Butterfly Knife',
+                '★ Classic Knife',
+                '★ Falchion Knife',
+                '★ Flip Knife',
+                '★ Gut Knife',
+                '★ Huntsman Knife',
+                '★ Karambit',
+                '★ M9 Bayonet',
+                '★ Navaja Knife',
+                '★ Nomad Knife',
+                '★ Paracord Knife',
+                '★ Shadow Daggers',
+                '★ Skeleton Knife',
+                '★ Stiletto Knife',
+                '★ Survival Knife',
+                '★ Talon Knife',
+                '★ Ursus Knife',
+                'AK-47',
+                'Five-SeveN'
+            ])],
+            'gem_type'      => ['required', Rule::in([
+                'Blue',
+                'Gold',
+                'Tier 2',
+                'Tier 3'
+            ])]
         ];
 
         if($this->method() == self::METHOD_PUT) 
