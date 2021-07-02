@@ -32,7 +32,7 @@ class UpsertShadowpaySaleGuardItemRequest extends FormRequest
     {
         $rules = [
             'shadowpay_item_id' => 'required|numeric',
-            'hash_name'         => 'required',
+            'hash_name'         => 'required|string',
             'min_price'         => 'required|numeric',
             'max_price'         => 'required|numeric'
         ];
