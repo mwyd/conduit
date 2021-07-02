@@ -35,7 +35,7 @@ class IndexShadowpayFriendRequest extends FormRequest
     public function rules()
     {
         return $this->apiPaginationRules() + [
-            'order_by'      => Rule::in(['updated_at', 'name'])
+            'order_by'      => ['sometimes', Rule::in(['updated_at', 'name'])]
         ];
     }
 }
