@@ -16,6 +16,7 @@ class ShadowpaySaleGuardItem extends Model
 
     protected $fillable = [
         'user_id',
+        'hash_name',
         'shadowpay_item_id',
         'min_price',
         'max_price'
