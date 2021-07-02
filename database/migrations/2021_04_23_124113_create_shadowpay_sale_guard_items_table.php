@@ -17,7 +17,7 @@ class CreateShadowpaySaleGuardItemsTable extends Migration
             $table->id();
             $table->mediumInteger('user_id');
             $table->string('hash_name');
-            $table->integer('shadowpay_item_id')->unique();
+            $table->integer('shadowpay_offer_id')->unique();
             $table->decimal('min_price', 7, 2);
             $table->decimal('max_price', 7, 2);
             $table->timestamps();

@@ -31,10 +31,10 @@ class UpsertShadowpaySaleGuardItemRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'shadowpay_item_id' => 'required|numeric',
-            'hash_name'         => 'required|string',
-            'min_price'         => 'required|numeric',
-            'max_price'         => 'required|numeric'
+            'shadowpay_offer_id'    => 'required|numeric',
+            'hash_name'             => 'required|string',
+            'min_price'             => 'required|numeric',
+            'max_price'             => 'required|numeric'
         ];
 
         if($this->method() == self::METHOD_PUT)
