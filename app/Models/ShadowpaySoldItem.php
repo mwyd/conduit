@@ -32,13 +32,16 @@ class ShadowpaySoldItem extends Model
         'avg_discount'          => 'float',
         'avg_suggested_price'   => 'float',
         'avg_sell_price'        => 'float',
-        'avg_steam_price'       => 'float',
-        'sold_at'               => 'date:Y-m-d\TH:i:s.u\Z',
-        'last_sold'             => 'date:Y-m-d\TH:i:s.u\Z'
+        'avg_steam_price'       => 'float'
     ];
 
     public function steamMarketCsgoItem() 
     {
         return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
+    }
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

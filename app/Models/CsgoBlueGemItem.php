@@ -10,8 +10,7 @@ class CsgoBlueGemItem extends Model
     use HasFactory;
 
     protected $hidden = [
-        'created_at',
-        'updated_at'
+        'created_at'
     ];
 
     protected $fillable = [
@@ -19,4 +18,9 @@ class CsgoBlueGemItem extends Model
         'paint_seed',
         'gem_type'
     ];
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

@@ -26,4 +26,9 @@ class ShadowpaySaleGuardItem extends Model
         'min_price'             => 'float',
         'max_price'             => 'float'
     ];
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
