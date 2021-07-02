@@ -26,7 +26,6 @@ class SteamMarketCsgoItem extends Model
     ];
 
     protected $casts = [
-        'volume'    => 'integer',
-        'price'     => 'float',
+        'price'     => 'float'
     ];
 }

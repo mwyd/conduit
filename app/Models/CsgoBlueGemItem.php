@@ -19,8 +19,4 @@ class CsgoBlueGemItem extends Model
         'paint_seed',
         'gem_type'
     ];
-
-    protected $casts = [
-        'paint_seed' => 'integer'
-    ];
 }
