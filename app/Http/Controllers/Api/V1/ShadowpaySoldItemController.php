@@ -36,7 +36,7 @@ class ShadowpaySoldItemController extends Controller
                         'hash_name, ' .
                         'count(hash_name) as sold, ' . 
                         'round(avg(discount), 2) as avg_discount, ' . 
-                        'round(avg(sell_price), 2) as avg_sell_price, '. 
+                        'round(avg(sell_price), 2) as avg_suggested_price, '. 
                         'round(avg(steam_price), 2) as avg_steam_price, ' . 
                         'max(sold_at) as last_sold'
                     )
