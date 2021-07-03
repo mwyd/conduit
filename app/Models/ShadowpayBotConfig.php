@@ -11,8 +11,7 @@ class ShadowpayBotConfig extends Model
 
     protected $hidden = [
         'user_id',
-        'created_at',
-        'updated_at'
+        'created_at'
     ];
 
     protected $fillable = [
@@ -23,4 +22,9 @@ class ShadowpayBotConfig extends Model
     protected $casts = [
         'config' => 'array'
     ];
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
