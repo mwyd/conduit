@@ -18,6 +18,7 @@ class CreateShadowpayFriendsTable extends Migration
             $table->string('name');
             $table->mediumInteger('shadowpay_user_id');
             $table->mediumInteger('user_id');
+            $table->unique(['shadowpay_user_id', 'user_id']);
             $table->timestamps();
         });
     }
