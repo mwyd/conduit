@@ -37,7 +37,7 @@ class IndexShadowpaySaleGuardItemRequest extends FormRequest
         return $this->apiPaginationRules() + [
             'order_by'      => ['sometimes', Rule::in([
                 'updated_at', 
-                'shadowpay_item_id', 
+                'shadowpay_offer_id', 
                 'min_price', 
                 'max_price'
             ])],

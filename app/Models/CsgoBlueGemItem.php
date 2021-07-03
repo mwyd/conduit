@@ -19,6 +19,10 @@ class CsgoBlueGemItem extends Model
         'gem_type'
     ];
 
+    protected $casts = [
+        'paint_seed'    => 'integer'
+    ];
+
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

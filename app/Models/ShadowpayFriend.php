@@ -20,6 +20,10 @@ class ShadowpayFriend extends Model
         'user_id'
     ];
 
+    protected $casts = [
+        'shadowpay_user_id'     => 'integer'
+    ];
+
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
