@@ -36,7 +36,7 @@ class ShadowpaySoldItemController extends Controller
                         'hash_name, ' .
                         'count(hash_name) as sold, ' . 
                         'round(avg(discount), 2) as avg_discount, ' . 
-                        'round(avg(sell_price), 2) as avg_suggested_price, '. 
+                        'round(avg(suggested_price), 2) as avg_suggested_price, '. 
                         'round(avg(steam_price), 2) as avg_steam_price, ' . 
                         'max(sold_at) as last_sold'
                     )
@@ -118,7 +118,7 @@ class ShadowpaySoldItemController extends Controller
         $trend = ShadowpaySoldItem::selectRaw(
                         'date_format(sold_at, "%M %d") as date, ' .
                         'count(hash_name) as sold, ' .
-                        'round(avg(sell_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
+                        'round(avg(suggested_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
                         'round(avg(steam_price), 2) as avg_steam_price'
                     )
                     ->when($dateStart, function($query, $dateStart) {

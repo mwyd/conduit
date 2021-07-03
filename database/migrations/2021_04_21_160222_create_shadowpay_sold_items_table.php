@@ -17,7 +17,7 @@ class CreateShadowpaySoldItemsTable extends Migration
             $table->string('transaction_id', 16)->primary();
             $table->string('hash_name');
             $table->tinyInteger('discount', false, true);
-            $table->decimal('sell_price', 7, 2, true)->nullable();
+            $table->decimal('suggested_price', 7, 2, true)->nullable();
             $table->decimal('steam_price', 7, 2, true)->nullable();
             $table->dateTime('sold_at');
         });

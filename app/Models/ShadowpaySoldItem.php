@@ -20,14 +20,14 @@ class ShadowpaySoldItem extends Model
         'transaction_id',
         'hash_name',
         'discount',
-        'sell_price',
+        'suggested_price',
         'steam_price',
         'sold_at'
     ];
 
     protected $casts = [
         'discount'              => 'integer',
-        'sell_price'            => 'float',
+        'suggested_price'       => 'float',
         'steam_price'           => 'float',
         'avg_discount'          => 'float',
         'avg_suggested_price'   => 'float',

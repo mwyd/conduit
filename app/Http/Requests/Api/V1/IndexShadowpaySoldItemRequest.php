@@ -45,7 +45,7 @@ class IndexShadowpaySoldItemRequest extends FormRequest
                 'hash_name',
                 'sold', 
                 'avg_discount', 
-                'avg_sell_price', 
+                'avg_suggested_price', 
                 'avg_steam_price', 
                 'last_sold'
             ])]

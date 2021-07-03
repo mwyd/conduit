@@ -34,7 +34,7 @@ class UpsertShadowpaySoldItemRequest extends FormRequest
             'transaction_id'    => 'required|string',
             'hash_name'         => 'required|string',
             'discount'          => 'required|integer',
-            'sell_price'        => 'sometimes|nullable|numeric',
+            'suggested_price'   => 'sometimes|nullable|numeric',
             'steam_price'       => 'sometimes|nullable|numeric',
             'sold_at'           => 'required|date'
         ];
