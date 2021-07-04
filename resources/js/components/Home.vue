@@ -2,11 +2,11 @@
     <div class="home w-100">
         <div class="home__top-bar p-fixed padding-m w-100">
             <div class="top-bar__search p-relative">
-                <InputField
+                <input-field
                     v-model="search"
                     :type="'text'"
                     :placeholder="'Item name...'"
-                ></InputField>
+                ></input-field>
                 <button 
                     class="clear-filters p-absolute cursor-pointer"
                     @click="$router.push({query: {}})"
@@ -48,57 +48,57 @@
                 <div class="filters__filter">
                     <label class="d-block">Date</label>
                     <div class="filters__input-pair d-grid">
-                        <InputField
+                        <input-field
                             v-model="date_start"
                             :type="'date'"
                             :validator="value => dateDiff(value, date_end, 'days') <= 0"
-                        ></InputField>
-                        <InputField
+                        ></input-field>
+                        <input-field
                             v-model="date_end"
                             :type="'date'"
                             :validator="value => dateDiff(value, date_start, 'days') >= 0"
-                        ></InputField>
+                        ></input-field>
                     </div>
                 </div>
                 <div class="filters__filter">
                     <label class="d-block">$ Price</label>
                     <div class="filters__input-pair d-grid">
-                        <InputField
+                        <input-field
                             v-model.number="price_from"
                             :type="'number'"
                             :validator="value => value >= 0 && value <= price_to"
-                        ></InputField>
-                        <InputField
+                        ></input-field>
+                        <input-field
                             v-model.number="price_to"
                             :type="'number'"
                             :validator="value => value >= price_from"
-                        ></InputField>
+                        ></input-field>
                     </div>
                 </div>
                 <div class="filters__filter">
                     <label class="d-block">Sold</label>
                     <div class="filters__input-pair d-grid">
-                        <InputField
+                        <input-field
                             v-model.number="min_sold"
                             :type="'number'"
                             :validator="value => value >= 0 && value <= max_sold"
-                        ></InputField>
-                        <InputField
+                        ></input-field>
+                        <input-field
                             v-model.number="max_sold"
                             :type="'number'"
                             :validator="value => value >= min_sold"
-                        ></InputField>
+                        ></input-field>
                     </div>
                 </div>
             </div>
         </div>
         <div class="home__content d-flex flex-jc-c">
-            <Item
+            <item
                 v-for="(item, index) in items"
                 :key="`${item.hash_name}-${index}`"
                 :item="item"
             >
-            </Item>
+            </item>
         </div>
         <div 
             v-if="!contentLoaded"
