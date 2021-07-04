@@ -2,11 +2,11 @@
     <div class="home w-100">
         <div class="home__top-bar p-fixed padding-m w-100">
             <div class="top-bar__search p-relative">
-                <input-field
+                <app-input
                     v-model="search"
                     :type="'text'"
                     :placeholder="'Item name...'"
-                ></input-field>
+                ></app-input>
                 <button 
                     class="clear-filters p-absolute cursor-pointer"
                     @click="$router.push({query: {}})"
@@ -48,57 +48,57 @@
                 <div class="filters__filter">
                     <label class="d-block">Date</label>
                     <div class="filters__input-pair d-grid">
-                        <input-field
+                        <app-input
                             v-model="date_start"
                             :type="'date'"
                             :validator="value => dateDiff(value, date_end, 'days') <= 0"
-                        ></input-field>
-                        <input-field
+                        ></app-input>
+                        <app-input
                             v-model="date_end"
                             :type="'date'"
                             :validator="value => dateDiff(value, date_start, 'days') >= 0"
-                        ></input-field>
+                        ></app-input>
                     </div>
                 </div>
                 <div class="filters__filter">
                     <label class="d-block">$ Price</label>
                     <div class="filters__input-pair d-grid">
-                        <input-field
+                        <app-input
                             v-model.number="price_from"
                             :type="'number'"
                             :validator="value => value >= 0 && value <= price_to"
-                        ></input-field>
-                        <input-field
+                        ></app-input>
+                        <app-input
                             v-model.number="price_to"
                             :type="'number'"
                             :validator="value => value >= price_from"
-                        ></input-field>
+                        ></app-input>
                     </div>
                 </div>
                 <div class="filters__filter">
                     <label class="d-block">Sold</label>
                     <div class="filters__input-pair d-grid">
-                        <input-field
+                        <app-input
                             v-model.number="min_sold"
                             :type="'number'"
                             :validator="value => value >= 0 && value <= max_sold"
-                        ></input-field>
-                        <input-field
+                        ></app-input>
+                        <app-input
                             v-model.number="max_sold"
                             :type="'number'"
                             :validator="value => value >= min_sold"
-                        ></input-field>
+                        ></app-input>
                     </div>
                 </div>
             </div>
         </div>
         <div class="home__content d-flex flex-jc-c">
-            <item
+            <home-item
                 v-for="(item, index) in items"
                 :key="`${item.hash_name}-${index}`"
                 :item="item"
             >
-            </item>
+            </home-item>
         </div>
         <div 
             v-if="!contentLoaded"
@@ -110,8 +110,8 @@
 </template>
 
 <script>
-import InputField from './InputField'
-import Item from './Item'
+import AppInput from './AppInput'
+import HomeItem from './HomeItem'
 import moment from 'moment'
 import { appendUrlParam, dateDiff } from '../helpers'
 import { mapGetters } from 'vuex'
@@ -119,8 +119,8 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'Home',
     components: {
-        InputField,
-        Item
+        AppInput,
+        HomeItem
     },
     data() {
         return {
