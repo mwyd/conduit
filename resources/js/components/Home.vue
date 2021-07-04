@@ -128,7 +128,7 @@ export default {
                 {name: 'Item name', value: 'hash_name'},
                 {name: 'Sold', value: 'sold'},
                 {name: 'Avg discount', value: 'avg_discount'},
-                {name: 'Avg shadowpay price', value: 'avg_sell_price'},
+                {name: 'Avg shadowpay price', value: 'avg_suggested_price'},
                 {name: 'Avg steam price', value: 'avg_steam_price'},
                 {name: 'Sold at', value: 'last_sold'}
             ],

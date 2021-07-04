@@ -22,11 +22,11 @@
             </tr>
             <tr>
                 <td class="stats__name">Avg suggested price</td>
-                <td class="stats__value">{{ item.avg_sell_price ? item.avg_sell_price.toFixed(2) + ' $' : '-' }}</td>
+                <td class="stats__value">{{ item.avg_suggested_price ? item.avg_suggested_price.toFixed(2) + ' $' : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Last sold at</td>
-                <td class="stats__value">{{ moment(item.last_sold).format('YYYY-MM-DD H:mm:ss') }}</td>
+                <td class="stats__value">{{ item.last_sold }}</td>
             </tr>
         </table>
         <table class="item__stats">
@@ -49,14 +49,13 @@
             </tr>
             <tr>
                 <td class="stats__name">Updated at</td>
-                <td class="stats__value">{{ item?.steam_market_csgo_item?.updated_at ? moment(item.steam_market_csgo_item.updated_at).format('YYYY-MM-DD H:mm:ss') : '-' }}</td>
+                <td class="stats__value">{{ item?.steam_market_csgo_item?.updated_at ? item.steam_market_csgo_item.updated_at : '-' }}</td>
             </tr>
         </table>
     </div>
 </template>
 
 <script>
-import moment from 'moment'
 import { mapState } from 'vuex'
 
 export default {
@@ -95,7 +94,6 @@ export default {
         })
     },
     methods: {
-        moment,
         reduceHashName(value) {
             if(this.mutableHashName.search(value) > -1) {
                 this.mutableHashName = this.mutableHashName.replace(value, '')
@@ -120,7 +118,7 @@ export default {
             this.itemName = itemTypeName[1]
         },
         getRealSellPrice() {
-            if(this.item.avg_sell_price) this.realSellPrice = this.item.avg_sell_price * (100 - this.item.avg_discount) / 100
+            if(this.item.avg_suggested_price) this.realSellPrice = this.item.avg_suggested_price * (100 - this.item.avg_discount) / 100
         }
     },
     created() {
