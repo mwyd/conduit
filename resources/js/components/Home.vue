@@ -26,7 +26,7 @@
                     <div class="filters__input-pair filters__sort-pair d-grid">
                         <select 
                             v-model="order_by"
-                            class="filters__sort-select app-input__field app-input__field--idle padding-m"
+                            class="filters__sort-select rounded-s app-input__field app-input__field--idle padding-m"
                             @change="fetchItems"
                         >
                             <option 
@@ -93,34 +93,31 @@
             </div>
         </div>
         <div class="home__content d-flex flex-jc-c">
-            <home-item
+            <base-item
                 v-for="(item, index) in items"
                 :key="`${item.hash_name}-${index}`"
                 :item="item"
             >
-            </home-item>
+            </base-item>
         </div>
-        <div 
-            v-if="!contentLoaded"
-            class="content__loader d-flex flex-jc-c flex-ai-c"
-        >
-            <div class="loader"></div>
-        </div>
+        <app-loader v-if="!contentLoaded"></app-loader>
     </div>
 </template>
 
 <script>
-import AppInput from './AppInput'
-import HomeItem from './HomeItem'
-import moment from 'moment'
 import { appendUrlParam, dateDiff } from '../helpers'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
+import AppInput from './AppInput'
+import AppLoader from './AppLoader'
+import BaseItem from './BaseItem'
 
 export default {
     name: 'Home',
     components: {
         AppInput,
-        HomeItem
+        AppLoader,
+        BaseItem
     },
     data() {
         return {
@@ -285,7 +282,6 @@ export default {
 <style scoped>
 .home__top-bar {
     background-color: var(--main-bg-color);
-    z-index: 1000;
 }
 
 .top-bar__search, .top-bar__filters {
@@ -349,7 +345,6 @@ export default {
 .filters__sort-select {
     background-color: var(--alt-bg-color);
     color: var(--alt-text-color);
-    border-radius: 4px;
 }
 
 .filters__sort-dir {
@@ -373,16 +368,6 @@ export default {
     padding-bottom: 20px;
     grid-gap: 20px;
     flex-wrap: wrap;
-}
-
-.content__loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .25);
-    z-index: 1001;
 }
 
 @media (max-width: 768px) {

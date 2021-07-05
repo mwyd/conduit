@@ -2,7 +2,7 @@
     <div class="app-input rounded-s">
         <input 
             v-model="internalModel"
-            class="app-input__field padding-m"
+            class="app-input__field padding-m w-100"
             :class="inputClass"
             :type="type"
             :placeholder="placeholder"
@@ -84,7 +84,6 @@ export default {
     color: var(--alt-text-color);
 }
 .app-input__field  {
-    width: 100%;
     outline: none;
     border: none;
     background: transparent;
