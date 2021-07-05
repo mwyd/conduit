@@ -23,6 +23,7 @@
 import { mapGetters } from 'vuex'
 import { setDocumentTitle } from '../helpers'
 import Chart from 'chart.js/auto'
+import moment from 'moment'
 import BaseItem from '../components/BaseItem'
 import AppNotFound from './AppNotFound.vue'
 import AppLoader from './AppLoader'
@@ -45,7 +46,7 @@ export default {
             item: null,
             itemLoaded: false,
             trendLoaded: false,
-            dateZero: '2021-05-01',
+            dateStart: moment().subtract('30', days).format('YYYY-MM-DD'),
             fetchDelay: 1000,
             charts: {
                 priceTrend: null,
@@ -63,11 +64,13 @@ export default {
             await new Promise(r => setTimeout(r, this.fetchDelay))
 
             try {
-                const response = await axios.get(this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS'), {params: {
-                    search: this.hashName,
-                    limit: 1,
-                    date_start: this.dateZero
-                }})
+                const response = await axios.get(this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS'), {
+                    params: {
+                        search: this.hashName,
+                        limit: 1,
+                        date_start: this.dateStart
+                    }
+                })
 
                 const {success, data} = response.data
 
@@ -107,7 +110,12 @@ export default {
             if(this.trendLoaded) return
 
             try {
-                const response = await axios.get(`${this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS')}/${this.item.hash_name}/trend`)
+                const response = await axios.get(`${this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS')}/${this.item.hash_name}/trend`, {
+                    params: {
+                        date_start: this.dateStart
+                    }
+                })
+
                 const {success, data} = response.data
 
                 let labels = []
