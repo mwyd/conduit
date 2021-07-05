@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { appendUrlParam, dateDiff } from '../helpers'
+import { appendUrlParam, dateDiff, setDocumentTitle } from '../helpers'
 import { mapGetters } from 'vuex'
 import moment from 'moment'
 import AppInput from './AppInput'
@@ -273,6 +273,7 @@ export default {
         }
     },
     mounted() {
+        setDocumentTitle('Conduit')
         this.fetchItems()
         this.initScrollEvent()
     }

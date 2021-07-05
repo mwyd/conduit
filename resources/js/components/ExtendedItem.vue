@@ -21,6 +21,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { setDocumentTitle } from '../helpers'
 import Chart from 'chart.js/auto'
 import BaseItem from '../components/BaseItem'
 import AppNotFound from './AppNotFound.vue'
@@ -71,7 +72,7 @@ export default {
                 const {success, data} = response.data
 
                 if(success && data?.length > 0) {
-                    document.title = `Conduit - ${this.hashName}`
+                    setDocumentTitle(`Conduit - ${this.hashName}`)
                     this.item = data[0]
                     this.loadTrend()
                 }

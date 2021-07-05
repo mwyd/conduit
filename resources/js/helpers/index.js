@@ -9,4 +9,8 @@ const dateDiff = (date1, date2, unit) => {
     return moment(date1).diff(date2, unit)
 }
 
-export { appendUrlParam, dateDiff }
+const setDocumentTitle = (title) => {
+    document.title = title
+}
+
+export { appendUrlParam, dateDiff, setDocumentTitle }
