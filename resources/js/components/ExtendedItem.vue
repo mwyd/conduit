@@ -46,7 +46,7 @@ export default {
             item: null,
             itemLoaded: false,
             trendLoaded: false,
-            dateStart: moment().subtract('30', days).format('YYYY-MM-DD'),
+            dateStart: moment().subtract('30', 'days').format('YYYY-MM-DD'),
             fetchDelay: 1000,
             charts: {
                 priceTrend: null,
