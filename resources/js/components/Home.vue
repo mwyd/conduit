@@ -285,6 +285,7 @@ export default {
 <style scoped>
 .home__top-bar {
     background-color: var(--main-bg-color);
+    z-index: 1000;
 }
 
 .top-bar__search, .top-bar__filters {
@@ -381,6 +382,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .25);
+    z-index: 1001;
 }
 
 @media (max-width: 768px) {
