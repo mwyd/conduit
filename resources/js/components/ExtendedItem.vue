@@ -9,7 +9,7 @@
                 :style="{ padding: 0 }"
                 :item="item"
             ></base-item>
-            <div class="item__charts d-flex">
+            <div class="item__charts d-flex w-100">
                 <canvas ref="priceChart"></canvas>
                 <canvas ref="sellChart"></canvas>
             </div>
