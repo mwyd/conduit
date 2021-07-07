@@ -19,7 +19,6 @@
             </div>
         </div>
     </div>
-    <app-not-found v-else-if="itemLoaded"></app-not-found>
     <app-loader v-else></app-loader>
 </template>
 
@@ -29,14 +28,12 @@ import { setDocumentTitle } from '../helpers'
 import Chart from 'chart.js/auto'
 import moment from 'moment'
 import BaseItem from '../components/BaseItem'
-import AppNotFound from './AppNotFound.vue'
 import AppLoader from './AppLoader'
 
 export default {
     name: 'ExtendedItem',
     components: {
         BaseItem,
-        AppNotFound,
         AppLoader
     },
     props: {
@@ -88,7 +85,14 @@ export default {
                     this.loadTrend()
                 }
                 else {
-                    
+                    this.$router.push({
+                        name: 'NotFound',
+                        params: {
+                            pathMatch: decodeURI(this.$route.path.substring(1)).split('/')
+                        },
+                        query: this.$route.query,
+                        hash: this.$route.hash
+                    })
                 }
             }
             catch(err) {
