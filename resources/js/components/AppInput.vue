@@ -47,17 +47,17 @@ export default {
             synchronized: true
         }
     },
-    watch: {
-        modelValue(value) {
-            this.internalModel = value
-        }
-    },
     computed: {
         inputClass() {
             return [
                 this.synchronized ? 'app-input__field--idle' : 'app-input__field--action',
                 this.disabled ? 'cursor-not-allowed' : ''
             ]
+        }
+    },
+    watch: {
+        modelValue(value) {
+            this.internalModel = value
         }
     },
     methods: {

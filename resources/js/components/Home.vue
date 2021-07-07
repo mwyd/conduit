@@ -138,11 +138,6 @@ export default {
             limit: 50
         }
     },
-    watch: {
-        $route(to) {
-            if(to.name == 'Home') this.fetchItems()
-        }
-    },
     computed: {
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
@@ -220,8 +215,32 @@ export default {
             }
         }
     },
+    watch: {
+        $route(to) {
+            if(to.name == 'Home') this.fetchItems()
+        }
+    },
+    beforeMount() {
+        this.addScrollEvent()
+    },
+    mounted() {
+        setDocumentTitle('Conduit')
+        this.fetchItems()
+    },
+    beforeUnmount() {
+        this.removeScrollEvent()
+    },
     methods: {
         dateDiff,
+        scrollEvent() {
+            if((window.innerHeight + window.scrollY) >= document.body.offsetHeight && this.contentLoaded) this.fetchItems(true)
+        },
+        addScrollEvent() {
+            window.addEventListener('scroll', this.scrollEvent)
+        },
+        removeScrollEvent() {
+            window.removeEventListener('scroll', this.scrollEvent)
+        },
         updateSortDir() {
             if(this.order_dir == 'asc') this.order_dir = 'desc'
             else this.order_dir = 'asc'
@@ -265,26 +284,7 @@ export default {
             }
 
             this.contentLoaded = true
-        },
-        scrollEvent() {
-            if((window.innerHeight + window.scrollY) >= document.body.offsetHeight && this.contentLoaded) this.fetchItems(true)
-        },
-        addScrollEvent() {
-            window.addEventListener('scroll', this.scrollEvent)
-        },
-        removeScrollEvent() {
-            window.removeEventListener('scroll', this.scrollEvent)
         }
-    },
-    beforeMount() {
-        this.addScrollEvent()
-    },
-    mounted() {
-        setDocumentTitle('Conduit')
-        this.fetchItems()
-    },
-    beforeUnmount() {
-        this.removeScrollEvent()
     }
 }
 </script>

@@ -63,6 +63,10 @@ export default {
             conduitApiUrl: 'app/conduitApiUrl'
         })
     },
+    created() {
+        this.initChartDefaults()
+        this.loadItem()
+    },
     methods: {
         async loadItem() {
             await new Promise(r => setTimeout(r, this.fetchDelay))
@@ -210,10 +214,6 @@ export default {
                 }
             })
         }
-    },
-    created() {
-        this.initChartDefaults()
-        this.loadItem()
     }
 }
 </script>

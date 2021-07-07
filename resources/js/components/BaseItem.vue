@@ -98,6 +98,10 @@ export default {
             conduitApiUrl: 'app/conduitApiUrl'
         })
     },
+    created() {
+        this.unpackHashName()
+        this.getRealSellPrice()
+    },
     methods: {
         reduceHashName(value) {
             if(this.mutableHashName.search(value) > -1) {
@@ -125,10 +129,6 @@ export default {
         getRealSellPrice() {
             if(this.item.avg_suggested_price) this.realSellPrice = this.item.avg_suggested_price * (100 - this.item.avg_discount) / 100
         }
-    },
-    created() {
-        this.unpackHashName()
-        this.getRealSellPrice()
     }
 }
 </script>
