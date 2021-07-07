@@ -3,7 +3,7 @@
         v-if="item"
         class="d-flex flex-jc-c flex-ai-c w-100 wrapper"
     >
-        <div class="content__item padding-m rounded-s d-flex">
+        <div class="content__item padding-m rounded-s d-flex w-100">
             <base-item 
                 class="item__details padding-clear"
                 :style="{ padding: 0 }"
@@ -110,7 +110,8 @@ export default {
                 display: true,
                 align: 'start',
                 font: {
-                    size: 16,
+                    size: 14,
+                    weight: 'bold'
                 },
                 padding: {
                     bottom: 20
@@ -247,7 +248,6 @@ export default {
 
 @media screen and (max-width: 1024px) {
     .content__item {
-        width: 100%;
         max-width: 680px;
         flex-direction: column;
     }
@@ -260,7 +260,6 @@ export default {
     .item__charts {
         flex: 1;
         width: 100%;
-        padding-top: 10px;
         padding-left: 0;
         margin-left: 0;
         border-left: none;
@@ -268,6 +267,7 @@ export default {
 
     .chart-wrapper {
         min-height: 350px;
+        margin-top: 20px;
     }
 }
 </style>
