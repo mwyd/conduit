@@ -139,8 +139,8 @@ export default {
         }
     },
     watch: {
-        $route() {
-            this.fetchItems()
+        $route(to) {
+            if(to.name == 'Home') this.fetchItems()
         }
     },
     computed: {
@@ -266,16 +266,25 @@ export default {
 
             this.contentLoaded = true
         },
-        initScrollEvent() {
-            window.addEventListener('scroll', () => {
-                if((window.innerHeight + window.scrollY) >= document.body.offsetHeight && this.contentLoaded) this.fetchItems(true)
-            })
+        scrollEvent() {
+            if((window.innerHeight + window.scrollY) >= document.body.offsetHeight && this.contentLoaded) this.fetchItems(true)
+        },
+        addScrollEvent() {
+            window.addEventListener('scroll', this.scrollEvent)
+        },
+        removeScrollEvent() {
+            window.removeEventListener('scroll', this.scrollEvent)
         }
+    },
+    beforeMount() {
+        this.addScrollEvent()
     },
     mounted() {
         setDocumentTitle('Conduit')
         this.fetchItems()
-        this.initScrollEvent()
+    },
+    beforeUnmount() {
+        this.removeScrollEvent()
     }
 }
 </script>
