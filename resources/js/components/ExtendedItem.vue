@@ -9,9 +9,13 @@
                 :style="{ padding: 0 }"
                 :item="item"
             ></base-item>
-            <div class="item__charts d-flex w-100">
-                <canvas ref="priceChart"></canvas>
-                <canvas ref="sellChart"></canvas>
+            <div class="item__charts d-flex flex-ai-c w-100">
+                <div class="chart-wrapper w-100 h-100">
+                    <canvas ref="priceChart"></canvas>
+                </div>
+                <div class="chart-wrapper w-100 h-100">
+                    <canvas ref="sellChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -92,6 +96,8 @@ export default {
         initChartDefaults() {
             Chart.defaults.color = '#cbd5e0'
             Chart.defaults.plugins.legend.position = 'bottom'
+            Chart.defaults.responsive = true
+            Chart.defaults.maintainAspectRatio = false
             Chart.defaults.plugins.title = Object.assign(Chart.defaults.plugins.title, {
                 display: true,
                 align: 'start',
@@ -221,7 +227,6 @@ export default {
     max-width: 1024px;
     background-color: var(--alt-bg-color);
     color: var(--alt-text-color);
-    overflow-x: auto;
 }
 
 .item__details {
@@ -230,10 +235,35 @@ export default {
 
 .item__charts {
     margin-left: 10px;
-    min-width: 680px;
     border-left: 1px solid var(--secondary-bg-color);
     padding-left: 10px;
     flex-direction: column;
     justify-content: space-around;
+}
+
+@media screen and (max-width: 1024px) {
+    .content__item {
+        width: 100%;
+        max-width: 680px;
+        flex-direction: column;
+    }
+
+    .item__details {
+        flex: 1;
+        width: 100%;
+    }
+
+    .item__charts {
+        flex: 1;
+        width: 100%;
+        padding-top: 10px;
+        padding-left: 0;
+        margin-left: 0;
+        border-left: none;
+    }
+
+    .chart-wrapper {
+        min-height: 350px;
+    }
 }
 </style>
