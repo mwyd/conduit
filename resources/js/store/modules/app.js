@@ -1,6 +1,7 @@
 export default {
     namespaced: true,
     state: () => ({
+        fetchDelay: 1000,
         conduit: {
             apiUrl: 'http://localhost:8000/api/v1',
             apiEndpoints: Object.freeze({

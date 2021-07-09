@@ -106,7 +106,7 @@
 
 <script>
 import { appendUrlParam, dateDiff, setDocumentTitle } from '../helpers'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 import AppInput from './AppInput'
 import AppLoader from './AppLoader'
@@ -131,7 +131,6 @@ export default {
             ],
             contentLoaded: false,
             showFilters: false,
-            fetchDelay: 1000,
             items: [],
             gotAll: false,
             offset: 0,
@@ -139,6 +138,9 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            fetchDelay: state => state.app.fetchDelay
+        }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         }),

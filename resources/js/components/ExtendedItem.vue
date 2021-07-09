@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { setDocumentTitle } from '../helpers'
 import Chart from 'chart.js/auto'
 import moment from 'moment'
@@ -48,7 +48,6 @@ export default {
             itemLoaded: false,
             trendLoaded: false,
             dateStart: moment().subtract('30', 'days').format('YYYY-MM-DD'),
-            fetchDelay: 1000,
             charts: {
                 priceTrend: null,
                 sellTrend: null
@@ -56,6 +55,9 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            fetchDelay: state => state.app.fetchDelay
+        }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         })
