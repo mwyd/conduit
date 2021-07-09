@@ -35,6 +35,7 @@ class IndexCsgoBlueGemItemRequest extends FormRequest
     public function rules()
     {
         return $this->apiPaginationRules() + [
+            'search'        => 'sometimes|nullable|string',
             'paint_seed'    => 'sometimes|integer',
             'gem_type'      => ['sometimes', Rule::in([
                 'blue', 

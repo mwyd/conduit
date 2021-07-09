@@ -35,6 +35,7 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
     public function rules()
     {
         return $this->apiPaginationRules() + [
+            'search'        => 'sometimes|nullable|string',
             'order_by'      => ['sometimes', Rule::in([
                 'hash_name',
                 'updated_at', 

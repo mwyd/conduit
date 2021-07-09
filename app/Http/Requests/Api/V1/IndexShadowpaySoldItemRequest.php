@@ -35,6 +35,7 @@ class IndexShadowpaySoldItemRequest extends FormRequest
     public function rules()
     {
         return $this->apiPaginationRules() + [
+            'search'        => 'sometimes|nullable|string',
             'date_start'    => 'sometimes|date',
             'date_end'      => 'sometimes|date',
             'price_from'    => 'sometimes|numeric',
