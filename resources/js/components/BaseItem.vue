@@ -9,7 +9,7 @@
             <div class="item__name">{{ itemName }}</div>
         </router-link>
         <table class="item__stats w-100">
-            <caption class="stats__title"><a :href="shadowpayWebsiteUrl" target="_blank" class="link">Shadowpay</a></caption>
+            <caption class="stats__title"><a :href="`${shadowpayWebsiteUrl}?search=${item.hash_name}`" target="_blank" class="link">Shadowpay</a></caption>
             <tr>
                 <td class="stats__name">Sold</td>
                 <td class="stats__value">{{ item.sold }}</td>
