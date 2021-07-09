@@ -235,7 +235,7 @@ export default {
     methods: {
         dateDiff,
         scrollEvent() {
-            if((window.innerHeight + window.scrollY) >= document.body.scrollHeight && this.contentLoaded) this.fetchItems(true)
+            if(Math.round(window.innerHeight + window.scrollY) >= document.body.scrollHeight && this.contentLoaded) this.fetchItems(true)
         },
         addScrollEvent() {
             window.addEventListener('scroll', this.scrollEvent)
