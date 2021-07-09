@@ -69,34 +69,29 @@ export default {
             await new Promise(r => setTimeout(r, this.fetchDelay))
 
             try {
-                const response = await axios.get(this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS'), {
+                const response = await axios.get(`${this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS')}/${this.hashName}`, {
                     params: {
-                        search: this.hashName,
-                        limit: 1,
                         date_start: this.dateStart
                     }
                 })
 
                 const {success, data} = response.data
 
-                if(success && data?.length > 0) {
+                if(success) {
                     setDocumentTitle(`Conduit - ${this.hashName}`)
-                    this.item = data[0]
+                    this.item = data
                     this.loadTrend()
-                }
-                else {
-                    this.$router.push({
-                        name: 'NotFound',
-                        params: {
-                            pathMatch: decodeURI(this.$route.path.substring(1)).split('/')
-                        },
-                        query: this.$route.query,
-                        hash: this.$route.hash
-                    })
                 }
             }
             catch(err) {
-                console.log(err)
+                this.$router.push({
+                    name: 'NotFound',
+                    params: {
+                        pathMatch: decodeURI(this.$route.path.substring(1)).split('/')
+                    },
+                    query: this.$route.query,
+                    hash: this.$route.hash
+                })
             }
 
             this.itemLoaded = true
@@ -145,13 +140,15 @@ export default {
                         steamPrices.push(row.avg_steam_price)
                         shadowpaySold.push(row.sold)
                     }
+
+                    labels = labels.map(date => moment(date).format('MMMM DD'))
                 }
 
                 this.createPriceTrendChart(labels, shadowpayPrices, steamPrices)
                 this.createSellTrendChart(labels, shadowpaySold)
             }
             catch(err) {
-                console.log(err)
+                console.log(err?.message)
             }
 
             this.trendLoaded = true
