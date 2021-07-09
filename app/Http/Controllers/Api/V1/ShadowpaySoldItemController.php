@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexShadowpaySoldItemRequest;
+use App\Http\Requests\Api\V1\ShowShadowpaySoldItemRequest;
 use App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest;
 use App\Http\Requests\Api\V1\ShowTrendShadowpaySoldItemRequest;
 use App\Models\ShadowpaySoldItem;
@@ -89,12 +90,33 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $transactionId
+     * @param  \App\Http\Requests\ShowShadowpaySoldItemRequest  $request
+     * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function show($transactionId)
+    public function show(ShowShadowpaySoldItemRequest $request, $hashName)
     {
-        $item = ShadowpaySoldItem::findOrFail($transactionId)->with('steamMarketCsgoItem');
+        $dateStart  = $request->input('date_start', Carbon::now()->subDays(30));
+        $dateEnd    = $request->input('date_end');
+
+        $item = ShadowpaySoldItem::selectRaw(
+                        'hash_name, ' .
+                        'count(hash_name) as sold, ' . 
+                        'round(avg(discount), 2) as avg_discount, ' . 
+                        'round(avg(suggested_price), 2) as avg_suggested_price, '. 
+                        'round(avg(steam_price), 2) as avg_steam_price, ' . 
+                        'max(sold_at) as last_sold'
+                    )
+                    ->when($dateStart, function($query, $dateStart) {
+                        return $query->whereDate('sold_at', '>', $dateStart);
+                    })
+                    ->when($dateEnd, function($query, $dateEnd) {
+                        return $query->whereDate('sold_at', '<=', $dateEnd);
+                    })
+                    ->where('hash_name', $hashName)
+                    ->with('steamMarketCsgoItem')
+                    ->groupBy('hash_name')
+                    ->firstOrFail();
 
         return response()->apiSuccess($item, 200);
     }
