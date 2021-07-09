@@ -138,7 +138,7 @@ class ShadowpaySoldItemController extends Controller
         $dateEnd    = $request->input('date_end');
 
         $trend = ShadowpaySoldItem::selectRaw(
-                        'date_format(sold_at, "%M %d") as date, ' .
+                        'date(sold_at) as date, ' .
                         'count(hash_name) as sold, ' .
                         'round(avg(suggested_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
                         'round(avg(steam_price), 2) as avg_steam_price'
