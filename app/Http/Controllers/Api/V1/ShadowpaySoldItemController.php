@@ -96,7 +96,7 @@ class ShadowpaySoldItemController extends Controller
      */
     public function show(ShowShadowpaySoldItemRequest $request, $hashName)
     {
-        $dateStart  = $request->input('date_start', Carbon::now()->subDays(30));
+        $dateStart  = $request->input('date_start', Carbon::now()->subWeek());
         $dateEnd    = $request->input('date_end');
 
         $item = ShadowpaySoldItem::selectRaw(
@@ -134,7 +134,7 @@ class ShadowpaySoldItemController extends Controller
         $limit      = $request->input('limit', 50);
         $orderBy    = $request->input('order_by', 'sold_at');
         $orderDir   = $request->input('order_dir', 'asc');
-        $dateStart  = $request->input('date_start', Carbon::now()->subDays(30));
+        $dateStart  = $request->input('date_start', Carbon::now()->subWeek());
         $dateEnd    = $request->input('date_end');
 
         $trend = ShadowpaySoldItem::selectRaw(
