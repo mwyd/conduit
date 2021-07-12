@@ -3,7 +3,7 @@ export default {
     state: () => ({
         fetchDelay: 1000,
         conduit: {
-            apiUrl: 'http://localhost:8000/api/v1',
+            apiUrl: '/api/v1',
             apiEndpoints: Object.freeze({
                 SHADOWPAY_SOLD_ITEMS: '/shadowpay-sold-items'
             })
