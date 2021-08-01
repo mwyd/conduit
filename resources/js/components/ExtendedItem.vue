@@ -27,8 +27,8 @@ import { mapState, mapGetters } from 'vuex'
 import { setDocumentTitle } from '../helpers'
 import Chart from 'chart.js/auto'
 import moment from 'moment'
-import BaseItem from '../components/BaseItem'
-import AppLoader from './AppLoader'
+import BaseItem from './BaseItem'
+import AppLoader from './ui/AppLoader'
 
 export default {
     name: 'ExtendedItem',

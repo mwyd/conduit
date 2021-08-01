@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../components/Home'
 import ExtendedItem from '../components/ExtendedItem'
-import AppNotFound from '../components/AppNotFound'
+import AppNotFound from '../components/ui/AppNotFound'
 
 const routes = [
     {

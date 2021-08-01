@@ -12,7 +12,5 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/main.js', 'public/js').vue()
-    .postCss('resources/css/main.css', 'public/css', [
-        //
-    ])
+    .postCss('resources/css/main.css', 'public/css', [])
     .disableSuccessNotifications();

@@ -108,8 +108,8 @@
 import { appendUrlParam, dateDiff, setDocumentTitle } from '../helpers'
 import { mapState, mapGetters } from 'vuex'
 import moment from 'moment'
-import AppInput from './AppInput'
-import AppLoader from './AppLoader'
+import AppInput from './ui/AppInput'
+import AppLoader from './ui/AppLoader'
 import BaseItem from './BaseItem'
 
 export default {
