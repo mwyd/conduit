@@ -1,5 +1,5 @@
 <template>
-    <div class="app-input rounded-s">
+    <div class="app-input">
         <input 
             v-model="internalModel"
             class="app-input__field padding-m w-100"
@@ -82,16 +82,18 @@ export default {
 .app-input {
     background-color: var(--alt-bg-color);
     color: var(--alt-text-color);
+    border-radius: 4px;
 }
 .app-input__field  {
     outline: none;
     border: none;
     background: transparent;
     color: inherit;
-    border-radius: inherit;
     font-family: inherit;
+    border-radius: 4px;
     line-break: 20px;
     font-size: 14px;
+    height: 40px;
 }
 .app-input__field--idle {
     border: 1px solid var(--main-border-color);

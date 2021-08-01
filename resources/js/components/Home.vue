@@ -26,7 +26,7 @@
                     <div class="filters__input-pair filters__sort-pair d-grid">
                         <select 
                             v-model="order_by"
-                            class="filters__sort-select rounded-s app-input__field app-input__field--idle padding-m"
+                            class="filters__sort-select app-input__field app-input__field--idle padding-m"
                             @change="fetchItems"
                         >
                             <option 
@@ -376,7 +376,7 @@ export default {
 .home__content {
     max-width: 1024px;
     margin: 0 auto;
-    padding-top: 101px;
+    padding-top: 100px;
     padding-bottom: 20px;
     grid-gap: 20px;
     flex-wrap: wrap;
