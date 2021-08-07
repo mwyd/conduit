@@ -27,7 +27,6 @@
                         <select 
                             v-model="order_by"
                             class="filters__sort-select app-input__field app-input__field--idle padding-m"
-                            @change="fetchItems"
                         >
                             <option 
                                 v-for="(sort, index) in sorts"
@@ -246,8 +245,6 @@ export default {
         updateSortDir() {
             if(this.order_dir == 'asc') this.order_dir = 'desc'
             else this.order_dir = 'asc'
-
-            this.fetchItems()
         },
         async fetchItems(append = false) {
             let params = this.$route.query
