@@ -153,7 +153,7 @@ export default {
         },
         price_from: {
             get() {
-                return this.$route.query.price_from ?? 0
+                return parseFloat(this.$route.query.price_from) || 0
             },
             set(value) {
                 appendUrlParam({price_from: value})
@@ -161,7 +161,7 @@ export default {
         },
         price_to: {
             get() {
-                return this.$route.query.price_to ?? 10000
+                return parseFloat(this.$route.query.price_to) || 10000
             },
             set(value) {
                 appendUrlParam({price_to: value})
@@ -169,7 +169,7 @@ export default {
         },
         min_sold: {
             get() {
-                return this.$route.query.min_sold ?? 0
+                return parseInt(this.$route.query.min_sold) || 0
             },
             set(value) {
                 appendUrlParam({min_sold: value})
@@ -177,7 +177,7 @@ export default {
         },
         max_sold: {
             get() {
-                return this.$route.query.max_sold ?? 10000
+                return parseInt(this.$route.query.max_sold) || 10000
             },
             set(value) {
                 appendUrlParam({max_sold: value})
