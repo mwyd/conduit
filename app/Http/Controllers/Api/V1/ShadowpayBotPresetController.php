@@ -17,16 +17,8 @@ class ShadowpayBotPresetController extends Controller
      */
     public function index(IndexShadowpayBotPresetRequest $request)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'updated_at');
-        $orderDir   = $request->input('order_dir', 'desc');
-
-        $presets = ShadowpayBotPreset::select('*')
-                    ->where('user_id', $request->user()->id)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
+        $presets = ShadowpayBotPreset::where('user_id', $request->user()->id)
+                    ->filter($request->validated())
                     ->get();
 
         return response()->apiSuccess($presets, 200);

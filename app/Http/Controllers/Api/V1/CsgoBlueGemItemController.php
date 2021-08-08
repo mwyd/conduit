@@ -17,29 +17,7 @@ class CsgoBlueGemItemController extends Controller
      */
     public function index(IndexCsgoBlueGemItemRequest $request)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'paint_seed');
-        $orderDir   = $request->input('order_dir', 'desc');
-
-        $search     = $request->input('search');
-        $paintSeed  = $request->input('paint_seed');
-        $gemType    = $request->input('gem_type');
-
-        $items = CsgoBlueGemItem::select('*')
-                    ->when($search, function($query, $search) {
-                        return $query->where('item_type', 'like', "%$search%");
-                    })
-                    ->when($paintSeed, function($query, $paintSeed) {
-                        return $query->where('paint_seed', $paintSeed);
-                    })
-                    ->when($gemType, function($query, $gemType) {
-                        return $query->where('gem_type', $gemType);
-                    })
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
-                    ->get();
+        $items = CsgoBlueGemItem::filter($request->validated())->get();
 
         return response()->apiSuccess($items, 200);
     }

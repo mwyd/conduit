@@ -17,16 +17,8 @@ class ShadowpayFriendController extends Controller
      */
     public function index(IndexShadowpayFriendRequest $request)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'name');
-        $orderDir   = $request->input('order_dir', 'asc');
-
-        $friends = ShadowpayFriend::select('*')
-                    ->where('user_id', $request->user()->id)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
+        $friends = ShadowpayFriend::where('user_id', $request->user()->id)
+                    ->filter($request->validated())
                     ->get();
 
         return response()->apiSuccess($friends, 200);

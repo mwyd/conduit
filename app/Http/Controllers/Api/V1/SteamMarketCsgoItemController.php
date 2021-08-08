@@ -17,20 +17,7 @@ class SteamMarketCsgoItemController extends Controller
      */
     public function index(IndexSteamMarketCsgoItemRequest $request)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $search     = $request->input('search');
-        $orderBy    = $request->input('order_by', 'updated_at');
-        $orderDir   = $request->input('order_dir', 'desc');
-
-        $items = SteamMarketCsgoItem::select('*')
-                    ->when($search, function($query, $search) {
-                        return $query->where('hash_name', 'like', "%$search%");
-                    })
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
-                    ->get();
+        $items = SteamMarketCsgoItem::filter($request->validated())->get();
 
         return response()->apiSuccess($items, 200);
     }

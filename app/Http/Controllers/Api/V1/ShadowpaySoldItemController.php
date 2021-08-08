@@ -20,53 +20,10 @@ class ShadowpaySoldItemController extends Controller
      */
     public function index(IndexShadowpaySoldItemRequest $request)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'sold');
-        $orderDir   = $request->input('order_dir', 'desc');
-        $dateStart  = $request->input('date_start', Carbon::now()->subWeek());
-        $dateEnd    = $request->input('date_end');
-
-        $search     = $request->input('search');
-        $priceFrom  = $request->input('price_from');
-        $priceTo    = $request->input('price_to');
-        $minSold    = $request->input('min_sold');
-        $maxSold    = $request->input('max_sold');
-
-        $items = ShadowpaySoldItem::selectRaw(
-                        'hash_name, ' .
-                        'count(hash_name) as sold, ' . 
-                        'round(avg(discount), 2) as avg_discount, ' . 
-                        'round(avg(suggested_price), 2) as avg_suggested_price, '. 
-                        'round(avg(steam_price), 2) as avg_steam_price, ' . 
-                        'max(sold_at) as last_sold'
-                    )
-                    ->when($search, function($query, $search) {
-                        return $query->where('hash_name', 'like', "%$search%");
-                    })
-                    ->when($dateStart, function($query, $dateStart) {
-                        return $query->whereDate('sold_at', '>', $dateStart);
-                    })
-                    ->when($dateEnd, function($query, $dateEnd) {
-                        return $query->whereDate('sold_at', '<=', $dateEnd);
-                    })
-                    ->when($priceFrom, function($query, $priceFrom) {
-                        return $query->having('avg_steam_price', '>=', $priceFrom);
-                    })
-                    ->when($priceTo, function($query, $priceTo) {
-                        return $query->having('avg_steam_price', '<=', $priceTo);
-                    })
-                    ->when($minSold, function($query, $minSold) {
-                        return $query->having('sold', '>=', $minSold);
-                    })
-                    ->when($maxSold, function($query, $maxSold) {
-                        return $query->having('sold', '<=', $maxSold);
-                    })
+        $items = ShadowpaySoldItem::rawItem()
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
+                    ->filter($request->validated())
                     ->get();
 
         return response()->apiSuccess($items, 200);
@@ -96,26 +53,11 @@ class ShadowpaySoldItemController extends Controller
      */
     public function show(ShowShadowpaySoldItemRequest $request, $hashName)
     {
-        $dateStart  = $request->input('date_start', Carbon::now()->subWeek());
-        $dateEnd    = $request->input('date_end');
-
-        $item = ShadowpaySoldItem::selectRaw(
-                        'hash_name, ' .
-                        'count(hash_name) as sold, ' . 
-                        'round(avg(discount), 2) as avg_discount, ' . 
-                        'round(avg(suggested_price), 2) as avg_suggested_price, '. 
-                        'round(avg(steam_price), 2) as avg_steam_price, ' . 
-                        'max(sold_at) as last_sold'
-                    )
-                    ->when($dateStart, function($query, $dateStart) {
-                        return $query->whereDate('sold_at', '>', $dateStart);
-                    })
-                    ->when($dateEnd, function($query, $dateEnd) {
-                        return $query->whereDate('sold_at', '<=', $dateEnd);
-                    })
+        $item = ShadowpaySoldItem::rawItem()
                     ->where('hash_name', $hashName)
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
+                    ->filter($request->validated())
                     ->firstOrFail();
 
         return response()->apiSuccess($item, 200);
@@ -130,30 +72,10 @@ class ShadowpaySoldItemController extends Controller
      */
     public function showTrend(ShowTrendShadowpaySoldItemRequest $request, $hashName)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'sold_at');
-        $orderDir   = $request->input('order_dir', 'asc');
-        $dateStart  = $request->input('date_start', Carbon::now()->subWeek());
-        $dateEnd    = $request->input('date_end');
-
-        $trend = ShadowpaySoldItem::selectRaw(
-                        'date(sold_at) as date, ' .
-                        'count(hash_name) as sold, ' .
-                        'round(avg(suggested_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
-                        'round(avg(steam_price), 2) as avg_steam_price'
-                    )
-                    ->when($dateStart, function($query, $dateStart) {
-                        return $query->whereDate('sold_at', '>', $dateStart);
-                    })
-                    ->when($dateEnd, function($query, $dateEnd) {
-                        return $query->whereDate('sold_at', '<=', $dateEnd);
-                    })
+        $trend = ShadowpaySoldItem::rawTrend()
                     ->where('hash_name', $hashName)
                     ->groupBy('date')
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
+                    ->filterTrend($request->validated())
                     ->get();
 
         return response()->apiSuccess($trend, 200);

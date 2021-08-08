@@ -17,16 +17,8 @@ class ShadowpayBotConfigController extends Controller
      */
     public function index(IndexShadowpayBotConfigRequest $request)
     {
-        $offset     = $request->input('offset', 0);
-        $limit      = $request->input('limit', 50);
-        $orderBy    = $request->input('order_by', 'updated_at');
-        $orderDir   = $request->input('order_dir', 'desc');
-
-        $configs = ShadowpayBotConfig::select('*')
-                    ->where('user_id', $request->user()->id)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->orderBy($orderBy, $orderDir)
+        $configs = ShadowpayBotConfig::where('user_id', $request->user()->id)
+                    ->filter($request->validated())
                     ->get();
 
         return response()->apiSuccess($configs, 200);
