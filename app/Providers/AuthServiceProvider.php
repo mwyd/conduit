@@ -6,12 +6,12 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\ShadowpayBotConfig;
-use App\Policies\ShadowpayBotConfigPolicy;
 use App\Models\ShadowpayBotPreset;
-use App\Policies\ShadowpayBotPresetPolicy;
 use App\Models\ShadowpayFriend;
-use App\Policies\ShadowpayFriendPolicy;
 use App\Models\ShadowpaySaleGuardItem;
+use App\Policies\ShadowpayBotConfigPolicy;
+use App\Policies\ShadowpayBotPresetPolicy;
+use App\Policies\ShadowpayFriendPolicy;
 use App\Policies\ShadowpaySaleGuardItemPolicy;
 
 class AuthServiceProvider extends ServiceProvider
