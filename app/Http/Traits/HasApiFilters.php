@@ -4,6 +4,14 @@ namespace App\Http\Traits;
 
 trait HasApiFilters
 {
+    /**
+     * Scope a query to include defaults api filters.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array  $params
+     * @param  array  $options
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeApiFilter($query, $params, $options = [])
     {
         if(isset($params['search']) && isset($options['search_column']))
