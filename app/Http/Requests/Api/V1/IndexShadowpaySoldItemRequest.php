@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\ApiValidationTrait;
+use App\Http\Traits\HasApiValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class IndexShadowpaySoldItemRequest extends FormRequest
 {
-    use ApiValidationTrait;
+    use HasApiValidation;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -34,22 +33,24 @@ class IndexShadowpaySoldItemRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiPaginationRules() + [
-            'search'        => 'sometimes|nullable|string',
-            'date_start'    => 'sometimes|date',
-            'date_end'      => 'sometimes|date',
-            'price_from'    => 'sometimes|numeric',
-            'price_to'      => 'sometimes|numeric',
-            'min_sold'      => 'sometimes|integer',
-            'max_sold'      => 'sometimes|integer',
-            'order_by'      => ['sometimes', Rule::in([
+        $rules = $this->apiValidationRules([
+            'use_date'      => true,
+            'use_search'    => true,
+            'order_by'      => [
                 'hash_name',
                 'sold', 
                 'avg_discount', 
                 'avg_suggested_price', 
                 'avg_steam_price', 
                 'last_sold'
-            ])]
+            ]
+        ]);
+
+        return $rules + [
+            'price_from'    => 'sometimes|numeric',
+            'price_to'      => 'sometimes|numeric',
+            'min_sold'      => 'sometimes|integer',
+            'max_sold'      => 'sometimes|integer'
         ];
     }
 }

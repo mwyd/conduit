@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\ApiValidationTrait;
+use App\Http\Traits\HasApiValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class IndexCsgoBlueGemItemRequest extends FormRequest
 {
-    use ApiValidationTrait;
+    use HasApiValidation;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -34,19 +34,22 @@ class IndexCsgoBlueGemItemRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiPaginationRules() + [
-            'search'        => 'sometimes|nullable|string',
+        $rules = $this->apiValidationRules([
+            'use_search'    => true,
+            'order_by'      => [
+                'updated_at', 
+                'item_type', 
+                'paint_seed'
+            ]
+        ]);
+
+        return $rules + [
             'paint_seed'    => 'sometimes|integer',
             'gem_type'      => ['sometimes', Rule::in([
                 'blue', 
                 'gold', 
                 'tier 2', 
                 'tier 3'
-            ])],
-            'order_by'      => ['sometimes', Rule::in([
-                'updated_at', 
-                'item_type', 
-                'paint_seed'
             ])]
         ];
     }

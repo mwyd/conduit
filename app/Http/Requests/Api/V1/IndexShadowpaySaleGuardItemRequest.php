@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\ApiValidationTrait;
+use App\Http\Traits\HasApiValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class IndexShadowpaySaleGuardItemRequest extends FormRequest
 {
-    use ApiValidationTrait;
+    use HasApiValidation;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -34,13 +33,13 @@ class IndexShadowpaySaleGuardItemRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiPaginationRules() + [
-            'order_by'      => ['sometimes', Rule::in([
+        return $this->apiValidationRules([
+            'order_by'  => [
                 'updated_at', 
                 'shadowpay_offer_id', 
                 'min_price', 
                 'max_price'
-            ])],
-        ];
+            ]
+        ]);
     }
 }

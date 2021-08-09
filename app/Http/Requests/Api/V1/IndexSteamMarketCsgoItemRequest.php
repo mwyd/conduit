@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\ApiValidationTrait;
+use App\Http\Traits\HasApiValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class IndexSteamMarketCsgoItemRequest extends FormRequest
 {
-    use ApiValidationTrait;
+    use HasApiValidation;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -34,14 +33,14 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiPaginationRules() + [
-            'search'        => 'sometimes|nullable|string',
-            'order_by'      => ['sometimes', Rule::in([
+        return $this->apiValidationRules([
+            'use_search'    => true,
+            'order_by'      => [
                 'hash_name',
                 'updated_at', 
                 'volume', 
                 'price'
-            ])]
-        ];
+            ]
+        ]);
     }
 }
