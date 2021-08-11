@@ -32,7 +32,7 @@ trait HasApiValidation
 
         if($options['use_date'] ?? false)
         {
-            $rules['date_from'] = 'sometimes|date';
+            $rules['date_start'] = 'sometimes|date';
             $rules['date_end']  = 'sometimes|date';
         }
 
