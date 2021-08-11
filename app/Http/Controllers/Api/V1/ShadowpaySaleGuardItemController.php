@@ -18,6 +18,7 @@ class ShadowpaySaleGuardItemController extends Controller
     public function index(IndexShadowpaySaleGuardItemRequest $request)
     {
         $items = ShadowpaySaleGuardItem::where('user_id', $request->user()->id)
+                    ->with('steamMarketCsgoItem')
                     ->filter($request->validated())
                     ->get();
 
@@ -45,7 +46,7 @@ class ShadowpaySaleGuardItemController extends Controller
      */
     public function show($itemId)
     {
-        $item = ShadowpaySaleGuardItem::findOrFail($itemId);
+        $item = ShadowpaySaleGuardItem::with('steamMarketCsgoItem')->findOrFail($itemId);
 
         $this->authorize('view', $item);
 

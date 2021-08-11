@@ -29,6 +29,11 @@ class ShadowpaySaleGuardItem extends Model
         'max_price'             => 'float'
     ];
 
+    public function steamMarketCsgoItem() 
+    {
+        return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
+    }
+
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
