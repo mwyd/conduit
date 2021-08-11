@@ -37,6 +37,6 @@ class ShadowpayFriend extends Model
             'order_dir' => 'asc'
         ];
 
-        return $query->apiFilters($params);
+        return $query->apiFilter($params);
     }
 }

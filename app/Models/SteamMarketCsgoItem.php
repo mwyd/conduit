@@ -43,7 +43,7 @@ class SteamMarketCsgoItem extends Model
             'order_dir' => 'desc'
         ];
 
-        return $query->apiFilters($params, [
+        return $query->apiFilter($params, [
             'search_column' => 'hash_name'
         ]);
     }

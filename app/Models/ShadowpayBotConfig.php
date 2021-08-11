@@ -36,6 +36,6 @@ class ShadowpayBotConfig extends Model
             'oder_dir'  => 'desc'
         ];
 
-        return $query->apiFilters($params);
+        return $query->apiFilter($params);
     }
 }
