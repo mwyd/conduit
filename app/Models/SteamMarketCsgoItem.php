@@ -48,6 +48,21 @@ class SteamMarketCsgoItem extends Model
             'order_dir' => 'desc'
         ];
 
+        if(isset($params['stattrak']))
+        {
+            $query = $query->where('is_stattrak', $params['stattrak']);
+        }
+
+        if(isset($params['exteriors']))
+        {
+            $query = $query->whereIn('exterior', $params['exteriors']);
+        }
+
+        if(isset($params['types']))
+        {
+            $query = $query->whereIn('type', $params['types']);
+        }
+
         return $query->apiFilter($params, [
             'search_column' => 'hash_name'
         ]);

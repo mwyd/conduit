@@ -27,13 +27,40 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $params = [];
+
+        if($this->stattrak)
+        {
+            $params['stattrak'] = boolval($this->stattrak);
+        }
+
+        if($this->exteriors)
+        {
+            $params['exteriors'] = explode(',', $this->exteriors);
+        }
+
+        if($this->types)
+        {
+            $params['types'] = explode(',', $this->types);
+        }
+
+        $this->merge($params);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        return $this->apiValidationRules([
+        $rules = $this->apiValidationRules([
             'use_search'    => true,
             'order_by'      => [
                 'hash_name',
@@ -42,5 +69,11 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
                 'price'
             ]
         ]);
+
+        return $rules + [
+            'stattrak'  => 'sometimes|boolean',
+            'exteriors' => 'sometimes|array',
+            'types'     => 'sometimes|array'
+        ];
     }
 }
