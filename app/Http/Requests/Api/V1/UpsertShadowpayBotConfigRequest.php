@@ -30,9 +30,12 @@ class UpsertShadowpayBotConfigRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge([
-            'config'    => json_decode($this->config, true)
-        ]);
+        if($this->config)
+        {
+            $this->merge([
+                'config'    => json_decode($this->config, true)
+            ]);
+        }
     }
 
     /**
