@@ -23,12 +23,17 @@ class SteamMarketCsgoItem extends Model
         'hash_name',
         'volume',
         'price',
-        'icon'
+        'icon',
+        'is_stattrak',
+        'name_color',
+        'exterior',
+        'type'
     ];
 
     protected $casts = [
-        'volume'    => 'integer',
-        'price'     => 'float'
+        'volume'        => 'integer',
+        'price'         => 'float',
+        'is_stattrak'   => 'boolean'
     ];
 
     protected function serializeDate(\DateTimeInterface $date)

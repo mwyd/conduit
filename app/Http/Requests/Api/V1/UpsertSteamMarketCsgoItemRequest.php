@@ -31,10 +31,14 @@ class UpsertSteamMarketCsgoItemRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'hash_name' => 'required|string',
-            'volume'    => 'required|integer',
-            'price'     => 'required|numeric',
-            'icon'      => 'required|string'
+            'hash_name'     => 'required|string',
+            'volume'        => 'required|integer',
+            'price'         => 'required|numeric',
+            'icon'          => 'required|string',
+            'is_stattrak'   => 'required|boolean',
+            'name_color'    => 'required|string',
+            'exterior'      => 'sometimes|nullable|string',
+            'type'          => 'required|string'
         ];
 
         if($this->method() == self::METHOD_PUT) 
