@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Actions\CreateSteamMarketCsgoItemAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
 use App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest;
@@ -28,11 +29,11 @@ class SteamMarketCsgoItemController extends Controller
      * @param  \App\Http\Requests\UpsertSteamMarketCsgoItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UpsertSteamMarketCsgoItemRequest $request)
+    public function store(UpsertSteamMarketCsgoItemRequest $request, CreateSteamMarketCsgoItemAction $action)
     {
         $this->authorize('api-create');
-
-        $item = SteamMarketCsgoItem::create($request->validated());
+        
+        $item = $action->execute($request->validated());
 
         return response()->apiSuccess($item, 201);
     }

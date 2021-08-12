@@ -35,9 +35,7 @@ class UpsertSteamMarketCsgoItemRequest extends FormRequest
             'volume'        => 'required|integer',
             'price'         => 'required|numeric',
             'icon'          => 'required|string',
-            'is_stattrak'   => 'required|boolean',
             'name_color'    => 'required|string',
-            'exterior'      => 'sometimes|nullable|string',
             'type'          => 'required|string'
         ];
 
