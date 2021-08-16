@@ -8,10 +8,10 @@ class CreateSteamMarketCsgoItemAction
 {
     public function execute($formData)
     {
-        $formData['is_stattrak'] = $this->isStattrak($formData['hash_name']);
-        $formData['exterior'] = $this->getItemExterior($formData['hash_name']);
-
-        SteamMarketCsgoItem::create($formData);
+        SteamMarketCsgoItem::create($formData + [
+            'is_stattrak'   => $this->isStattrak($formData['hash_name']),
+            'exterior'      => $this->getItemExterior($formData['hash_name'])
+        ]);
     }
 
     private function isStattrak($hashName)
