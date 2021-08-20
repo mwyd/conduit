@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Http\Traits\HasApiFilters;
+use App\Http\Filters\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SteamMarketCsgoItem extends Model
 {
-    use HasFactory, HasApiFilters;
+    use HasFactory, Filterable;
 
     public $incrementing    = false;
     
@@ -39,32 +39,5 @@ class SteamMarketCsgoItem extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function scopeFilter($query, $params)
-    {
-        $params = $params + [
-            'order_by'  => 'updated_at',
-            'order_dir' => 'desc'
-        ];
-
-        if(isset($params['stattrak']))
-        {
-            $query = $query->where('is_stattrak', $params['stattrak']);
-        }
-
-        if(isset($params['exteriors']))
-        {
-            $query = $query->whereIn('exterior', $params['exteriors']);
-        }
-
-        if(isset($params['types']))
-        {
-            $query = $query->whereIn('type', $params['types']);
-        }
-
-        return $query->apiFilter($params, [
-            'search_column' => 'hash_name'
-        ]);
     }
 }

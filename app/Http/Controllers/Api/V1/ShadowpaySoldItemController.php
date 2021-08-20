@@ -3,27 +3,26 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexShadowpaySoldItemRequest;
-use App\Http\Requests\Api\V1\ShowShadowpaySoldItemRequest;
+use App\Http\Filters\ShadowpaySoldItemFilter;
+use App\Http\Filters\ShadowpaySoldItemShowFilter;
+use App\Http\Filters\ShadowpaySoldItemTrendFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest;
-use App\Http\Requests\Api\V1\ShowTrendShadowpaySoldItemRequest;
 use App\Models\ShadowpaySoldItem;
-use Carbon\Carbon;
 
 class ShadowpaySoldItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Requests\IndexShadowpaySoldItemRequest  $request
+     * @param  \App\Http\Filters\ShadowpaySoldItemFilter  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexShadowpaySoldItemRequest $request)
+    public function index(ShadowpaySoldItemFilter $filter)
     {
         $items = ShadowpaySoldItem::rawItem()
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
-                    ->filter($request->validated())
+                    ->filter($filter)
                     ->get();
 
         return response()->apiSuccess($items, 200);
@@ -47,17 +46,17 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Http\Requests\ShowShadowpaySoldItemRequest  $request
+     * @param  \App\Http\Filters\ShadowpaySoldItemShowFilter  $filter
      * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowShadowpaySoldItemRequest $request, $hashName)
+    public function show(ShadowpaySoldItemShowFilter $filter, $hashName)
     {
         $item = ShadowpaySoldItem::rawItem()
                     ->where('hash_name', $hashName)
                     ->with('steamMarketCsgoItem')
                     ->groupBy('hash_name')
-                    ->filter($request->validated())
+                    ->filter($filter)
                     ->firstOrFail();
 
         return response()->apiSuccess($item, 200);
@@ -66,16 +65,16 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Display trend of the specified resource.
      *
-     * @param  \App\Http\Requests\Api\V1\ShowTrendShadowpaySoldItemRequest  $request
+     * @param  \App\Http\Filters\ShadowpaySoldItemTrendFilter  $filter
      * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */
-    public function showTrend(ShowTrendShadowpaySoldItemRequest $request, $hashName)
+    public function showTrend(ShadowpaySoldItemTrendFilter $filter, $hashName)
     {
         $trend = ShadowpaySoldItem::rawTrend()
                     ->where('hash_name', $hashName)
                     ->groupBy('date')
-                    ->filterTrend($request->validated())
+                    ->filter($filter)
                     ->get();
 
         return response()->apiSuccess($trend, 200);

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexShadowpayBotPresetRequest;
+use App\Http\Filters\ShadowpayBotPresetFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest;
 use App\Models\ShadowpayBotPreset;
 
@@ -15,10 +15,10 @@ class ShadowpayBotPresetController extends Controller
      * @param  \App\Http\Requests\IndexShadowpayBotPresetRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexShadowpayBotPresetRequest $request)
+    public function index(ShadowpayBotPresetFilter $filter)
     {
-        $presets = ShadowpayBotPreset::where('user_id', $request->user()->id)
-                    ->filter($request->validated())
+        $presets = ShadowpayBotPreset::where('user_id', $filter->request()->user()->id)
+                    ->filter($filter)
                     ->get();
 
         return response()->apiSuccess($presets, 200);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\CreateSteamMarketCsgoItemAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
+use App\Http\Filters\SteamMarketCsgoItemFilter;
 use App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest;
 use App\Models\SteamMarketCsgoItem;
 
@@ -13,12 +13,12 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Requests\IndexSteamMarketCsgoItemRequest  $request
+     * @param  \App\Http\Filters\SteamMarketCsgoItemFilter  $filter
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexSteamMarketCsgoItemRequest $request)
+    public function index(SteamMarketCsgoItemFilter $filter)
     {
-        $items = SteamMarketCsgoItem::filter($request->validated())->get();
+        $items = SteamMarketCsgoItem::filter($filter)->get();
 
         return response()->apiSuccess($items, 200);
     }

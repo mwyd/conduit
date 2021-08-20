@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
+use App\Http\Validation\HasSearchRules;
+use App\Http\Validation\HasSteamMarketCsgoItemRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexSteamMarketCsgoItemRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasSteamMarketCsgoItemRules, HasSearchRules, HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -33,24 +36,7 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $params = [];
-
-        if($this->stattrak)
-        {
-            $params['stattrak'] = boolval($this->stattrak);
-        }
-
-        if($this->exteriors)
-        {
-            $params['exteriors'] = explode(',', $this->exteriors);
-        }
-
-        if($this->types)
-        {
-            $params['types'] = explode(',', $this->types);
-        }
-
-        $this->merge($params);
+        $this->prepareSteamMarketCsgoItemRules($this);
     }
 
     /**
@@ -60,20 +46,14 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = $this->apiValidationRules([
-            'use_search'    => true,
-            'order_by'      => [
-                'hash_name',
-                'updated_at', 
-                'volume', 
-                'price'
-            ]
-        ]);
-
-        return $rules + [
-            'stattrak'  => 'sometimes|boolean',
-            'exteriors' => 'sometimes|array',
-            'types'     => 'sometimes|array'
-        ];
+        return $this->steamMarketCsgoItemRules()
+        + $this->searchRules()
+        + $this->orderRules([
+            'hash_name',
+            'updated_at', 
+            'volume', 
+            'price'  
+        ])
+        + $this->paginationRules();
     }
 }

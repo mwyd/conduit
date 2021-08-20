@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
+use App\Http\Validation\HasSearchRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexShadowpayFriendRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasSearchRules, HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -33,11 +35,11 @@ class IndexShadowpayFriendRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiValidationRules([
-            'order_by'  => [
-                'created_at',
-                'name'
-            ]
-        ]);
+        return $this->searchRules() 
+        + $this->orderRules([
+            'created_at',
+            'name' 
+        ])
+        + $this->paginationRules();
     }
 }

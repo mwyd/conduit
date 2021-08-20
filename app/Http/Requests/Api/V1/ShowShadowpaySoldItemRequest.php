@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Http\Validation\HasDateRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShowShadowpaySoldItemRequest extends FormRequest
 {
+    use HasDateRules;
+
     /**
      * Indicates if the validator should stop on the first rule failure.
      *
@@ -30,9 +33,6 @@ class ShowShadowpaySoldItemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'date_start'    => 'sometimes|date',
-            'date_end'      => 'sometimes|date'
-        ];
+        return $this->dateRules();
     }
 }

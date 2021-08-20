@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexCsgoBlueGemItemRequest;
+use App\Http\Filters\CsgoBlueGemItemFilter;
 use App\Http\Requests\Api\V1\UpsertCsgoBlueGemItemRequest;
 use App\Models\CsgoBlueGemItem;
 
@@ -12,12 +12,12 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Requests\IndexCsgoBlueGemItemRequest  $request
+     * @param  \App\Http\Filters\CsgoBlueGemItemFilter  $filter
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexCsgoBlueGemItemRequest $request)
+    public function index(CsgoBlueGemItemFilter $filter)
     {
-        $items = CsgoBlueGemItem::filter($request->validated())->get();
+        $items = CsgoBlueGemItem::filter($filter)->get();
 
         return response()->apiSuccess($items, 200);
     }

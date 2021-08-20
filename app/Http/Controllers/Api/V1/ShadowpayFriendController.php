@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexShadowpayFriendRequest;
+use App\Http\Filters\ShadowpayFriendFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest;
 use App\Models\ShadowpayFriend;
 
@@ -15,10 +15,10 @@ class ShadowpayFriendController extends Controller
      * @param  \App\Http\Requests\IndexShadowpayFriendRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexShadowpayFriendRequest $request)
+    public function index(ShadowpayFriendFilter $filter)
     {
-        $friends = ShadowpayFriend::where('user_id', $request->user()->id)
-                    ->filter($request->validated())
+        $friends = ShadowpayFriend::where('user_id', $filter->request()->user()->id)
+                    ->filter($filter)
                     ->get();
 
         return response()->apiSuccess($friends, 200);

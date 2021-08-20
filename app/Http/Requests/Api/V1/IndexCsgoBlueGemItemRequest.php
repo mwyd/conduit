@@ -2,13 +2,15 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
+use App\Http\Validation\HasSearchRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class IndexCsgoBlueGemItemRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasSearchRules, HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -34,16 +36,7 @@ class IndexCsgoBlueGemItemRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = $this->apiValidationRules([
-            'use_search'    => true,
-            'order_by'      => [
-                'updated_at', 
-                'item_type', 
-                'paint_seed'
-            ]
-        ]);
-
-        return $rules + [
+        return [
             'paint_seed'    => 'sometimes|integer',
             'gem_type'      => ['sometimes', Rule::in([
                 'blue', 
@@ -51,6 +44,13 @@ class IndexCsgoBlueGemItemRequest extends FormRequest
                 'tier 2', 
                 'tier 3'
             ])]
-        ];
+        ]
+        + $this->searchRules();
+        + $this->orderRules([
+            'updated_at', 
+            'item_type', 
+            'paint_seed'
+        ])
+        + $this->paginationRules();
     }
 }

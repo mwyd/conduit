@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasDateRules;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShowTrendShadowpaySoldItemRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasDateRules, HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -33,11 +35,8 @@ class ShowTrendShadowpaySoldItemRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiValidationRules([
-            'use_date'  => true,
-            'order_by'  => [
-                'sold_at'
-            ]
-        ]);
+        return $this->dateRules()
+        + $this->orderRules(['sold_at'])
+        + $this->paginationRules();
     }
 }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
+use App\Http\Validation\HasSearchRules;
+use App\Http\Validation\HasSteamMarketCsgoItemRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexShadowpaySaleGuardItemRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasSteamMarketCsgoItemRules, HasSearchRules, HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -27,19 +30,31 @@ class IndexShadowpaySaleGuardItemRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->prepareSteamMarketCsgoItemRules($this);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        return $this->apiValidationRules([
-            'order_by'  => [
-                'updated_at', 
-                'shadowpay_offer_id', 
-                'min_price', 
-                'max_price'
-            ]
-        ]);
+        return $this->steamMarketCsgoItemRules() 
+        + $this->searchRules()
+        + $this->orderRules([
+            'created_at', 
+            'updated_at', 
+            'shadowpay_offer_id', 
+            'min_price', 
+            'max_price'
+        ])
+        + $this->paginationRules();
     }
 }

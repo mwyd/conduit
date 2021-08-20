@@ -2,12 +2,16 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasDateRules;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
+use App\Http\Validation\HasSearchRules;
+use App\Http\Validation\HasSteamMarketCsgoItemRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexShadowpaySoldItemRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasSteamMarketCsgoItemRules, HasSearchRules, HasDateRules, HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -27,30 +31,39 @@ class IndexShadowpaySoldItemRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->prepareSteamMarketCsgoItemRules($this);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        $rules = $this->apiValidationRules([
-            'use_date'      => true,
-            'use_search'    => true,
-            'order_by'      => [
-                'hash_name',
-                'sold', 
-                'avg_discount', 
-                'avg_suggested_price', 
-                'avg_steam_price', 
-                'last_sold'
-            ]
-        ]);
-
-        return $rules + [
+        return [
             'price_from'    => 'sometimes|numeric',
             'price_to'      => 'sometimes|numeric',
             'min_sold'      => 'sometimes|integer',
             'max_sold'      => 'sometimes|integer'
-        ];
+        ]
+        + $this->steamMarketCsgoItemRules()
+        + $this->searchRules()
+        + $this->dateRules()
+        + $this->orderRules([
+            'hash_name',
+            'sold', 
+            'avg_discount', 
+            'avg_suggested_price', 
+            'avg_steam_price', 
+            'last_sold'
+        ])
+        + $this->paginationRules();
     }
 }

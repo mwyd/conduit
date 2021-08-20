@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexShadowpaySaleGuardItemRequest;
+use App\Http\Filters\ShadowpaySaleGuardItemFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest;
 use App\Models\ShadowpaySaleGuardItem;
 
@@ -12,14 +12,14 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Requests\IndexShadowpaySaleGuardItemRequest  $request
+     * @param  \App\Http\Filters\ShadowpaySaleGuardItemFilter  $filter
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexShadowpaySaleGuardItemRequest $request)
+    public function index(ShadowpaySaleGuardItemFilter $filter)
     {
-        $items = ShadowpaySaleGuardItem::where('user_id', $request->user()->id)
+        $items = ShadowpaySaleGuardItem::where('user_id', $filter->request()->user()->id)
                     ->with('steamMarketCsgoItem')
-                    ->filter($request->validated())
+                    ->filter($filter)
                     ->get();
 
         return response()->apiSuccess($items, 200);

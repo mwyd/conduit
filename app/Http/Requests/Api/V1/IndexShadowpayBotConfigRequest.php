@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Http\Traits\HasApiValidation;
+use App\Http\Validation\HasOrderRules;
+use App\Http\Validation\HasPaginationRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexShadowpayBotConfigRequest extends FormRequest
 {
-    use HasApiValidation;
+    use HasOrderRules, HasPaginationRules;
 
     /**
      * Indicates if the validator should stop on the first rule failure.
@@ -33,10 +34,6 @@ class IndexShadowpayBotConfigRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->apiValidationRules([
-            'order_by'  => [
-                'updated_at'
-            ]
-        ]);
+        return $this->orderRules(['updated_at']) + $this->paginationRules();
     }
 }

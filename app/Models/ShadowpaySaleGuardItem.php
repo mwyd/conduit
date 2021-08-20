@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\Http\Traits\HasApiFilters;
+use App\Http\Filters\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ShadowpaySaleGuardItem extends Model
 {
-    use HasFactory, HasApiFilters;
+    use HasFactory, Filterable;
 
     protected $hidden = [
-        'user_id',
-        'created_at'
+        'user_id'
     ];
 
     protected $fillable = [
@@ -37,15 +36,5 @@ class ShadowpaySaleGuardItem extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function scopeFilter($query, $params)
-    {
-        $params = $params + [
-            'order_by'  => 'updated_at',
-            'order_dir' => 'desc'
-        ];
-
-        return $query->apiFilter($params);
     }
 }
