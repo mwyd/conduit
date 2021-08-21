@@ -6,6 +6,7 @@ use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
 use App\Http\Filters\Traits\HasSearchFilter;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
+use App\Http\Filters\Traits\HasSteamMarketCsgoItemFilter;
 
 class SteamMarketCsgoItemFilter extends Filter
 {

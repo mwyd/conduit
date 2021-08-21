@@ -5,6 +5,7 @@ namespace App\Http\Filters;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
 use App\Http\Filters\Traits\HasSearchFilter;
+use App\Http\Filters\Traits\HasSteamMarketCsgoItemFilter;
 use App\Http\Requests\Api\V1\IndexShadowpaySaleGuardItemRequest;
 
 class ShadowpaySaleGuardItemFilter extends Filter
