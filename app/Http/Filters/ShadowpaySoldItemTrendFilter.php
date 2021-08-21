@@ -21,7 +21,7 @@ class ShadowpaySoldItemTrendFilter extends Filter
         $this->filters += [
             'offset'        => null,
             'limit'         => null,
-            'order_by'      => 'sold_at',
+            'order_by'      => 'date',
             'order_dir'     => 'asc',
             'date_start'    => Carbon::now()->subWeek()
         ];

@@ -36,7 +36,7 @@ class ShowTrendShadowpaySoldItemRequest extends FormRequest
     public function rules()
     {
         return $this->dateRules()
-        + $this->orderRules(['sold_at'])
+        + $this->orderRules(['date'])
         + $this->paginationRules();
     }
 }
