@@ -45,7 +45,7 @@ class IndexCsgoBlueGemItemRequest extends FormRequest
                 'tier 3'
             ])]
         ]
-        + $this->searchRules();
+        + $this->searchRules()
         + $this->orderRules([
             'updated_at', 
             'item_type', 
