@@ -21,7 +21,7 @@ class SteamMarketCsgoItemFilter extends Filter
         $this->filters += [
             'offset'    => null,
             'limit'     => null,
-            'order_by'  => 'updated_at',
+            'order_by'  => 'volume',
             'order_dir' => 'desc'
         ];
     }
