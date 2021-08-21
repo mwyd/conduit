@@ -9,7 +9,7 @@ use App\Http\Filters\Traits\HasPaginationFilter;
 
 class SteamMarketCsgoItemFilter extends Filter
 {
-    use HasSearchFilter, HasOrderFilter, HasPaginationFilter;
+    use HasSteamMarketCsgoItemFilter, HasSearchFilter, HasOrderFilter, HasPaginationFilter;
 
     public function __construct(IndexSteamMarketCsgoItemRequest $request)
     {
@@ -23,20 +23,5 @@ class SteamMarketCsgoItemFilter extends Filter
             'order_by'  => 'updated_at',
             'order_dir' => 'desc'
         ];
-    }
-
-    public function isStattrak($value)
-    {
-        $this->builder->where('is_stattrak', $value);
-    }
-
-    public function exteriors($value)
-    {
-        $this->builder->whereIn('exterior', $value);
-    }
-
-    public function types($value)
-    {
-        $this->builder->whereIn('type', $value);
     }
 }

@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class ShadowpaySoldItemFilter extends Filter
 {
-    use HasSearchFilter, HasDateFilter, HasOrderFilter, HasPaginationFilter;
+    use HasSteamMarketCsgoItemFilter, HasSearchFilter, HasDateFilter, HasOrderFilter, HasPaginationFilter;
 
     public function __construct(IndexShadowpaySoldItemRequest $request)
     {
@@ -19,6 +19,8 @@ class ShadowpaySoldItemFilter extends Filter
 
         $this->searchColumn = 'hash_name';
         $this->dateColumn = 'sold_at';
+
+        $this->steamMarketCsgoItemRelation = true;
 
         $this->filters += [
             'offset'        => null,
@@ -47,20 +49,5 @@ class ShadowpaySoldItemFilter extends Filter
     public function maxSold($value)
     {
         $this->builder->having('sold', '<=', $value);
-    }
-
-    public function isStattrak($value)
-    {
-        $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->where('is_stattrak', $value));
-    }
-
-    public function exteriors($value)
-    {
-        $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->whereIn('exterior', $value));
-    }
-
-    public function types($value)
-    {
-        $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->whereIn('type', $value));
     }
 }
