@@ -11,7 +11,8 @@ class ShadowpaySaleGuardItem extends Model
     use HasFactory, Filterable;
 
     protected $hidden = [
-        'user_id'
+        'user_id',
+        'updated_at'
     ];
 
     protected $fillable = [

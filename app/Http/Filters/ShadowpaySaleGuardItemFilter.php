@@ -23,7 +23,7 @@ class ShadowpaySaleGuardItemFilter extends Filter
         $this->filters += [
             'offset'    => null,
             'limit'     => null,
-            'order_by'  => 'updated_at',
+            'order_by'  => 'created_at',
             'oder_dir'  => 'desc'
         ];
     }

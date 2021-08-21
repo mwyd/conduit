@@ -50,7 +50,6 @@ class IndexShadowpaySaleGuardItemRequest extends FormRequest
         + $this->searchRules()
         + $this->orderRules([
             'created_at', 
-            'updated_at', 
             'shadowpay_offer_id', 
             'min_price', 
             'max_price'
