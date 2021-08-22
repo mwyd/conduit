@@ -16,7 +16,7 @@ class AddColumnsToSteamMarketCsgoItemsTable extends Migration
         Schema::table('steam_market_csgo_items', function (Blueprint $table) {
             $table->boolean('is_stattrak')->after('icon');
             $table->string('name_color', 7)->after('is_stattrak');
-            $table->string('exterior', 2)->nullable()->after('name_color');
+            $table->string('exterior', 8)->nullable()->after('name_color');
             $table->string('type')->after('exterior');
         });
     }
