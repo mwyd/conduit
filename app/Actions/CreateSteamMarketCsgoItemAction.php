@@ -6,37 +6,53 @@ use App\Models\SteamMarketCsgoItem;
 
 class CreateSteamMarketCsgoItemAction
 {
+    private $stattrakKeyword = 'StatTrak™ ';
+
+    private $exteriors = [
+        'FN'    => ' (Factory New)',
+        'MW'    => ' (Minimal Wear)',
+        'FT'    => ' (Field-Tested)',
+        'WW'    => ' (Well-Worn)',
+        'BS'    => ' (Battle-Scarred)',
+        'Foil'  => ' (Foil)',
+        'Holo'  => ' (Holo)',
+        'Gold'  => ' (Gold)',
+        'Blue'  => ' (Blue)',
+        'Red'   => ' (Red)'
+    ];
+
     public function execute($formData)
     {
-        SteamMarketCsgoItem::create($formData + [
-            'is_stattrak'   => $this->isStattrak($formData['hash_name']),
-            'exterior'      => $this->getItemExterior($formData['hash_name'])
-        ]);
+        SteamMarketCsgoItem::create($formData + $this->unpackHashName($formData['hash_name']));
     }
 
-    private function isStattrak($hashName)
+    private function unpackHashName($hashName)
     {
-        return str_contains($hashName, 'StatTrak™');
-    }
-
-    private function getItemExterior($hashName)
-    {
-        $exteriors = [
-            'FN' => '(Factory New)',
-            'MW' => '(Minimal Wear)',
-            'FT' => '(Field-Tested)',
-            'WW' => '(Well-Worn)',
-            'BS' => '(Battle-Scarred)',
-            'Foil' => '(Foil)',
-            'Holo' => '(Holo)',
-            'Gold' => '(Gold)'
+        $data = [
+            'is_stattrak'   => false,
+            'exterior'      => null,
+            'name'          => ''
         ];
 
-        foreach($exteriors as $short => $exterior)
+        if(str_contains($hashName, $this->stattrakKeyword))
         {
-            if(str_contains($hashName, $exterior)) return $short;
+            $hashName = str_replace($this->stattrakKeyword, '', $hashName);
+            $data['is_stattrak'] = true;
         }
 
-        return null;
+        foreach($this->exteriors as $short => $exterior)
+        {
+            if(str_contains($hashName, $exterior))
+            {
+                $hashName = str_replace($exterior, '', $hashName);
+                $data['exterior'] = $short;
+
+                break;
+            }
+        }
+
+        $data['name'] = $hashName;
+
+        return $data;
     }
 }

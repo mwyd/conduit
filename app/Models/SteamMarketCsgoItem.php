@@ -25,6 +25,7 @@ class SteamMarketCsgoItem extends Model
         'price',
         'icon',
         'is_stattrak',
+        'name',
         'name_color',
         'exterior',
         'type'
