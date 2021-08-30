@@ -29,7 +29,8 @@ class SteamMarketCsgoItem extends Model
         'name',
         'name_color',
         'exterior',
-        'type'
+        'type',
+        'type_color'
     ];
 
     protected $casts = [

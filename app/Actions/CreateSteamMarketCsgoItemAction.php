@@ -21,37 +21,65 @@ class CreateSteamMarketCsgoItemAction
         'Red'   => ' (Red)'
     ];
 
+    private $typeColors = [
+        'Contraband'        => '#FFAE39',
+        'Covert'            => '#EB4B4B',
+        'Extraordinary'     => '#EB4B4B',
+        'Master'            => '#EB4B4B',
+        'Classified'        => '#D32EE6',
+        'Exotic'            => '#D32EE6',
+        'Superior'          => '#D32EE6',
+        'Restricted'        => '#8847FF',
+        'Remarkable'        => '#8847FF',
+        'Exceptional'       => '#8847FF',
+        'Mil-Spec'          => '#4B69FF',
+        'High Grade'        => '#4B69FF',
+        'Distinguished'     => '#4B69FF',
+        'Industrial Grade'  => '#5E98D9',
+        'Consumer Grade'    => '#B0C3D9',
+        'Base grade'        => '#B0C3D9'
+    ];
+
     public function execute($formData)
     {
-        SteamMarketCsgoItem::create($formData + $this->unpackHashName($formData['hash_name']));
+        SteamMarketCsgoItem::create($this->prepareData($formData));
     }
 
-    private function unpackHashName($hashName)
+    private function prepareData($formData)
     {
-        $data = [
+        $data = $formData + [
             'is_stattrak'   => false,
             'exterior'      => null,
-            'name'          => ''
+            'name'          => $formData['hash_name'],
+            'type_color'    => $formData['name_color']
         ];
 
-        if(str_contains($hashName, $this->stattrakKeyword))
+        if(str_contains($data['name'], $this->stattrakKeyword))
         {
-            $hashName = str_replace($this->stattrakKeyword, '', $hashName);
+            $data['name'] = str_replace($this->stattrakKeyword, '', $data['name']);
             $data['is_stattrak'] = true;
         }
 
         foreach($this->exteriors as $short => $exterior)
         {
-            if(str_contains($hashName, $exterior))
+            if(str_contains($data['name'], $exterior))
             {
-                $hashName = str_replace($exterior, '', $hashName);
+                $data['name'] = str_replace($exterior, '', $data['name']);
                 $data['exterior'] = $short;
 
                 break;
             }
         }
 
-        $data['name'] = $hashName;
+        foreach($this->typeColors as $type => $color)
+        {
+            if(str_contains($data['type'], $type))
+            {
+                $data['type_color'] = $color;
+
+                break;
+            }
+        }
 
         return $data;
     }
