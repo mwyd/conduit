@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Http\Filters\Traits\Filterable;
+use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ShadowpaySaleGuardItem extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, HasSerializedDate, Filterable;
 
     protected $hidden = [
         'user_id',
@@ -32,10 +33,5 @@ class ShadowpaySaleGuardItem extends Model
     public function steamMarketCsgoItem() 
     {
         return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
-    }
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
     }
 }

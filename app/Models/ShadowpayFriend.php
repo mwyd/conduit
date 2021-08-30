@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Http\Filters\Traits\Filterable;
+use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ShadowpayFriend extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, HasSerializedDate, Filterable;
 
     protected $hidden = [
         'user_id',
@@ -24,9 +25,4 @@ class ShadowpayFriend extends Model
     protected $casts = [
         'shadowpay_user_id'     => 'integer'
     ];
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
 }

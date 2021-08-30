@@ -6,10 +6,11 @@ use App\Http\Filters\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SteamMarketCsgoItem;
+use App\Models\Traits\HasSerializedDate;
 
 class ShadowpaySoldItem extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, HasSerializedDate, Filterable;
 
     public $incrementing    = false;
     public $timestamps      = false;
@@ -39,11 +40,6 @@ class ShadowpaySoldItem extends Model
     public function steamMarketCsgoItem() 
     {
         return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
-    }
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
     }
 
     public function scopeRawItem($query)

@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Http\Filters\Traits\Filterable;
+use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ShadowpayBotPreset extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, HasSerializedDate, Filterable;
 
     protected $hidden = [
         'user_id',
@@ -23,9 +24,4 @@ class ShadowpayBotPreset extends Model
     protected $casts = [
         'preset' => 'array'
     ];
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
 }

@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Http\Filters\Traits\Filterable;
+use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SteamMarketCsgoItem extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, HasSerializedDate, Filterable;
 
     public $incrementing    = false;
     
@@ -36,9 +37,4 @@ class SteamMarketCsgoItem extends Model
         'price'         => 'float',
         'is_stattrak'   => 'boolean'
     ];
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
 }
