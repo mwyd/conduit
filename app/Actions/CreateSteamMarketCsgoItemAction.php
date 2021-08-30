@@ -42,7 +42,7 @@ class CreateSteamMarketCsgoItemAction
 
     public function execute($formData)
     {
-        SteamMarketCsgoItem::create($this->prepareData($formData));
+        return SteamMarketCsgoItem::create($this->prepareData($formData));
     }
 
     private function prepareData($formData)
