@@ -37,7 +37,7 @@ class CreateSteamMarketCsgoItemAction
         'Distinguished'     => '#4B69FF',
         'Industrial Grade'  => '#5E98D9',
         'Consumer Grade'    => '#B0C3D9',
-        'Base grade'        => '#B0C3D9'
+        'Base Grade'        => '#B0C3D9'
     ];
 
     public function execute($formData)
