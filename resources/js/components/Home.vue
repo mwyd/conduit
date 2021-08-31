@@ -105,7 +105,7 @@
 
 <script>
 import { appendUrlParam, dateDiff, setDocumentTitle } from '../helpers'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import moment from 'moment'
 import AppInput from './ui/AppInput'
 import AppLoader from './ui/AppLoader'
@@ -137,9 +137,6 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-            fetchDelay: state => state.app.fetchDelay
-        }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         }),
@@ -266,8 +263,6 @@ export default {
             }
 
             this.contentLoaded = false
-
-            await new Promise(r => setTimeout(r, this.fetchDelay))
 
             try {
                 const response = await axios.get(this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS'), {params: params})

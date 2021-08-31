@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { setDocumentTitle } from '../helpers'
 import Chart from 'chart.js/auto'
 import moment from 'moment'
@@ -55,9 +55,6 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-            fetchDelay: state => state.app.fetchDelay
-        }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         })
@@ -68,8 +65,6 @@ export default {
     },
     methods: {
         async loadItem() {
-            await new Promise(r => setTimeout(r, this.fetchDelay))
-
             try {
                 const response = await axios.get(`${this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS')}/${this.hashName}`, {
                     params: {

@@ -1,7 +1,6 @@
 export default {
     namespaced: true,
     state: () => ({
-        fetchDelay: 1000,
         conduit: {
             apiUrl: '/api/v1',
             apiEndpoints: Object.freeze({
