@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { setDocumentTitle } from '../helpers'
+import { mapState, mapGetters } from 'vuex'
+import { setDocumentTitle, formatPrice } from '../helpers'
 import Chart from 'chart.js/auto'
 import moment from 'moment'
 import BaseItem from './BaseItem'
@@ -56,6 +56,9 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            currency: state => state.app.currency
+        }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         })
@@ -134,8 +137,8 @@ export default {
                 if(success) {
                     for(let row of data) {
                         labels.push(row.date)
-                        shadowpayPrices.push(row.avg_sell_price)
-                        steamPrices.push(row.avg_steam_price)
+                        shadowpayPrices.push(formatPrice(row.avg_sell_price * this.currency.ratio))
+                        steamPrices.push(formatPrice(row.avg_steam_price * this.currency.ratio))
                         shadowpaySold.push(row.sold)
                     }
 
@@ -176,7 +179,7 @@ export default {
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: false
                         }
                     },
                     plugins: {

@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div class="filters__filter">
-                    <label class="d-block">$ Price</label>
+                    <label class="d-block">{{ currency.symbol }} Price</label>
                     <div class="filters__input-pair d-grid">
                         <app-input
                             v-model.number="price_from"
@@ -76,7 +76,7 @@
                         <app-input
                             v-model.number="price_to"
                             :type="'number'"
-                            :validator="value => value >= price_from"
+                            :validator="value => value > price_from"
                         >
                         </app-input>
                     </div>
@@ -98,6 +98,21 @@
                         </app-input>
                     </div>
                 </div>
+                <div class="filters__filter">
+                    <label class="d-block">Currency</label>
+                    <select 
+                        class="filters__sort-select app-input__field app-input__field--idle padding-m w-100"
+                        v-model="currencyIso"
+                    >
+                        <option 
+                            v-for="currency in currencies"
+                            :key="`currency-${currency.iso}}`"
+                            :value="currency.iso"
+                        >
+                            {{ currency.iso + ' - ' + currency.symbol }} 
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="home__content d-flex flex-jc-c">
@@ -113,8 +128,8 @@
 </template>
 
 <script>
-import { appendUrlParam, dateDiff, setDocumentTitle } from '../helpers'
-import { mapGetters } from 'vuex'
+import { appendUrlParam, dateDiff, setDocumentTitle, formatPrice } from '../helpers'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import AppInput from './ui/AppInput'
 import AppLoader from './ui/AppLoader'
@@ -146,9 +161,21 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            currency: state => state.app.currency,
+            currencies: state => state.app.currencies
+        }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         }),
+        currencyIso: {
+            get() {
+                return this.currency.iso
+            },
+            set(value) {
+                this.updateCurrency(value)
+            }
+        },
         search: {
             get() {
                 return this.$route.query.search ?? ''
@@ -167,7 +194,7 @@ export default {
         },
         price_to: {
             get() {
-                return parseFloat(this.$route.query.price_to) || 10000
+                return parseFloat(this.$route.query.price_to) || (10000 * this.currency.ratio)
             },
             set(value) {
                 appendUrlParam({price_to: value})
@@ -238,6 +265,9 @@ export default {
         this.removeScrollEvent()
     },
     methods: {
+        ...mapActions({
+            updateCurrency: 'app/updateCurrency'
+        }),
         dateDiff,
         scrollEvent() {
             if(Math.ceil(window.innerHeight + window.scrollY) + 2 >= document.body.scrollHeight && this.contentLoaded) this.fetchItems(true)
@@ -258,6 +288,14 @@ export default {
             let callback = items => {
                 window.scrollTo(0, 0)
                 this.items = items
+            }
+
+            if(params.price_from) {
+                params.price_from = formatPrice(params.price_from / this.currency.ratio)
+            }
+
+            if(params.price_to) {
+                params.price_to = formatPrice(params.price_to / this.currency.ratio)
             }
 
             if(append) {
@@ -322,6 +360,8 @@ export default {
     grid-template-columns: 2fr 2fr;
     grid-gap: 10px;
     background-color: var(--secondary-bg-color);
+    max-height: 70vh;
+    overflow: auto;
 }
 
 .top-bar__filters-button {

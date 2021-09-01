@@ -47,11 +47,11 @@
             </tr>
             <tr>
                 <td class="stats__name">Avg sell price</td>
-                <td class="stats__value">{{ realSellPrice ? realSellPrice.toFixed(2) + ' $' : '-' }}</td>
+                <td class="stats__value">{{ realSellPrice ? exchangePrice(realSellPrice) : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Avg suggested price</td>
-                <td class="stats__value">{{ item.avg_suggested_price ? item.avg_suggested_price.toFixed(2) + ' $' : '-' }}</td>
+                <td class="stats__value">{{ item.avg_suggested_price ? exchangePrice(item.avg_suggested_price) : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Last sold at</td>
@@ -74,11 +74,11 @@
             </tr>
             <tr>
                 <td class="stats__name">Current price</td>
-                <td class="stats__value">{{ item.steam_market_csgo_item?.price ? item.steam_market_csgo_item.price.toFixed(2) + ' $' : '-' }}</td>
+                <td class="stats__value">{{ item.steam_market_csgo_item?.price ? exchangePrice(item.steam_market_csgo_item.price) : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Avg price</td>
-                <td class="stats__value">{{ item.avg_steam_price ? item.avg_steam_price.toFixed(2) + ' $' : '-' }}</td>
+                <td class="stats__value">{{ item.avg_steam_price ? exchangePrice(item.avg_steam_price) : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Profitability ratio</td>
@@ -112,6 +112,7 @@ export default {
     },
     computed: {
         ...mapState({
+            currency: state => state.app.currency,
             marketItemImgUrl: state => state.app.steam.marketItemImgUrl,
             csgoMarketItemUrl: state => state.app.steam.csgoMarketItemUrl,
             shadowpayWebsiteUrl: state => state.app.shadowpay.websiteUrl
@@ -159,6 +160,9 @@ export default {
             if(this.item.avg_suggested_price) {
                 this.realSellPrice = this.item.avg_suggested_price * (100 - this.item.avg_discount) / 100
             }
+        },
+        exchangePrice(price) {
+            return `${(price * this.currency.ratio).toFixed(2)} ${this.currency.symbol}`
         }
     }
 }

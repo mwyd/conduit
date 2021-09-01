@@ -5,8 +5,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-    name: 'App'
+    name: 'App',
+    methods: {
+        ...mapActions({
+            setupApp: 'app/setup'
+        })
+    },
+    created() {
+        this.setupApp()
+    }
 }
 </script>
 

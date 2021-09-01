@@ -13,4 +13,15 @@ const setDocumentTitle = (title) => {
     document.title = title
 }
 
-export { appendUrlParam, dateDiff, setDocumentTitle }
+const formatPrice = (price, decimals = 2) => {
+    const modifier = Math.pow(10, decimals)
+
+    return Math.round(price * modifier) / modifier
+}
+
+export { 
+    appendUrlParam, 
+    dateDiff, 
+    setDocumentTitle,
+    formatPrice 
+}
