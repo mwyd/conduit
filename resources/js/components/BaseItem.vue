@@ -1,15 +1,36 @@
 <template>
     <div class="content__item padding-m rounded-s">
-        <div class="item__ext">{{ isStattrak ? 'ST | ' + shortExterior : shortExterior }}</div>
-        <div class="item__img-wrapper">
-            <img class="item__img h-100" :src="item?.steam_market_csgo_item?.icon ? `${marketItemImgUrl}/${item.steam_market_csgo_item.icon}/360fx360f` : dota2ImgPlaceholder">
+        <div class="item__ext d-flex">
+            <div v-html="itemExterior"></div>
+            <div 
+                class="ext__color rounded-s"
+                :style="{ 'backgroundColor': item.steam_market_csgo_item?.type_color }"
+            >
+            </div>
         </div>
-        <router-link class="link" :to="{ name: 'Item', params: { 'hashName': item.hash_name } }">
-            <div class="item__type">{{ itemType }}</div>
-            <div class="item__name">{{ itemName }}</div>
+        <div class="item__img-wrapper">
+            <img 
+                class="item__img h-100" 
+                :src="itemImage"
+            >
+        </div>
+        <router-link 
+            class="link" 
+            :to="{ name: 'Item', params: { 'hashName': item.hash_name } }"
+        >
+            <div class="item__type overflow-text">{{ itemType }}</div>
+            <div class="item__name overflow-text">{{ itemName }}</div>
         </router-link>
         <table class="item__stats w-100">
-            <caption class="stats__title"><a :href="`${shadowpayWebsiteUrl}?search=${item.hash_name}`" target="_blank" class="link">Shadowpay</a></caption>
+            <caption class="stats__title">
+                <a 
+                    :href="shadowpayItemUrl" 
+                    target="_blank" 
+                    class="link"
+                >
+                    Shadowpay
+                </a>
+            </caption>
             <tr>
                 <td class="stats__name">Sold</td>
                 <td class="stats__value">{{ item.sold }}</td>
@@ -32,14 +53,22 @@
             </tr>
         </table>
         <table class="item__stats w-100">
-            <caption class="stats__title"><a :href="`${csgoMarketItemUrl}/${item.hash_name}`" target="_blank" class="link">Steam</a></caption>
+            <caption class="stats__title">
+                <a 
+                    :href="steamItemUrl" 
+                    target="_blank" 
+                    class="link"
+                >
+                    Steam
+                </a>
+            </caption>
             <tr>
                 <td class="stats__name">Volume</td>
-                <td class="stats__value">{{ item?.steam_market_csgo_item?.volume ?? '-' }}</td>
+                <td class="stats__value">{{ item.steam_market_csgo_item?.volume ?? '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Current price</td>
-                <td class="stats__value">{{ item?.steam_market_csgo_item?.price ? item.steam_market_csgo_item.price.toFixed(2) + ' $' : '-' }}</td>
+                <td class="stats__value">{{ item.steam_market_csgo_item?.price ? item.steam_market_csgo_item.price.toFixed(2) + ' $' : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Avg price</td>
@@ -47,11 +76,11 @@
             </tr>
             <tr>
                 <td class="stats__name">Profitability ratio</td>
-                <td class="stats__value">{{ realSellPrice && item?.steam_market_csgo_item?.price ? (realSellPrice / item.steam_market_csgo_item.price).toFixed(2) : '-' }}</td>
+                <td class="stats__value">{{ realSellPrice && item.steam_market_csgo_item?.price ? (realSellPrice / item.steam_market_csgo_item.price).toFixed(2) : '-' }}</td>
             </tr>
             <tr>
                 <td class="stats__name">Updated at</td>
-                <td class="stats__value">{{ item?.steam_market_csgo_item?.updated_at ? item.steam_market_csgo_item.updated_at : '-' }}</td>
+                <td class="stats__value">{{ item.steam_market_csgo_item?.updated_at ? item.steam_market_csgo_item.updated_at : '-' }}</td>
             </tr>
         </table>
     </div>
@@ -70,18 +99,6 @@ export default {
     },
     data() {
         return {
-            mutableHashName: this.item.hash_name,
-            exteriors: Object.freeze({
-                FN: '(Factory New)',
-                MW: '(Minimal Wear)',
-                FT: '(Field-Tested)',
-                BS: '(Battle-Scarred)',
-                WW: '(Well-Worn)',
-                FOIL: '(Foil)',
-                HOLO: '(Holo)'
-            }),
-            shortExterior: '',
-            isStattrak: false,
             itemType: '',
             itemName: '',
             realSellPrice: null
@@ -96,38 +113,49 @@ export default {
         }),
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
-        })
+        }),
+        itemExterior() {
+            let exterior = ''
+
+            if(this.item.steam_market_csgo_item?.is_stattrak) {
+                exterior += `<span style="color: ${this.item.steam_market_csgo_item.name_color}">ST</span>`
+            }
+
+            if(this.item.steam_market_csgo_item?.exterior) {
+                exterior += ` ${this.item.steam_market_csgo_item.exterior.toUpperCase()}`
+            }
+
+            return exterior
+        },
+        itemImage() {
+            return this.item.steam_market_csgo_item?.icon 
+                ? `${this.marketItemImgUrl}/${this.item.steam_market_csgo_item.icon}/360fx360f` 
+                : this.dota2ImgPlaceholder
+        },
+        shadowpayItemUrl() {
+            return `${this.shadowpayWebsiteUrl}?search=${this.item.hash_name}`
+        },
+        steamItemUrl() {
+            return `${this.csgoMarketItemUrl}/${this.item.hash_name}`
+        }
     },
     created() {
-        this.unpackHashName()
+        this.splitName()
         this.getRealSellPrice()
     },
     methods: {
-        reduceHashName(value) {
-            if(this.mutableHashName.search(value) > -1) {
-                this.mutableHashName = this.mutableHashName.replace(value, '')
-                return true
-            }
+        splitName() {
+            const [type, name] = this.item.steam_market_csgo_item?.name 
+                ? this.item.steam_market_csgo_item.name.split('|')
+                : this.item.hash_name.split('|')
 
-            return false
-        },
-        unpackHashName() {
-            if(this.reduceHashName('StatTrak™ ')) this.isStattrak = true
-
-            for(let pair of Object.entries(this.exteriors)) {
-                if(this.reduceHashName(pair[1])) {
-                    this.shortExterior = pair[0]
-                    break
-                }
-            }
-
-            const itemTypeName = this.mutableHashName.split('|')
-
-            this.itemType = itemTypeName[0]
-            this.itemName = itemTypeName[1]
+            this.itemType = type
+            this.itemName = name
         },
         getRealSellPrice() {
-            if(this.item.avg_suggested_price) this.realSellPrice = this.item.avg_suggested_price * (100 - this.item.avg_discount) / 100
+            if(this.item.avg_suggested_price) {
+                this.realSellPrice = this.item.avg_suggested_price * (100 - this.item.avg_discount) / 100
+            }
         }
     }
 }
@@ -146,6 +174,13 @@ export default {
     line-height: 100%;
     font-size: 14px;
     font-weight: bold;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ext__color {
+    height: 10px;
+    width: 20px;
 }
 
 .item__img-wrapper {

@@ -6,17 +6,20 @@
                     v-model="search"
                     :type="'text'"
                     :placeholder="'Item name...'"
-                ></app-input>
+                >
+                </app-input>
                 <button 
                     class="clear-filters p-absolute cursor-pointer"
                     @click="$router.push({query: {}})"
-                ></button>
+                >
+                </button>
             </div>
             <div 
                 class="top-bar__filters-button padding-m cursor-pointer"
                 :class="{'top-bar__filters-button--active': showFilters}"
                 @click="showFilters = !showFilters"
-            ></div>
+            >
+            </div>
             <div 
                 v-if="showFilters"
                 class="top-bar__filters d-grid rounded-s padding-m"
@@ -51,12 +54,14 @@
                             v-model="date_start"
                             :type="'date'"
                             :validator="value => dateDiff(value, date_end, 'days') <= 0"
-                        ></app-input>
+                        >
+                        </app-input>
                         <app-input
                             v-model="date_end"
                             :type="'date'"
                             :validator="value => dateDiff(value, date_start, 'days') >= 0"
-                        ></app-input>
+                        >
+                        </app-input>
                     </div>
                 </div>
                 <div class="filters__filter">
@@ -66,12 +71,14 @@
                             v-model.number="price_from"
                             :type="'number'"
                             :validator="value => value >= 0 && value <= price_to"
-                        ></app-input>
+                        >
+                        </app-input>
                         <app-input
                             v-model.number="price_to"
                             :type="'number'"
                             :validator="value => value >= price_from"
-                        ></app-input>
+                        >
+                        </app-input>
                     </div>
                 </div>
                 <div class="filters__filter">
@@ -81,12 +88,14 @@
                             v-model.number="min_sold"
                             :type="'number'"
                             :validator="value => value >= 0 && value <= max_sold"
-                        ></app-input>
+                        >
+                        </app-input>
                         <app-input
                             v-model.number="max_sold"
                             :type="'number'"
                             :validator="value => value >= min_sold"
-                        ></app-input>
+                        >
+                        </app-input>
                     </div>
                 </div>
             </div>
@@ -121,12 +130,12 @@ export default {
     data() {
         return {
             sorts: [
-                {name: 'Item name', value: 'hash_name'},
-                {name: 'Sold', value: 'sold'},
-                {name: 'Avg discount', value: 'avg_discount'},
-                {name: 'Avg shadowpay price', value: 'avg_suggested_price'},
-                {name: 'Avg steam price', value: 'avg_steam_price'},
-                {name: 'Sold at', value: 'last_sold'}
+                { name: 'Item name', value: 'hash_name' },
+                { name: 'Sold', value: 'sold' },
+                { name: 'Avg discount', value: 'avg_discount' },
+                { name: 'Avg shadowpay price', value: 'avg_suggested_price' },
+                { name: 'Avg steam price', value: 'avg_steam_price' },
+                { name: 'Sold at', value: 'last_sold' }
             ],
             contentLoaded: false,
             showFilters: false,
@@ -244,7 +253,8 @@ export default {
             else this.order_dir = 'asc'
         },
         async fetchItems(append = false) {
-            let params = this.$route.query
+            let params = { ...this.$route.query }
+
             let callback = items => {
                 window.scrollTo(0, 0)
                 this.items = items
@@ -254,7 +264,8 @@ export default {
                 if(this.gotAll) return
 
                 this.offset += this.limit
-                params = {...params, offset: this.offset}
+                params.offset = this.offset
+
                 callback = items => this.items.push(...items)
             }
             else {
@@ -266,7 +277,7 @@ export default {
 
             try {
                 const response = await axios.get(this.conduitApiUrl('SHADOWPAY_SOLD_ITEMS'), {params: params})
-                const {success, data} = response.data
+                const { success, data } = response.data
 
                 if(success) {
                     callback(data)

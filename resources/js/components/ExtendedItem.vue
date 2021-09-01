@@ -8,7 +8,8 @@
                 class="item__details padding-clear"
                 :style="{ padding: 0 }"
                 :item="item"
-            ></base-item>
+            >
+            </base-item>
             <div class="item__charts d-flex flex-ai-c w-100">
                 <div class="chart-wrapper w-100 h-100">
                     <canvas ref="priceChart"></canvas>
@@ -72,7 +73,7 @@ export default {
                     }
                 })
 
-                const {success, data} = response.data
+                const { success, data } = response.data
 
                 if(success) {
                     setDocumentTitle(`Conduit - ${this.hashName}`)
@@ -123,7 +124,7 @@ export default {
                     }
                 })
 
-                const {success, data} = response.data
+                const { success, data } = response.data
 
                 let labels = []
                 let shadowpayPrices = []
