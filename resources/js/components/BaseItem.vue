@@ -10,8 +10,14 @@
         </div>
         <div class="item__img-wrapper">
             <img 
-                class="item__img h-100" 
+                class="item__img h-100"
+                v-if="item.steam_market_csgo_item" 
                 :src="itemImage"
+            >
+            <img
+                class="item__img h-100"
+                src="../../img/placeholder-image.png"
+                v-else
             >
         </div>
         <router-link 
@@ -108,7 +114,6 @@ export default {
         ...mapState({
             marketItemImgUrl: state => state.app.steam.marketItemImgUrl,
             csgoMarketItemUrl: state => state.app.steam.csgoMarketItemUrl,
-            dota2ImgPlaceholder: state => state.app.steam.dota2ImgPlaceholder,
             shadowpayWebsiteUrl: state => state.app.shadowpay.websiteUrl
         }),
         ...mapGetters({
@@ -128,9 +133,7 @@ export default {
             return exterior
         },
         itemImage() {
-            return this.item.steam_market_csgo_item?.icon 
-                ? `${this.marketItemImgUrl}/${this.item.steam_market_csgo_item.icon}/360fx360f` 
-                : this.dota2ImgPlaceholder
+            return `${this.marketItemImgUrl}/${this.item.steam_market_csgo_item.icon}/360fx360f`
         },
         shadowpayItemUrl() {
             return `${this.shadowpayWebsiteUrl}?search=${this.item.hash_name}`
