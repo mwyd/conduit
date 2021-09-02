@@ -106,11 +106,11 @@
                             class="filters__select app-input__field app-input__field--idle padding-m"
                         >
                             <option 
-                                v-for="(value, name) in exteriorsFilters"
-                                :key="`exterior-${name}`"
-                                :value="name"
+                                v-for="(exterior, index) in exteriorsFilters"
+                                :key="`exterior-${exterior.value}-${index}`"
+                                :value="exterior.value"
                             >
-                                {{ value }} 
+                                {{ exterior.name }} 
                             </option>
                         </select>
                         <select 
@@ -118,11 +118,11 @@
                             class="filters__select app-input__field app-input__field--idle padding-m"
                         >
                             <option 
-                                v-for="(value, name) in stattrakFilters"
-                                :key="`stattrak-${name}`"
-                                :value="name"
+                                v-for="(stattrak, index) in stattrakFilters"
+                                :key="`stattrak-${stattrak.value}-${index}`"
+                                :value="stattrak.value"
                             >
-                                {{ value }} 
+                                {{ stattrak.name }} 
                             </option>
                         </select>
                     </div>
@@ -157,12 +157,12 @@
 </template>
 
 <script>
-import { appendUrlParam, dateDiff, setDocumentTitle, formatPrice } from '../helpers'
+import { dateDiff, setDocumentTitle, formatPrice } from '../helpers'
 import { mapState, mapGetters, mapActions } from 'vuex'
-import moment from 'moment'
 import AppInput from './ui/AppInput'
 import AppLoader from './ui/AppLoader'
 import BaseItem from './BaseItem'
+import itemFiltersMixin from '../mixins/itemFiltersMixin'
 
 export default {
     name: 'Home',
@@ -171,29 +171,9 @@ export default {
         AppLoader,
         BaseItem
     },
+    mixins: [itemFiltersMixin],
     data() {
         return {
-            sorts: [
-                { name: 'Item name', value: 'hash_name' },
-                { name: 'Sold', value: 'sold' },
-                { name: 'Avg discount', value: 'avg_discount' },
-                { name: 'Avg shadowpay price', value: 'avg_suggested_price' },
-                { name: 'Avg steam price', value: 'avg_steam_price' },
-                { name: 'Sold at', value: 'last_sold' }
-            ],
-            exteriorsFilters: {
-                ALL: '-- all --',
-                FN: 'Factory New',
-                MW: 'Minimal Wear',
-                FT: 'Field-Tested',
-                WW: 'Well-Worn',
-                BS: 'Battle-Scarred'
-            },
-            stattrakFilters: {
-                'ALL': '-- all --',
-                '1': 'With StatTrak™',
-                '0': 'Without StatTrak™'
-            },
             contentLoaded: false,
             showFilters: false,
             items: [],
@@ -210,94 +190,6 @@ export default {
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         }),
-        search: {
-            get() {
-                return this.$route.query.search ?? ''
-            },
-            set(value) {
-                appendUrlParam({search: value})
-            }
-        },
-        price_from: {
-            get() {
-                return parseFloat(this.$route.query.price_from) || 0
-            },
-            set(value) {
-                appendUrlParam({price_from: value})
-            }
-        },
-        price_to: {
-            get() {
-                return parseFloat(this.$route.query.price_to) || (10000 * this.currency.ratio)
-            },
-            set(value) {
-                appendUrlParam({price_to: value})
-            }
-        },
-        min_sold: {
-            get() {
-                return parseInt(this.$route.query.min_sold) || 0
-            },
-            set(value) {
-                appendUrlParam({min_sold: value})
-            }
-        },
-        max_sold: {
-            get() {
-                return parseInt(this.$route.query.max_sold) || 10000
-            },
-            set(value) {
-                appendUrlParam({max_sold: value})
-            }
-        },
-        date_start: {
-            get() {
-                return this.$route.query.date_start ?? moment().subtract(7, 'days').format('YYYY-MM-DD')
-            },
-            set(value) {
-                appendUrlParam({date_start: value})
-            }
-        },
-        date_end: {
-            get() {
-                return this.$route.query.date_end ?? moment().format('YYYY-MM-DD')
-            },
-            set(value) {
-                appendUrlParam({date_end: value})
-            }
-        },
-        order_by: {
-            get() {
-                return this.$route.query.order_by ?? 'sold'
-            },
-            set(value) {
-                appendUrlParam({order_by: value})
-            }
-        },
-        order_dir: {
-            get() {
-                return this.$route.query.order_dir ?? 'desc'
-            },
-            set(value) {
-                appendUrlParam({order_dir: value})
-            }
-        },
-        exteriors: {
-            get() {
-                return this.$route.query.exteriors ?? 'ALL'
-            },
-            set(value) {
-                appendUrlParam({exteriors: value == 'ALL' ? undefined : value})
-            }
-        },
-        is_stattrak: {
-            get() {
-                return this.$route.query.is_stattrak ?? 'ALL'
-            },
-            set(value) {
-                appendUrlParam({is_stattrak: value == 'ALL' ? undefined : value})
-            }
-        },
         currencyModel: {
             get() {
                 return this.currency.iso
@@ -323,10 +215,10 @@ export default {
         this.removeScrollEvent()
     },
     methods: {
+        dateDiff,
         ...mapActions({
             updateCurrency: 'app/updateCurrency'
         }),
-        dateDiff,
         scrollEvent() {
             if(Math.ceil(window.innerHeight + window.scrollY) + 2 >= document.body.scrollHeight && this.contentLoaded) this.fetchItems(true)
         },
@@ -335,10 +227,6 @@ export default {
         },
         removeScrollEvent() {
             window.removeEventListener('scroll', this.scrollEvent)
-        },
-        updateSortDir() {
-            if(this.order_dir == 'asc') this.order_dir = 'desc'
-            else this.order_dir = 'asc'
         },
         async fetchItems(append = false) {
             let params = { ...this.$route.query }

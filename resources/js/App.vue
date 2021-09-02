@@ -6,9 +6,11 @@
 
 <script>
 import { mapActions } from 'vuex'
+import chartMixin from './mixins/chartMixin'
 
 export default {
     name: 'App',
+    mixins: [chartMixin],
     methods: {
         ...mapActions({
             setupApp: 'app/setup'
