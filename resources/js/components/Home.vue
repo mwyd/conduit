@@ -29,7 +29,7 @@
                     <div class="filters__input-pair filters__sort-pair d-grid">
                         <select 
                             v-model="order_by"
-                            class="filters__sort-select app-input__field app-input__field--idle padding-m"
+                            class="filters__select app-input__field app-input__field--idle padding-m"
                         >
                             <option 
                                 v-for="(sort, index) in sorts"
@@ -99,10 +99,39 @@
                     </div>
                 </div>
                 <div class="filters__filter">
+                    <label class="d-block">Exterior</label>
+                    <div class="filters__input-pair d-grid">
+                        <select 
+                            v-model="exteriors"
+                            class="filters__select app-input__field app-input__field--idle padding-m"
+                        >
+                            <option 
+                                v-for="(value, name) in exteriorsFilters"
+                                :key="`exterior-${name}`"
+                                :value="name"
+                            >
+                                {{ value }} 
+                            </option>
+                        </select>
+                        <select 
+                            v-model="is_stattrak"
+                            class="filters__select app-input__field app-input__field--idle padding-m"
+                        >
+                            <option 
+                                v-for="(value, name) in stattrakFilters"
+                                :key="`stattrak-${name}`"
+                                :value="name"
+                            >
+                                {{ value }} 
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filters__filter">
                     <label class="d-block">Currency</label>
                     <select 
-                        class="filters__sort-select app-input__field app-input__field--idle padding-m w-100"
-                        v-model="currencyIso"
+                        class="filters__select app-input__field app-input__field--idle padding-m w-100"
+                        v-model="currencyModel"
                     >
                         <option 
                             v-for="currency in currencies"
@@ -152,6 +181,19 @@ export default {
                 { name: 'Avg steam price', value: 'avg_steam_price' },
                 { name: 'Sold at', value: 'last_sold' }
             ],
+            exteriorsFilters: {
+                ALL: '-- all --',
+                FN: 'Factory New',
+                MW: 'Minimal Wear',
+                FT: 'Field-Tested',
+                WW: 'Well-Worn',
+                BS: 'Battle-Scarred'
+            },
+            stattrakFilters: {
+                'ALL': '-- all --',
+                '1': 'With StatTrak™',
+                '0': 'Without StatTrak™'
+            },
             contentLoaded: false,
             showFilters: false,
             items: [],
@@ -168,14 +210,6 @@ export default {
         ...mapGetters({
             conduitApiUrl: 'app/conduitApiUrl'
         }),
-        currencyIso: {
-            get() {
-                return this.currency.iso
-            },
-            set(value) {
-                this.updateCurrency(value)
-            }
-        },
         search: {
             get() {
                 return this.$route.query.search ?? ''
@@ -246,6 +280,30 @@ export default {
             },
             set(value) {
                 appendUrlParam({order_dir: value})
+            }
+        },
+        exteriors: {
+            get() {
+                return this.$route.query.exteriors ?? 'ALL'
+            },
+            set(value) {
+                appendUrlParam({exteriors: value == 'ALL' ? undefined : value})
+            }
+        },
+        is_stattrak: {
+            get() {
+                return this.$route.query.is_stattrak ?? 'ALL'
+            },
+            set(value) {
+                appendUrlParam({is_stattrak: value == 'ALL' ? undefined : value})
+            }
+        },
+        currencyModel: {
+            get() {
+                return this.currency.iso
+            },
+            set(value) {
+                this.updateCurrency(value)
             }
         }
     },
@@ -397,7 +455,7 @@ export default {
     grid-template-columns: 1fr 40px;
 }
 
-.filters__sort-select {
+.filters__select {
     background-color: var(--alt-bg-color);
     color: var(--alt-text-color);
 }
