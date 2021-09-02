@@ -10,18 +10,18 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@vue/compiler-sfc": "^3.1.1",
+        "@vue/compiler-sfc": "^3.2.7",
         "axios": "^0.21",
-        "laravel-mix": "^6.0.23",
+        "laravel-mix": "^6.0.29",
         "lodash": "^4.17.19",
-        "postcss": "^8.3.5",
-        "vue-loader": "^16.2.0"
+        "postcss": "^8.3.6",
+        "vue-loader": "^16.5.0"
     },
     "dependencies": {
-        "chart.js": "^3.4.1",
+        "chart.js": "^3.5.1",
         "moment": "^2.29.1",
-        "vue": "^3.1.1",
-        "vue-router": "^4.0.9",
-        "vuex": "^4.0.1"
+        "vue": "^3.2.7",
+        "vue-router": "^4.0.11",
+        "vuex": "^4.0.2"
     }
 }
