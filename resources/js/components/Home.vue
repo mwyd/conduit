@@ -346,6 +346,7 @@ export default {
 .filters__select {
     background-color: var(--alt-bg-color);
     color: var(--alt-text-color);
+    width: 100%;
 }
 
 .filters__sort-dir {

@@ -91,7 +91,6 @@ export default {
     color: inherit;
     font-family: inherit;
     border-radius: 4px;
-    line-break: 20px;
     font-size: 14px;
     height: 40px;
 }
