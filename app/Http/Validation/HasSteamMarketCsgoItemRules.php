@@ -20,9 +20,9 @@ trait HasSteamMarketCsgoItemRules
             $params['exteriors'] = explode(',', $request->input('exteriors'));
         }
 
-        if($request->has('types'))
+        if($request->has('tags'))
         {
-            $params['types'] = explode(',', $request->input('types'));
+            $params['tags'] = explode(',', $request->input('tags'));
         }
 
         $request->merge($params);
@@ -32,8 +32,8 @@ trait HasSteamMarketCsgoItemRules
     {
         return [
             'is_stattrak'   => 'sometimes|boolean',
-            'exteriors'     => 'sometimes|array',
-            'types'         => 'sometimes|array'
+            'exteriors'     => 'sometimes|array|max:5',
+            'tags'          => 'sometimes|array|max:3'
         ];
     }
 }

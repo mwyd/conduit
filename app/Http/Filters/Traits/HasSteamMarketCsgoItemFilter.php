@@ -30,15 +30,17 @@ trait HasSteamMarketCsgoItemFilter
         }
     }
 
-    public function types($value)
+    public function tags($value)
     {
+        $tags = array_map(fn($tag) => ['type', 'like', "%$tag%"], $value);
+
         if($this->steamMarketCsgoItemRelation)
         {
-            $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->whereIn('type', $value));
+            $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->where($tags));
         }
         else
         {
-            $this->builder->whereIn('type', $value);
+            $this->builder->where($tags);
         }
     }
 }
