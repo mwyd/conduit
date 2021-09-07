@@ -29,6 +29,7 @@ class SteamMarketCsgoItem extends Model
         'name',
         'name_color',
         'exterior',
+        'phase',
         'type',
         'type_color'
     ];
