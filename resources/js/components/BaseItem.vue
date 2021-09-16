@@ -105,6 +105,7 @@ export default {
     },
     data() {
         return {
+            marketHashName: '',
             itemType: '',
             itemName: '',
             realSellPrice: null
@@ -134,27 +135,33 @@ export default {
             return exterior
         },
         itemImage() {
-            return `${this.marketItemImgUrl}/${this.item.steam_market_csgo_item.icon}/360fx360f`
+            return `${this.marketItemImgUrl}/${this.item.steam_market_csgo_item.icon_large ?? this.item.steam_market_csgo_item.icon}/360fx360f`
         },
         shadowpayItemUrl() {
-            return `${this.shadowpayWebsiteUrl}?search=${this.item.hash_name}`
+            return `${this.shadowpayWebsiteUrl}?search=${this.marketHashName}`
         },
         steamItemUrl() {
-            return `${this.csgoMarketItemUrl}/${this.item.hash_name}`
+            return `${this.csgoMarketItemUrl}/${this.marketHashName}`
         }
     },
     created() {
+        this.getMarketHashName()
         this.splitName()
         this.getRealSellPrice()
     },
     methods: {
         splitName() {
-            const [type, name] = this.item.steam_market_csgo_item?.name 
+            const splitName = this.item.steam_market_csgo_item?.name 
                 ? this.item.steam_market_csgo_item.name.split('|')
                 : this.item.hash_name.split('|')
 
-            this.itemType = type
-            this.itemName = name
+            this.itemType = splitName[0]
+            this.itemName = splitName.slice(1).join('|')
+        },
+        getMarketHashName() {
+            const phase = this.item.steam_market_csgo_item?.phase
+
+            this.marketHashName = phase ? this.item.hash_name.replace(' ' + phase, '') : this.item.hash_name
         },
         getRealSellPrice() {
             if(this.item.avg_suggested_price) {
