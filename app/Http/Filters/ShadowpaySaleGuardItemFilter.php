@@ -20,7 +20,7 @@ class ShadowpaySaleGuardItemFilter extends Filter
 
         $this->steamMarketCsgoItemRelation = true;
 
-        $this->filters += [
+        $this->defaultFilters = [
             'offset'    => null,
             'limit'     => null,
             'order_by'  => 'created_at',

@@ -18,7 +18,7 @@ class SteamMarketCsgoItemFilter extends Filter
 
         $this->searchColumn = 'hash_name';
 
-        $this->filters += [
+        $this->defaultFilters = [
             'offset'    => null,
             'limit'     => null,
             'order_by'  => 'volume',

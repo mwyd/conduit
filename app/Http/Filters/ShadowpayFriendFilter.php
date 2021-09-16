@@ -17,7 +17,7 @@ class ShadowpayFriendFilter extends Filter
 
         $this->searchColumn = 'name';
 
-        $this->filters += [
+        $this->defaultFilters = [
             'offset'    => null,
             'limit'     => null,
             'order_by'  => 'name',

@@ -17,7 +17,7 @@ class CsgoBlueGemItemFilter extends Filter
 
         $this->searchColumn = 'item_type';
 
-        $this->filters += [
+        $this->defaultFilters = [
             'offset'    => null,
             'limit'     => null,
             'order_by'  => 'paint_seed',

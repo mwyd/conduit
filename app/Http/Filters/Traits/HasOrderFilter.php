@@ -6,6 +6,6 @@ trait HasOrderFilter
 {
     public function orderBy($value)
     {
-        $this->builder->orderBy($value, $this->filters['order_dir'] ?? 'asc');
+        $this->builder->orderBy($value, $this->filters()['order_dir'] ?? 'asc');
     }
 }

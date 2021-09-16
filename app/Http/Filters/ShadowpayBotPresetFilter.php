@@ -14,7 +14,7 @@ class ShadowpayBotPresetFilter extends Filter
     {
         parent::__construct($request);
 
-        $this->filters += [
+        $this->defaultFilters = [
             'offset'    => null,
             'limit'     => null,
             'order_by'  => 'updated_at',

@@ -10,21 +10,20 @@ abstract class Filter
 {
     protected $request;
 
-    protected $filters;
+    protected $defaultFilters = [];
 
     protected $builder;
 
     public function __construct(Request $request)
     {   
         $this->request = $request;
-        $this->filters = $request->validated();
     }
 
     public function apply(Builder $builder)
     {
         $this->builder = $builder;
 
-        foreach($this->filters as $name => $value)
+        foreach($this->filters() as $name => $value)
         {
             $name = Str::camel($name);
 
@@ -39,5 +38,10 @@ abstract class Filter
     public function request()
     {
         return $this->request;
+    }
+
+    public function filters()
+    {
+        return $this->request->validated() + $this->defaultFilters;
     }
 }

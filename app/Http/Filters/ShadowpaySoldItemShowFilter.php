@@ -16,7 +16,7 @@ class ShadowpaySoldItemShowFilter extends Filter
 
         $this->dateColumn = 'sold_at';
 
-        $this->filters += [
+        $this->defaultFilters = [
             'date_start'    => Carbon::now()->subWeek()
         ];
     }

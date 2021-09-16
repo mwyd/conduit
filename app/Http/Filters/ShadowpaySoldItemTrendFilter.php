@@ -18,7 +18,7 @@ class ShadowpaySoldItemTrendFilter extends Filter
 
         $this->dateColumn = 'sold_at';
 
-        $this->filters += [
+        $this->defaultFilters = [
             'offset'        => null,
             'limit'         => null,
             'order_by'      => 'date',
