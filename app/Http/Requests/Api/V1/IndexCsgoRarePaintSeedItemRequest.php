@@ -6,9 +6,8 @@ use App\Http\Validation\HasOrderRules;
 use App\Http\Validation\HasPaginationRules;
 use App\Http\Validation\HasSearchRules;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class IndexCsgoBlueGemItemRequest extends FormRequest
+class IndexCsgoRarePaintSeedItemRequest extends FormRequest
 {
     use HasSearchRules, HasOrderRules, HasPaginationRules;
 
@@ -38,18 +37,13 @@ class IndexCsgoBlueGemItemRequest extends FormRequest
     {
         return [
             'paint_seed'    => 'sometimes|integer',
-            'gem_type'      => ['sometimes', Rule::in([
-                'blue', 
-                'gold', 
-                'tier 2', 
-                'tier 3'
-            ])]
+            'variant'       => 'sometimes|string',
         ]
         + $this->searchRules()
         + $this->orderRules([
-            'updated_at', 
-            'item_type', 
-            'paint_seed'
+            'name', 
+            'paint_seed',
+            'updated_at'
         ])
         + $this->paginationRules();
     }

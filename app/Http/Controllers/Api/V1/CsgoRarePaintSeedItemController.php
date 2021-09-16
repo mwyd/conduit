@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\CsgoBlueGemItemFilter;
-use App\Http\Requests\Api\V1\UpsertCsgoBlueGemItemRequest;
-use App\Models\CsgoBlueGemItem;
+use App\Http\Filters\CsgoRarePaintSeedItemFilter;
+use App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest;
+use App\Models\CsgoRarePaintSeedItem;
 
-class CsgoBlueGemItemController extends Controller
+class CsgoRarePaintSeedItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Filters\CsgoBlueGemItemFilter  $filter
+     * @param  \App\Http\Filters\CsgoRarePaintSeedItemFilter  $filter
      * @return \Illuminate\Http\Response
      */
-    public function index(CsgoBlueGemItemFilter $filter)
+    public function index(CsgoRarePaintSeedItemFilter $filter)
     {
-        $items = CsgoBlueGemItem::filter($filter)->get();
+        $items = CsgoRarePaintSeedItem::filter($filter)->get();
 
         return response()->apiSuccess($items, 200);
     }
@@ -25,14 +25,14 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertCsgoBlueGemItemRequest  $request
+     * @param  \App\Http\Requests\UpsertCsgoRarePaintSeedItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UpsertCsgoBlueGemItemRequest $request)
+    public function store(UpsertCsgoRarePaintSeedItemRequest $request)
     {
         $this->authorize('api-create');
 
-        $item = CsgoBlueGemItem::create($request->validated());
+        $item = CsgoRarePaintSeedItem::create($request->validated());
 
         return response()->apiSuccess($item, 201);
     }
@@ -45,7 +45,7 @@ class CsgoBlueGemItemController extends Controller
      */
     public function show($id)
     {
-        $item = CsgoBlueGemItem::findOrFail($id);
+        $item = CsgoRarePaintSeedItem::findOrFail($id);
 
         return response()->apiSuccess($item, 200);
     }
@@ -53,15 +53,15 @@ class CsgoBlueGemItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertCsgoBlueGemItemRequest  $request
+     * @param  \App\Http\Requests\UpsertCsgoRarePaintSeedItemRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpsertCsgoBlueGemItemRequest $request, $id)
+    public function update(UpsertCsgoRarePaintSeedItemRequest $request, $id)
     {
         $this->authorize('api-update');
 
-        $item = CsgoBlueGemItem::findOrFail($id);
+        $item = CsgoRarePaintSeedItem::findOrFail($id);
         $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
@@ -77,7 +77,7 @@ class CsgoBlueGemItemController extends Controller
     {
         $this->authorize('api-delete');
 
-        $item = CsgoBlueGemItem::findOrFail($id);
+        $item = CsgoRarePaintSeedItem::findOrFail($id);
         $item->delete();
 
         return response()->apiSuccess($item, 200);

@@ -7,7 +7,7 @@ use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CsgoBlueGemItem extends Model
+class CsgoRarePaintSeedItem extends Model
 {
     use HasFactory, HasSerializedDate, Filterable;
 
@@ -16,9 +16,9 @@ class CsgoBlueGemItem extends Model
     ];
 
     protected $fillable = [
-        'item_type',
+        'name',
         'paint_seed',
-        'gem_type'
+        'variant'
     ];
 
     protected $casts = [

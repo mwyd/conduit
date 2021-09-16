@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCsgoBlueGemItemsTable extends Migration
+class CreateCsgoRarePaintSeedItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCsgoBlueGemItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('csgo_blue_gem_items', function (Blueprint $table) {
+        Schema::create('csgo_rare_paint_seed_items', function (Blueprint $table) {
             $table->id();
-            $table->string('item_type');
+            $table->string('name');
             $table->mediumInteger('paint_seed');
-            $table->string('gem_type');
-            $table->unique(['item_type', 'paint_seed']);
+            $table->string('variant');
+            $table->unique(['name', 'paint_seed']);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCsgoBlueGemItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('csgo_blue_gem_items');
+        Schema::dropIfExists('csgo_rare_paint_seed_items');
     }
 }

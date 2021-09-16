@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\V1\ShadowpaySaleGuardItemController;
 use App\Http\Controllers\Api\V1\ShadowpayBotPresetController;
 use App\Http\Controllers\Api\V1\ShadowpayBotConfigController;
 use App\Http\Controllers\Api\V1\ShadowpayFriendController;
-use App\Http\Controllers\Api\V1\CsgoBlueGemItemController;
+use App\Http\Controllers\Api\V1\CsgoRarePaintSeedItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +36,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
         Route::apiResource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
         Route::apiResource('shadowpay-friends', ShadowpayFriendController::class);
-        Route::apiResource('csgo-blue-gem-items', CsgoBlueGemItemController::class);
+        Route::apiResource('csgo-rare-paint-seed-items', CsgoRarePaintSeedItemController::class);
 
         Route::post('/steam-market-csgo-items', [SteamMarketCsgoItemController::class, 'store']);
         Route::put('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'update']);

@@ -5,17 +5,17 @@ namespace App\Http\Filters;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
 use App\Http\Filters\Traits\HasSearchFilter;
-use App\Http\Requests\Api\V1\IndexCsgoBlueGemItemRequest;
+use App\Http\Requests\Api\V1\IndexCsgoRarePaintSeedItemRequest;
 
-class CsgoBlueGemItemFilter extends Filter
+class CsgoRarePaintSeedItemFilter extends Filter
 {
     use HasSearchFilter, HasOrderFilter, HasPaginationFilter;
 
-    public function __construct(IndexCsgoBlueGemItemRequest $request)
+    public function __construct(IndexCsgoRarePaintSeedItemRequest $request)
     {
         parent::__construct($request);
 
-        $this->searchColumn = 'item_type';
+        $this->searchColumn = 'name';
 
         $this->defaultFilters = [
             'offset'    => null,
@@ -30,8 +30,8 @@ class CsgoBlueGemItemFilter extends Filter
         $this->builder->where('paint_seed', $value);
     }
 
-    public function gemType($value)
+    public function variant($value)
     {
-        $this->builder->where('gem_type', $value);
+        $this->builder->where('variant', $value);
     }
 }
