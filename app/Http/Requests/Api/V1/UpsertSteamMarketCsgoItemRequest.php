@@ -38,7 +38,8 @@ class UpsertSteamMarketCsgoItemRequest extends FormRequest
             'icon_large'    => 'sometimes|nullable',
             'name_color'    => 'required|string',
             'type'          => 'required|string',
-            'phase'         => 'sometimes|nullable'
+            'phase'         => 'sometimes|nullable',
+            'collection'    => 'sometimes|nullable'
         ];
 
         if($this->method() == self::METHOD_PUT) 
