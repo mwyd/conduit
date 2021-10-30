@@ -2,60 +2,95 @@
 
 namespace Tests\Feature\Api\V1;
 
+use App\Models\ShadowpaySoldItem;
 use App\Models\SteamMarketCsgoItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class SteamMarketCsgoItemTest extends TestCase
+class ShadowpaySoldItemTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
 
     public function test_index_request_returns_valid_data()
     {
-        $items = SteamMarketCsgoItem::factory()
-            ->count(20)
-            ->create()
-            ->toArray();
+        ShadowpaySoldItem::factory()
+            ->count(10)
+            ->create();
 
-        $response = $this->json('GET', '/api/v1/steam-market-csgo-items');
+        ShadowpaySoldItem::factory()
+            ->count(10)
+            ->for(SteamMarketCsgoItem::factory())
+            ->create();
+
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items');
 
         $response
             ->assertStatus(200)
-            ->assertJson([
-                'success'   => true,
-                'data'      => usort($items, function ($a, $b) { return $a['volume'] - $b['volume']; })
+            ->assertJsonStructure([
+                'success',
+                'data' => [
+                    '*' => [
+                        'hash_name',
+                        'sold',
+                        'avg_discount',
+                        'avg_suggested_price',
+                        'avg_steam_price',
+                        'last_sold',
+                        'steam_market_csgo_item'
+                    ]
+                ]
             ]);
     }
 
     public function test_single_request_returns_valid_data()
     {
-        $item = SteamMarketCsgoItem::factory()->create();
+        $item = ShadowpaySoldItem::factory()->create();
 
-        $response = $this->json('GET', '/api/v1/steam-market-csgo-items/' . $item->hash_name);
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/' . $item->hash_name);
 
         $response
             ->assertStatus(200)
-            ->assertJson([
-                'success'   => true,
-                'data'      => $item->toArray()
-            ]);
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('data.hash_name', $item->hash_name);
     }
 
     public function test_single_request_returns_not_found()
     {
         $hashName = $this->faker()->words(3, true);
 
-        $response = $this->json('GET', '/api/v1/steam-market-csgo-items/' . $hashName);
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/' . $hashName);
 
         $response
             ->assertStatus(404)
             ->assertJson([
                 'success'       => false,
                 'error_message' => 'not_found'
+            ]);
+    }
+
+    public function test_single_trend_request_returns_valid_data()
+    {
+        $item = ShadowpaySoldItem::factory()->create();
+
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/' . $item->hash_name . '/trend');
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'data' => [
+                    '*' => [
+                        'date',
+                        'sold',
+                        'avg_sell_price',
+                        'avg_steam_price'
+                    ]
+                ]
             ]);
     }
 
@@ -69,7 +104,7 @@ class SteamMarketCsgoItemTest extends TestCase
             ['api:post']
         );
 
-        $response = $this->json('POST', '/api/v1/steam-market-csgo-items', $formData);
+        $response = $this->json('POST', '/api/v1/shadowpay-sold-items', $formData);
 
         $response
             ->assertStatus(201)
@@ -88,7 +123,7 @@ class SteamMarketCsgoItemTest extends TestCase
             User::factory()->create()
         );
 
-        $response = $this->json('POST', '/api/v1/steam-market-csgo-items', $formData);
+        $response = $this->json('POST', '/api/v1/shadowpay-sold-items', $formData);
 
         $response
             ->assertStatus(401)
@@ -103,14 +138,14 @@ class SteamMarketCsgoItemTest extends TestCase
      */
     public function test_authorized_user_can_update_item($formData)
     {
-        $item = SteamMarketCsgoItem::factory()->create();
+        $item = ShadowpaySoldItem::factory()->create();
 
         Sanctum::actingAs(
             User::factory()->create(),
             ['api:put']
         );
 
-        $response = $this->json('PUT', '/api/v1/steam-market-csgo-items/' . $item->hash_name, $formData);
+        $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/' . $item->transaction_id, $formData);
 
         $response
             ->assertStatus(200)
@@ -125,13 +160,13 @@ class SteamMarketCsgoItemTest extends TestCase
      */
     public function test_unauthorized_user_cannot_update_item($formData)
     {
-        $item = SteamMarketCsgoItem::factory()->create();
+        $item = ShadowpaySoldItem::factory()->create();
 
         Sanctum::actingAs(
             User::factory()->create()
         );
 
-        $response = $this->json('PUT', '/api/v1/steam-market-csgo-items/' . $item->hash_name, $formData);
+        $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/' . $item->transaction_id, $formData);
 
         $response
             ->assertStatus(401)
@@ -143,14 +178,14 @@ class SteamMarketCsgoItemTest extends TestCase
 
     public function test_authorized_user_can_delete_item()
     {
-        $item = SteamMarketCsgoItem::factory()->create();
+        $item = ShadowpaySoldItem::factory()->create();
 
         Sanctum::actingAs(
             User::factory()->create(),
             ['api:delete']
         );
 
-        $response = $this->json('DELETE', '/api/v1/steam-market-csgo-items/' . $item->hash_name);
+        $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/' . $item->transaction_id);
 
         $response
             ->assertStatus(200)
@@ -162,13 +197,13 @@ class SteamMarketCsgoItemTest extends TestCase
 
     public function test_unauthorized_user_cannot_delete_item()
     {
-        $item = SteamMarketCsgoItem::factory()->create();
+        $item = ShadowpaySoldItem::factory()->create();
 
         Sanctum::actingAs(
             User::factory()->create()
         );
 
-        $response = $this->json('DELETE', '/api/v1/steam-market-csgo-items/' . $item->hash_name);
+        $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/' . $item->transaction_id);
 
         $response
             ->assertStatus(401)
@@ -183,14 +218,12 @@ class SteamMarketCsgoItemTest extends TestCase
         return [
             'valid data' => [
                 [
-                    'hash_name'     => 'AK-47 | Asiimov (Field-Tested)',
-                    'volume'        => 100,
-                    'price'         => 77.77,
-                    'icon'          => '-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV092lnYmGmOHLPr7Vn35cppQiiOuQpoml3wW18xdkNTjxd9CQdwM_ZlrT-lW_kLzu0560vp-azXJ9-n51Q5-Fea0',
-                    'icon_large'    => '-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV092lnYmGmOHLPr7Vn35c18lwmO7Eu92milbl-BZsZGiiLNKdJFc8Mg7V_1S_xuzshZK97c_In3pruCJx4X_D30vgyZM--n4',
-                    'name_color'    => '#D2D2D2',
-                    'type'          => 'Covert Rifle',
-                    'collection'    => 'The Danger Zone Collection'
+                    'transaction_id'    => Str::random(),
+                    'hash_name'         => 'AK-47 | Asiimov (Field-Tested)',
+                    'suggested_price'   => 70.11,
+                    'steam_price'       => 100.22,
+                    'discount'          => 70,
+                    'sold_at'           => date('Y-m-d H:i:s')
                 ]
             ]
         ];
@@ -201,8 +234,9 @@ class SteamMarketCsgoItemTest extends TestCase
         return [
             'valid data' => [
                 [
-                    'volume'    => 21,
-                    'price'     => 25.71
+                    'suggested_price'   => 50.11,
+                    'steam_price'       => 70.22,
+                    'discount'          => 71
                 ]
             ]
         ];
