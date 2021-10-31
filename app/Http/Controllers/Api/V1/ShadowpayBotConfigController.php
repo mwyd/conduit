@@ -27,7 +27,7 @@ class ShadowpayBotConfigController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpayBotConfigRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotConfigRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertShadowpayBotConfigRequest $request)
@@ -55,7 +55,7 @@ class ShadowpayBotConfigController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpayBotConfigRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotConfigRequest  $request
      * @param  int  $configId
      * @return \Illuminate\Http\Response
      */
@@ -79,7 +79,7 @@ class ShadowpayBotConfigController extends Controller
     public function destroy($configId)
     {
         $config = ShadowpayBotConfig::findOrFail($configId);
-                    
+
         $this->authorize('delete', $config);
 
         $config->delete();

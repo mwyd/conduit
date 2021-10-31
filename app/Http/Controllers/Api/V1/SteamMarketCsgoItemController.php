@@ -26,13 +26,13 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertSteamMarketCsgoItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertSteamMarketCsgoItemRequest $request, CreateSteamMarketCsgoItemAction $action)
     {
         $this->authorize('api-create');
-        
+
         $item = $action->execute($request->validated());
 
         return response()->apiSuccess($item, 201);
@@ -54,7 +54,7 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertSteamMarketCsgoItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest  $request
      * @param  string  $hashName
      * @return \Illuminate\Http\Response
      */

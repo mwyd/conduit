@@ -12,7 +12,7 @@ class ShadowpayFriendController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Requests\IndexShadowpayFriendRequest  $request
+     * @param  \App\Http\Requests\Api\V1\IndexShadowpayFriendRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function index(ShadowpayFriendFilter $filter)
@@ -27,7 +27,7 @@ class ShadowpayFriendController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpayFriendRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertShadowpayFriendRequest $request)
@@ -55,7 +55,7 @@ class ShadowpayFriendController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpayFriendRequest $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest $request
      * @param  int  $shadowpayId
      * @return \Illuminate\Http\Response
      */
@@ -81,7 +81,7 @@ class ShadowpayFriendController extends Controller
         $friend = ShadowpayFriend::findOrFail($shadowpayId);
 
         $this->authorize('delete', $friend);
-                    
+
         $friend->delete();
 
         return response()->apiSuccess($friend, 200);

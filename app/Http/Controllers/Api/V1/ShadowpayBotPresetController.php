@@ -12,7 +12,7 @@ class ShadowpayBotPresetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Requests\IndexShadowpayBotPresetRequest  $request
+     * @param  \App\Http\Requests\Api\V1\IndexShadowpayBotPresetRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function index(ShadowpayBotPresetFilter $filter)
@@ -27,7 +27,7 @@ class ShadowpayBotPresetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpayBotPresetRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertShadowpayBotPresetRequest $request)
@@ -55,12 +55,12 @@ class ShadowpayBotPresetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpayBotPresetRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest  $request
      * @param  int  $presetId
      * @return \Illuminate\Http\Response
      */
     public function update(UpsertShadowpayBotPresetRequest $request, $presetId)
-    { 
+    {
         $preset = ShadowpayBotPreset::findOrFail($presetId);
 
         $this->authorize('update', $preset);
@@ -81,7 +81,7 @@ class ShadowpayBotPresetController extends Controller
         $preset = ShadowpayBotPreset::findOrFail($presetId);
 
         $this->authorize('delete', $preset);
-                    
+
         $preset->delete();
 
         return response()->apiSuccess($preset, 200);

@@ -31,7 +31,7 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpaySoldItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertShadowpaySoldItemRequest $request)
@@ -83,7 +83,7 @@ class ShadowpaySoldItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpaySoldItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest  $request
      * @param  int  $transactionId
      * @return \Illuminate\Http\Response
      */

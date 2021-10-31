@@ -28,7 +28,7 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpaySaleGuardItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertShadowpaySaleGuardItemRequest $request)
@@ -56,7 +56,7 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertShadowpaySaleGuardItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest  $request
      * @param  int  $itemId
      * @return \Illuminate\Http\Response
      */
@@ -82,7 +82,7 @@ class ShadowpaySaleGuardItemController extends Controller
         $item = ShadowpaySaleGuardItem::findOrFail($itemId);
 
         $this->authorize('delete', $item);
-                    
+
         $item->delete();
 
         return response()->apiSuccess($item, 200);

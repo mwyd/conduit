@@ -25,7 +25,7 @@ class CsgoRarePaintSeedItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertCsgoRarePaintSeedItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UpsertCsgoRarePaintSeedItemRequest $request)
@@ -53,7 +53,7 @@ class CsgoRarePaintSeedItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpsertCsgoRarePaintSeedItemRequest  $request
+     * @param  \App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
