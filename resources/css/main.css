@@ -94,7 +94,7 @@ body {
 }
 
 .alert {
-    position: absolute;
+    position: fixed;
     padding: 5px 10px;
     background: var(--alt-bg-color);
     color: white;
