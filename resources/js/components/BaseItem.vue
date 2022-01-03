@@ -1,7 +1,13 @@
 <template>
     <div class="content__item padding-m rounded-s">
         <div class="item__ext d-flex">
-            <div v-html="itemExterior"></div>
+            <div
+                class="cursor-pointer"
+                @click="() => copyToClipboard(item.hash_name)" 
+                title="Copy hash name"
+                v-html="itemExterior"
+            >
+            </div>
             <div 
                 class="ext__color rounded-s"
                 :style="{ 'backgroundColor': item.steam_market_csgo_item?.type_color }"
@@ -94,6 +100,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import { copyToClipboard } from '../helpers'
 
 export default {
     name: 'BaseItem',
@@ -150,6 +157,7 @@ export default {
         this.getRealSellPrice()
     },
     methods: {
+        copyToClipboard,
         splitName() {
             const splitName = this.item.steam_market_csgo_item?.name 
                 ? this.item.steam_market_csgo_item.name.split('|')

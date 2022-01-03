@@ -19,9 +19,29 @@ const formatPrice = (price, decimals = 2) => {
     return Math.round(price * modifier) / modifier
 }
 
+const copyToClipboard = async (data) => {
+    const alert = document.createElement('div')
+
+    alert.classList.add('alert', 'rounded-s')
+
+    try {
+        await navigator.clipboard.writeText(data)
+
+        alert.innerText = 'Copied'
+    }
+    catch(err) {
+        alert.innerText = 'Error: ' + err?.message
+    }
+
+    document.querySelector('#app').appendChild(alert)
+
+    setTimeout(() => alert.remove(), 1000)
+}
+
 export { 
     appendUrlParam, 
     dateDiff, 
     setDocumentTitle,
-    formatPrice 
+    formatPrice,
+    copyToClipboard
 }

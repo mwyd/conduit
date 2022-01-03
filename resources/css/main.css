@@ -92,3 +92,12 @@ body {
 .cursor-not-allowed {
     cursor: not-allowed;
 }
+
+.alert {
+    position: absolute;
+    padding: 5px 10px;
+    background: var(--alt-bg-color);
+    color: white;
+    top: 10px;
+    right: 10px;
+}
