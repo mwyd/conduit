@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\ShadowpayBotPresetController;
 use App\Http\Controllers\Api\V1\ShadowpayBotConfigController;
 use App\Http\Controllers\Api\V1\ShadowpayFriendController;
 use App\Http\Controllers\Api\V1\CsgoRarePaintSeedItemController;
+use App\Http\Controllers\Api\V1\BuffMarketCsgoItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,30 +22,38 @@ use App\Http\Controllers\Api\V1\CsgoRarePaintSeedItemController;
 |
 */
 
-Route::prefix('v1')->group(function () {
-    // public routes
-    Route::get('/steam-market-csgo-items', [SteamMarketCsgoItemController::class, 'index']);
-    Route::get('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'show']);
+Route::prefix('v1')->group(function() {
+    Route::controller(SteamMarketCsgoItemController::class)->prefix('steam-market-csgo-items')->group(function() {
+        Route::get('/', 'index');
+        Route::get('/{hashName}', 'show');
+        Route::post('/', 'store')->middleware('auth:sanctum');
+        Route::put('/{hashName}', 'update')->middleware('auth:sanctum');
+        Route::delete('/{hashName}', 'destroy')->middleware('auth:sanctum');
+    });
 
-    Route::get('/shadowpay-sold-items', [ShadowpaySoldItemController::class, 'index']);
-    Route::get('/shadowpay-sold-items/{hashName}', [ShadowpaySoldItemController::class, 'show']);
-    Route::get('/shadowpay-sold-items/{hashName}/trend', [ShadowpaySoldItemController::class, 'showTrend']);
+    Route::controller(ShadowpaySoldItemController::class)->prefix('shadowpay-sold-items')->group(function() {
+        Route::get('/', 'index');
+        Route::get('/{hashName}', 'show');
+        Route::get('/{hashName}/trend', 'showTrend');
+        Route::post('/', 'store')->middleware('auth:sanctum');
+        Route::put('/{transactionId}', 'update')->middleware('auth:sanctum');
+        Route::delete('/{transactionId}', 'destroy')->middleware('auth:sanctum');
+    });
 
-    // protected routes
-    Route::middleware(['auth:sanctum'])->group(function() {
+    Route::controller(BuffMarketCsgoItemController::class)->prefix('buff-market-csgo-items')->group(function() {
+        Route::get('/', 'index');
+        Route::get('/{hashName}', 'show');
+        Route::post('/', 'store')->middleware('auth:sanctum');
+        Route::put('/{hashName}', 'update')->middleware('auth:sanctum');
+        Route::delete('/{hashName}', 'destroy')->middleware('auth:sanctum');
+    });
+    
+    Route::middleware('auth:sanctum')->group(function() {
         Route::apiResource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class);
         Route::apiResource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
         Route::apiResource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
         Route::apiResource('shadowpay-friends', ShadowpayFriendController::class);
         Route::apiResource('csgo-rare-paint-seed-items', CsgoRarePaintSeedItemController::class);
-
-        Route::post('/steam-market-csgo-items', [SteamMarketCsgoItemController::class, 'store']);
-        Route::put('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'update']);
-        Route::delete('/steam-market-csgo-items/{hashName}', [SteamMarketCsgoItemController::class, 'destroy']);
-
-        Route::post('/shadowpay-sold-items', [ShadowpaySoldItemController::class, 'store']);
-        Route::put('/shadowpay-sold-items/{transactionId}', [ShadowpaySoldItemController::class, 'update']);
-        Route::delete('/shadowpay-sold-items/{transactionId}', [ShadowpaySoldItemController::class, 'destroy']);
 
         Route::get('/user', function(Request $request) {
             return response()->apiSuccess($request->user(), 200);
