@@ -17,7 +17,7 @@ class CreateBuffMarketCsgoItemsTable extends Migration
             $table->string('hash_name')->primary();
             $table->mediumInteger('volume', false, true);
             $table->decimal('price', 8, 2, true);
-            $table->integer('good_id', false, true);
+            $table->integer('good_id', false, true)->unique();
             $table->timestamps();
         });
     }
