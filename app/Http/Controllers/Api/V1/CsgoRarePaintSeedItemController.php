@@ -6,16 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\CsgoRarePaintSeedItemFilter;
 use App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest;
 use App\Models\CsgoRarePaintSeedItem;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class CsgoRarePaintSeedItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Filters\CsgoRarePaintSeedItemFilter  $filter
-     * @return \Illuminate\Http\Response
-     */
-    public function index(CsgoRarePaintSeedItemFilter $filter)
+    public function index(CsgoRarePaintSeedItemFilter $filter): JsonResponse
     {
         $items = CsgoRarePaintSeedItem::filter($filter)->get();
 
@@ -23,12 +19,9 @@ class CsgoRarePaintSeedItemController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest  $request
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function store(UpsertCsgoRarePaintSeedItemRequest $request)
+    public function store(UpsertCsgoRarePaintSeedItemRequest $request): JsonResponse
     {
         $this->authorize('api-create');
 
@@ -37,13 +30,7 @@ class CsgoRarePaintSeedItemController extends Controller
         return response()->apiSuccess($item, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
         $item = CsgoRarePaintSeedItem::findOrFail($id);
 
@@ -51,13 +38,9 @@ class CsgoRarePaintSeedItemController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertCsgoRarePaintSeedItemRequest $request, $id)
+    public function update(UpsertCsgoRarePaintSeedItemRequest $request, int $id): JsonResponse
     {
         $this->authorize('api-update');
 
@@ -68,12 +51,9 @@ class CsgoRarePaintSeedItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $this->authorize('api-delete');
 

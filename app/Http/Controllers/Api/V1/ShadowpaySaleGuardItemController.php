@@ -6,47 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\ShadowpaySaleGuardItemFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest;
 use App\Models\ShadowpaySaleGuardItem;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class ShadowpaySaleGuardItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Filters\ShadowpaySaleGuardItemFilter  $filter
-     * @return \Illuminate\Http\Response
-     */
-    public function index(ShadowpaySaleGuardItemFilter $filter)
+    public function index(ShadowpaySaleGuardItemFilter $filter): JsonResponse
     {
         $items = ShadowpaySaleGuardItem::where('user_id', $filter->request()->user()->id)
-                    ->with('steamMarketCsgoItem')
-                    ->filter($filter)
-                    ->get();
+            ->with('steamMarketCsgoItem')
+            ->filter($filter)
+            ->get();
 
         return response()->apiSuccess($items, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UpsertShadowpaySaleGuardItemRequest $request)
+    public function store(UpsertShadowpaySaleGuardItemRequest $request): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::create(['user_id' => $request->user()->id] + $request->validated());
+        $item = ShadowpaySaleGuardItem::create(['user_id' => $request->user()->id, ...$request->validated()]);
 
         return response()->apiSuccess($item, 201);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $itemId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function show($itemId)
+    public function show(int $id): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::with('steamMarketCsgoItem')->findOrFail($itemId);
+        $item = ShadowpaySaleGuardItem::with('steamMarketCsgoItem')->findOrFail($id);
 
         $this->authorize('view', $item);
 
@@ -54,15 +41,11 @@ class ShadowpaySaleGuardItemController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest  $request
-     * @param  int  $itemId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertShadowpaySaleGuardItemRequest $request, $itemId)
+    public function update(UpsertShadowpaySaleGuardItemRequest $request, int $id): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::findOrFail($itemId);
+        $item = ShadowpaySaleGuardItem::findOrFail($id);
 
         $this->authorize('update', $item);
 
@@ -72,14 +55,11 @@ class ShadowpaySaleGuardItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $itemId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($itemId)
+    public function destroy(int $id): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::findOrFail($itemId);
+        $item = ShadowpaySaleGuardItem::findOrFail($id);
 
         $this->authorize('delete', $item);
 

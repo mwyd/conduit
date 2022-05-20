@@ -48,17 +48,16 @@ class Handler extends ExceptionHandler
     {
         $view = parent::render($request, $e);
 
-        if($request->expectsJson())
-        {
-            $message = match($e::class) {
-                ValidationException::class      => ['wrong_params', 422],
-                ModelNotFoundException::class   => ['not_found', 404],
-                AuthenticationException::class  => ['forbidden', 403],
-                AuthorizationException::class   => ['unauthorized', 401],
-                HttpException::class            => [$e->getMessage(), $e->getStatusCode()],
-                default                         => [config('app.debug') ? $e->getMessage() : 'internal_error', 500]
+        if ($request->expectsJson()) {
+            $message = match ($e::class) {
+                ValidationException::class => ['wrong_params', 422],
+                ModelNotFoundException::class => ['not_found', 404],
+                AuthenticationException::class => ['forbidden', 403],
+                AuthorizationException::class => ['unauthorized', 401],
+                HttpException::class => [$e->getMessage(), $e->getStatusCode()],
+                default => [config('app.debug') ? $e->getMessage() : 'internal_error', 500]
             };
-            
+
             $view = response()->apiFail(...$message);
         }
 

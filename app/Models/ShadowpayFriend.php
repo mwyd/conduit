@@ -23,6 +23,6 @@ class ShadowpayFriend extends Model
     ];
 
     protected $casts = [
-        'shadowpay_user_id'     => 'integer'
+        'shadowpay_user_id' => 'integer'
     ];
 }

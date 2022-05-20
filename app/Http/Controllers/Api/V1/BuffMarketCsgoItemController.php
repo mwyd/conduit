@@ -6,16 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\BuffMarketCsgoItemFilter;
 use App\Http\Requests\Api\V1\UpsertBuffMarketCsgoItemRequest;
 use App\Models\BuffMarketCsgoItem;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class BuffMarketCsgoItemController extends Controller
 {
-        /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Filters\BuffMarketCsgoItemFilter  $filter
-     * @return \Illuminate\Http\Response
-     */
-    public function index(BuffMarketCsgoItemFilter $filter)
+    public function index(BuffMarketCsgoItemFilter $filter): JsonResponse
     {
         $items = BuffMarketCsgoItem::filter($filter)->get();
 
@@ -23,12 +19,9 @@ class BuffMarketCsgoItemController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertBuffMarketCsgoItemRequest  $request
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function store(UpsertBuffMarketCsgoItemRequest $request)
+    public function store(UpsertBuffMarketCsgoItemRequest $request): JsonResponse
     {
         $this->authorize('api-create');
 
@@ -37,13 +30,7 @@ class BuffMarketCsgoItemController extends Controller
         return response()->apiSuccess($item, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  string  $hashName
-     * @return \Illuminate\Http\Response
-     */
-    public function show($hashName)
+    public function show(string $hashName): JsonResponse
     {
         $item = BuffMarketCsgoItem::findOrFail($hashName);
 
@@ -51,13 +38,9 @@ class BuffMarketCsgoItemController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertBuffMarketCsgoItemRequest  $request
-     * @param  string  $hashName
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertBuffMarketCsgoItemRequest $request, $hashName)
+    public function update(UpsertBuffMarketCsgoItemRequest $request, string $hashName): JsonResponse
     {
         $this->authorize('api-update');
 
@@ -68,12 +51,9 @@ class BuffMarketCsgoItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  string  $hashName
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($hashName)
+    public function destroy(string $hashName): JsonResponse
     {
         $this->authorize('api-delete');
 

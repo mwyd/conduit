@@ -4,10 +4,10 @@ namespace App\Http\Validation;
 
 trait HasSearchRules
 {
-    protected function searchRules()
+    protected function searchRules(): array
     {
         return [
-            'search'    => 'sometimes|nullable|string'
+            'search' => 'sometimes|nullable|string'
         ];
     }
 }

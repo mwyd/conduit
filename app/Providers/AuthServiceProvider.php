@@ -22,10 +22,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        ShadowpayBotConfig::class       => ShadowpayBotConfigPolicy::class,
-        ShadowpayBotPreset::class       => ShadowpayBotPresetPolicy::class,
-        ShadowpayFriend::class          => ShadowpayFriendPolicy::class,
-        ShadowpaySaleGuardItem::class   => ShadowpaySaleGuardItemPolicy::class
+        ShadowpayBotConfig::class => ShadowpayBotConfigPolicy::class,
+        ShadowpayBotPreset::class => ShadowpayBotPresetPolicy::class,
+        ShadowpayFriend::class => ShadowpayFriendPolicy::class,
+        ShadowpaySaleGuardItem::class => ShadowpaySaleGuardItemPolicy::class
     ];
 
     /**
@@ -37,16 +37,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('api-create', function(User $user) {
-            return $user->tokenCan('api:post');
-        });
+        Gate::define('api-create', fn(User $user) => $user->tokenCan('api:post'));
 
-        Gate::define('api-update', function(User $user) {
-            return $user->tokenCan('api:put');
-        });
+        Gate::define('api-update', fn(User $user) => $user->tokenCan('api:put'));
 
-        Gate::define('api-delete', function(User $user) {
-            return $user->tokenCan('api:delete');
-        });
+        Gate::define('api-delete', fn(User $user) => $user->tokenCan('api:delete'));
     }
 }

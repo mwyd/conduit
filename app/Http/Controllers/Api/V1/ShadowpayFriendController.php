@@ -6,46 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\ShadowpayFriendFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest;
 use App\Models\ShadowpayFriend;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class ShadowpayFriendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Requests\Api\V1\IndexShadowpayFriendRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(ShadowpayFriendFilter $filter)
+    public function index(ShadowpayFriendFilter $filter): JsonResponse
     {
         $friends = ShadowpayFriend::where('user_id', $filter->request()->user()->id)
-                    ->filter($filter)
-                    ->get();
+            ->filter($filter)
+            ->get();
 
         return response()->apiSuccess($friends, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UpsertShadowpayFriendRequest $request)
+    public function store(UpsertShadowpayFriendRequest $request): JsonResponse
     {
-        $friend = ShadowpayFriend::create(['user_id' => $request->user()->id] + $request->validated());
+        $friend = ShadowpayFriend::create(['user_id' => $request->user()->id, ...$request->validated()]);
 
         return response()->apiSuccess($friend, 201);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $shadowpayId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function show($shadowpayId)
+    public function show(int $id): JsonResponse
     {
-        $friend = ShadowpayFriend::findOrFail($shadowpayId);
+        $friend = ShadowpayFriend::findOrFail($id);
 
         $this->authorize('view', $friend);
 
@@ -53,15 +40,11 @@ class ShadowpayFriendController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayFriendRequest $request
-     * @param  int  $shadowpayId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertShadowpayFriendRequest $request, $shadowpayId)
+    public function update(UpsertShadowpayFriendRequest $request, int $id): JsonResponse
     {
-        $friend = ShadowpayFriend::findOrFail($shadowpayId);
+        $friend = ShadowpayFriend::findOrFail($id);
 
         $this->authorize('update', $friend);
 
@@ -71,14 +54,11 @@ class ShadowpayFriendController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $shadowpayId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($shadowpayId)
+    public function destroy(int $id): JsonResponse
     {
-        $friend = ShadowpayFriend::findOrFail($shadowpayId);
+        $friend = ShadowpayFriend::findOrFail($id);
 
         $this->authorize('delete', $friend);
 

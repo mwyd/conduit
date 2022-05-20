@@ -10,30 +10,18 @@ class IndexShadowpayBotConfigRequest extends FormRequest
 {
     use HasOrderRules, HasPaginationRules;
 
-    /**
-     * Indicates if the validator should stop on the first rule failure.
-     *
-     * @var bool
-     */
     protected $stopOnFirstFailure = true;
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
-        return $this->orderRules(['updated_at']) + $this->paginationRules();
+        return [
+            ...$this->orderRules(['updated_at']),
+            ...$this->paginationRules()
+        ];
     }
 }

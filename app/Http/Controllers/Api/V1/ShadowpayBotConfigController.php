@@ -6,31 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\ShadowpayBotConfigFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpayBotConfigRequest;
 use App\Models\ShadowpayBotConfig;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class ShadowpayBotConfigController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Filters\ShadowpayBotConfigFilter  $filter
-     * @return \Illuminate\Http\Response
-     */
-    public function index(ShadowpayBotConfigFilter $filter)
+    public function index(ShadowpayBotConfigFilter $filter): JsonResponse
     {
         $configs = ShadowpayBotConfig::where('user_id', $filter->request()->user()->id)
-                    ->filter($filter)
-                    ->get();
+            ->filter($filter)
+            ->get();
 
         return response()->apiSuccess($configs, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotConfigRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UpsertShadowpayBotConfigRequest $request)
+    public function store(UpsertShadowpayBotConfigRequest $request): JsonResponse
     {
         $config = ShadowpayBotConfig::updateOrCreate(['user_id' => $request->user()->id], $request->validated());
 
@@ -38,14 +28,11 @@ class ShadowpayBotConfigController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $configId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function show($configId)
+    public function show(int $id): JsonResponse
     {
-        $config = ShadowpayBotConfig::findOrFail($configId);
+        $config = ShadowpayBotConfig::findOrFail($id);
 
         $this->authorize('view', $config);
 
@@ -53,15 +40,11 @@ class ShadowpayBotConfigController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotConfigRequest  $request
-     * @param  int  $configId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertShadowpayBotConfigRequest $request, $configId)
+    public function update(UpsertShadowpayBotConfigRequest $request, int $id): JsonResponse
     {
-        $config = ShadowpayBotConfig::findOrFail($configId);
+        $config = ShadowpayBotConfig::findOrFail($id);
 
         $this->authorize('update', $config);
 
@@ -71,14 +54,11 @@ class ShadowpayBotConfigController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $configId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($configId)
+    public function destroy(int $id): JsonResponse
     {
-        $config = ShadowpayBotConfig::findOrFail($configId);
+        $config = ShadowpayBotConfig::findOrFail($id);
 
         $this->authorize('delete', $config);
 

@@ -6,40 +6,26 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpsertBuffMarketCsgoItemRequest extends FormRequest
 {
-    /**
-     * Indicates if the validator should stop on the first rule failure.
-     *
-     * @var bool
-     */
     protected $stopOnFirstFailure = true;
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         $rules = [
-            'hash_name'     => 'required|string',
-            'volume'        => 'required|integer',
-            'price'         => 'required|numeric',
-            'good_id'       => 'required|integer'
+            'hash_name' => 'required|string',
+            'volume' => 'required|integer',
+            'price' => 'required|numeric',
+            'good_id' => 'required|integer'
         ];
 
-        if($this->method() == self::METHOD_PUT) 
-        {
-            foreach($rules as $key => $rule) $rules[$key] = str_replace('required', 'sometimes', $rule);
+        if ($this->method() == self::METHOD_PUT) {
+            foreach ($rules as $key => $rule) {
+                $rules[$key] = str_replace('required', 'sometimes', $rule);
+            }
         }
 
         return $rules;

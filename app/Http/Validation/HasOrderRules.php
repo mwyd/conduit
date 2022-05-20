@@ -6,11 +6,11 @@ use Illuminate\Validation\Rule;
 
 trait HasOrderRules
 {
-    protected function orderRules($orderBy)
+    protected function orderRules(array $orderBy): array
     {
         return [
-            'order_by'      => ['sometimes', Rule::in($orderBy)],
-            'order_dir'     => ['sometimes', Rule::in(['desc', 'asc'])]
+            'order_by' => ['sometimes', Rule::in($orderBy)],
+            'order_dir' => ['sometimes', Rule::in(['desc', 'asc'])]
         ];
     }
 }

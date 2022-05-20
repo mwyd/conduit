@@ -6,46 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\ShadowpayBotPresetFilter;
 use App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest;
 use App\Models\ShadowpayBotPreset;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class ShadowpayBotPresetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Requests\Api\V1\IndexShadowpayBotPresetRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(ShadowpayBotPresetFilter $filter)
+    public function index(ShadowpayBotPresetFilter $filter): JsonResponse
     {
         $presets = ShadowpayBotPreset::where('user_id', $filter->request()->user()->id)
-                    ->filter($filter)
-                    ->get();
+            ->filter($filter)
+            ->get();
 
         return response()->apiSuccess($presets, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UpsertShadowpayBotPresetRequest $request)
+    public function store(UpsertShadowpayBotPresetRequest $request): JsonResponse
     {
-        $preset = ShadowpayBotPreset::create(['user_id' => $request->user()->id] + $request->validated());
+        $preset = ShadowpayBotPreset::create(['user_id' => $request->user()->id, ...$request->validated()]);
 
         return response()->apiSuccess($preset, 201);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $presetId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function show($presetId)
+    public function show(int $id): JsonResponse
     {
-        $preset = ShadowpayBotPreset::findOrFail($presetId);
+        $preset = ShadowpayBotPreset::findOrFail($id);
 
         $this->authorize('view', $preset);
 
@@ -53,15 +40,11 @@ class ShadowpayBotPresetController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest  $request
-     * @param  int  $presetId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertShadowpayBotPresetRequest $request, $presetId)
+    public function update(UpsertShadowpayBotPresetRequest $request, int $id): JsonResponse
     {
-        $preset = ShadowpayBotPreset::findOrFail($presetId);
+        $preset = ShadowpayBotPreset::findOrFail($id);
 
         $this->authorize('update', $preset);
 
@@ -71,14 +54,11 @@ class ShadowpayBotPresetController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $presetId
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($presetId)
+    public function destroy(int $id): JsonResponse
     {
-        $preset = ShadowpayBotPreset::findOrFail($presetId);
+        $preset = ShadowpayBotPreset::findOrFail($id);
 
         $this->authorize('delete', $preset);
 

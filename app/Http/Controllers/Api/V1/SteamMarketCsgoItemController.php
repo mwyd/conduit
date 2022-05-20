@@ -7,16 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\SteamMarketCsgoItemFilter;
 use App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest;
 use App\Models\SteamMarketCsgoItem;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class SteamMarketCsgoItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Filters\SteamMarketCsgoItemFilter  $filter
-     * @return \Illuminate\Http\Response
-     */
-    public function index(SteamMarketCsgoItemFilter $filter)
+    public function index(SteamMarketCsgoItemFilter $filter): JsonResponse
     {
         $items = SteamMarketCsgoItem::filter($filter)->get();
 
@@ -24,12 +20,9 @@ class SteamMarketCsgoItemController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest  $request
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function store(UpsertSteamMarketCsgoItemRequest $request, CreateSteamMarketCsgoItemAction $action)
+    public function store(UpsertSteamMarketCsgoItemRequest $request, CreateSteamMarketCsgoItemAction $action): JsonResponse
     {
         $this->authorize('api-create');
 
@@ -38,13 +31,7 @@ class SteamMarketCsgoItemController extends Controller
         return response()->apiSuccess($item, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  string  $hashName
-     * @return \Illuminate\Http\Response
-     */
-    public function show($hashName)
+    public function show(string $hashName): JsonResponse
     {
         $item = SteamMarketCsgoItem::findOrFail($hashName);
 
@@ -52,13 +39,9 @@ class SteamMarketCsgoItemController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest  $request
-     * @param  string  $hashName
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function update(UpsertSteamMarketCsgoItemRequest $request, $hashName)
+    public function update(UpsertSteamMarketCsgoItemRequest $request, string $hashName): JsonResponse
     {
         $this->authorize('api-update');
 
@@ -69,12 +52,9 @@ class SteamMarketCsgoItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  string  $hashName
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy($hashName)
+    public function destroy(string $hashName): JsonResponse
     {
         $this->authorize('api-delete');
 

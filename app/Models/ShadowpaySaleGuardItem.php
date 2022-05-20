@@ -6,6 +6,7 @@ use App\Http\Filters\Traits\Filterable;
 use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShadowpaySaleGuardItem extends Model
 {
@@ -25,12 +26,12 @@ class ShadowpaySaleGuardItem extends Model
     ];
 
     protected $casts = [
-        'shadowpay_offer_id'    => 'integer',
-        'min_price'             => 'float',
-        'max_price'             => 'float'
+        'shadowpay_offer_id' => 'integer',
+        'min_price' => 'float',
+        'max_price' => 'float'
     ];
 
-    public function steamMarketCsgoItem() 
+    public function steamMarketCsgoItem(): BelongsTo
     {
         return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
     }

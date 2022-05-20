@@ -10,39 +10,18 @@ class ShadowpaySaleGuardItemPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpaySaleGuardItem  $shadowpaySaleGuardItem
-     * @return mixed
-     */
-    public function view(User $user, ShadowpaySaleGuardItem $shadowpaySaleGuardItem)
+    public function view(User $user, ShadowpaySaleGuardItem $item): bool
     {
-        return $user->id == $shadowpaySaleGuardItem->user_id;
+        return $user->id == $item->user_id;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpaySaleGuardItem  $shadowpaySaleGuardItem
-     * @return mixed
-     */
-    public function update(User $user, ShadowpaySaleGuardItem $shadowpaySaleGuardItem)
+    public function update(User $user, ShadowpaySaleGuardItem $item): bool
     {
-        return $user->id == $shadowpaySaleGuardItem->user_id;
+        return $user->id == $item->user_id;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpaySaleGuardItem  $shadowpaySaleGuardItem
-     * @return mixed
-     */
-    public function delete(User $user, ShadowpaySaleGuardItem $shadowpaySaleGuardItem)
+    public function delete(User $user, ShadowpaySaleGuardItem $item): bool
     {
-        return $user->id == $shadowpaySaleGuardItem->user_id;
+        return $user->id == $item->user_id;
     }
 }

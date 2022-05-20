@@ -11,40 +11,25 @@ class IndexCsgoRarePaintSeedItemRequest extends FormRequest
 {
     use HasSearchRules, HasOrderRules, HasPaginationRules;
 
-    /**
-     * Indicates if the validator should stop on the first rule failure.
-     *
-     * @var bool
-     */
     protected $stopOnFirstFailure = true;
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'paint_seed'    => 'sometimes|integer',
-            'variant'       => 'sometimes|string',
-        ]
-        + $this->searchRules()
-        + $this->orderRules([
-            'name', 
-            'paint_seed',
-            'updated_at'
-        ])
-        + $this->paginationRules();
+            'paint_seed' => 'sometimes|integer',
+            'variant' => 'sometimes|string',
+            ...$this->searchRules(),
+            ...$this->orderRules([
+                'name',
+                'paint_seed',
+                'updated_at'
+            ]),
+            ...$this->paginationRules()
+        ];
     }
 }

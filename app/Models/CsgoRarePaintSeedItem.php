@@ -22,6 +22,6 @@ class CsgoRarePaintSeedItem extends Model
     ];
 
     protected $casts = [
-        'paint_seed'    => 'integer'
+        'paint_seed' => 'integer'
     ];
 }

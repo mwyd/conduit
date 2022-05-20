@@ -10,39 +10,18 @@ class ShadowpayBotConfigPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpayBotConfig  $shadowpayBotConfig
-     * @return mixed
-     */
-    public function view(User $user, ShadowpayBotConfig $shadowpayBotConfig)
+    public function view(User $user, ShadowpayBotConfig $config): bool
     {
-        return $user->id == $shadowpayBotConfig->user_id;
+        return $user->id == $config->user_id;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpayBotConfig  $shadowpayBotConfig
-     * @return mixed
-     */
-    public function update(User $user, ShadowpayBotConfig $shadowpayBotConfig)
+    public function update(User $user, ShadowpayBotConfig $config): bool
     {
-        return $user->id == $shadowpayBotConfig->user_id;
+        return $user->id == $config->user_id;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpayBotConfig  $shadowpayBotConfig
-     * @return mixed
-     */
-    public function delete(User $user, ShadowpayBotConfig $shadowpayBotConfig)
+    public function delete(User $user, ShadowpayBotConfig $config): bool
     {
-        return $user->id == $shadowpayBotConfig->user_id;
+        return $user->id == $config->user_id;
     }
 }

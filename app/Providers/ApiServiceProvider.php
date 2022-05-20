@@ -24,16 +24,16 @@ class ApiServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Response::macro('apiSuccess', function($data, $httpCode = 200) {
+        Response::macro('apiSuccess', function (mixed $data, int $httpCode = 200) {
             return Response::json([
-                'success'   => true,
-                'data'      => $data
+                'success' => true,
+                'data' => $data
             ], $httpCode);
         });
 
-        Response::macro('apiFail', function($message, $httpCode = 400) {
+        Response::macro('apiFail', function (string $message, int $httpCode = 400) {
             return Response::json([
-                'success'       => false,
+                'success' => false,
                 'error_message' => $message
             ], $httpCode);
         });

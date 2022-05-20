@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShadowpayBotConfig extends Model
 {
     use HasFactory, HasSerializedDate, Filterable;
-
+    
     protected $hidden = [
         'user_id',
         'created_at'

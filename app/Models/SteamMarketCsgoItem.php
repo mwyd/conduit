@@ -11,10 +11,10 @@ class SteamMarketCsgoItem extends Model
 {
     use HasFactory, HasSerializedDate, Filterable;
 
-    public $incrementing    = false;
-    
-    protected $keyType      = 'string';
-    protected $primaryKey   = 'hash_name';
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+    protected $primaryKey = 'hash_name';
 
     protected $hidden = [
         'created_at'
@@ -37,8 +37,8 @@ class SteamMarketCsgoItem extends Model
     ];
 
     protected $casts = [
-        'volume'        => 'integer',
-        'price'         => 'float',
-        'is_stattrak'   => 'boolean'
+        'volume' => 'integer',
+        'price' => 'float',
+        'is_stattrak' => 'boolean'
     ];
 }

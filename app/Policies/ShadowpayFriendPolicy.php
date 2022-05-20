@@ -10,39 +10,18 @@ class ShadowpayFriendPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpayFriend  $shadowpayFriend
-     * @return mixed
-     */
-    public function view(User $user, ShadowpayFriend $shadowpayFriend)
+    public function view(User $user, ShadowpayFriend $friend): bool
     {
-        return $user->id == $shadowpayFriend->user_id;
+        return $user->id == $friend->user_id;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpayFriend  $shadowpayFriend
-     * @return mixed
-     */
-    public function update(User $user, ShadowpayFriend $shadowpayFriend)
+    public function update(User $user, ShadowpayFriend $friend): bool
     {
-        return $user->id == $shadowpayFriend->user_id;
+        return $user->id == $friend->user_id;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShadowpayFriend  $shadowpayFriend
-     * @return mixed
-     */
-    public function delete(User $user, ShadowpayFriend $shadowpayFriend)
+    public function delete(User $user, ShadowpayFriend $friend): bool
     {
-        return $user->id == $shadowpayFriend->user_id;
+        return $user->id == $friend->user_id;
     }
 }

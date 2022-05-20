@@ -11,10 +11,10 @@ class BuffMarketCsgoItem extends Model
 {
     use HasFactory, HasSerializedDate, Filterable;
 
-    public $incrementing    = false;
-    
-    protected $keyType      = 'string';
-    protected $primaryKey   = 'hash_name';
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+    protected $primaryKey = 'hash_name';
 
     protected $hidden = [
         'created_at'
@@ -28,8 +28,8 @@ class BuffMarketCsgoItem extends Model
     ];
 
     protected $casts = [
-        'volume'        => 'integer',
-        'price'         => 'float',
-        'good_id'       => 'integer'
+        'volume' => 'integer',
+        'price' => 'float',
+        'good_id' => 'integer'
     ];
 }

@@ -13,57 +13,37 @@ class IndexShadowpaySoldItemRequest extends FormRequest
 {
     use HasSteamMarketCsgoItemRules, HasSearchRules, HasDateRules, HasOrderRules, HasPaginationRules;
 
-    /**
-     * Indicates if the validator should stop on the first rule failure.
-     *
-     * @var bool
-     */
     protected $stopOnFirstFailure = true;
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->prepareSteamMarketCsgoItemRules($this);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'price_from'    => 'sometimes|numeric',
-            'price_to'      => 'sometimes|numeric',
-            'min_sold'      => 'sometimes|integer',
-            'max_sold'      => 'sometimes|integer'
-        ]
-        + $this->steamMarketCsgoItemRules()
-        + $this->searchRules()
-        + $this->dateRules()
-        + $this->orderRules([
-            'hash_name',
-            'sold', 
-            'avg_discount', 
-            'avg_suggested_price', 
-            'avg_steam_price', 
-            'last_sold'
-        ])
-        + $this->paginationRules();
+            'price_from' => 'sometimes|numeric',
+            'price_to' => 'sometimes|numeric',
+            'min_sold' => 'sometimes|integer',
+            'max_sold' => 'sometimes|integer',
+            ...$this->steamMarketCsgoItemRules(),
+            ...$this->searchRules(),
+            ...$this->dateRules(),
+            ...$this->orderRules([
+                'hash_name',
+                'sold',
+                'avg_discount',
+                'avg_suggested_price',
+                'avg_steam_price',
+                'last_sold'
+            ]),
+            ...$this->paginationRules()
+        ];
     }
 }
