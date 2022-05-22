@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\ShadowpayBotPresetFilter;
+use App\Http\Requests\Api\V1\IndexShadowpayBotPresetRequest;
 use App\Http\Requests\Api\V1\UpsertShadowpayBotPresetRequest;
 use App\Models\ShadowpayBotPreset;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -11,10 +11,10 @@ use Illuminate\Http\JsonResponse;
 
 class ShadowpayBotPresetController extends Controller
 {
-    public function index(ShadowpayBotPresetFilter $filter): JsonResponse
+    public function index(IndexShadowpayBotPresetRequest $request): JsonResponse
     {
-        $presets = ShadowpayBotPreset::where('user_id', $filter->request()->user()->id)
-            ->filter($filter)
+        $presets = ShadowpayBotPreset::where('user_id', $request->user()->id)
+            ->filter($request->validated())
             ->get();
 
         return response()->apiSuccess($presets, 200);

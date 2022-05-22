@@ -5,23 +5,19 @@ namespace App\Http\Filters;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
 use App\Http\Filters\Traits\HasSearchFilter;
-use App\Http\Requests\Api\V1\IndexShadowpayFriendRequest;
 
-class ShadowpayFriendFilter extends Filter
+class ShadowpayFriendFilter extends AbstractFilter
 {
     use HasSearchFilter, HasOrderFilter, HasPaginationFilter;
 
-    public function __construct(IndexShadowpayFriendRequest $request)
+    public function __construct()
     {
-        parent::__construct($request);
-
         $this->searchColumn = 'name';
 
         $this->defaultFilters = [
-            'offset'    => null,
-            'limit'     => null,
-            'order_by'  => 'name',
-            'oder_dir'  => 'asc'
+            'offset' => null,
+            'limit' => null,
+            'order_by' => 'name'
         ];
     }
 }

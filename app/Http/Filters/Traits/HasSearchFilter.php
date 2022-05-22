@@ -2,12 +2,14 @@
 
 namespace App\Http\Filters\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasSearchFilter
 {
-    protected $searchColumn;
-    
-    public function search($value)
+    protected string $searchColumn;
+
+    public function search(Builder $builder, string $value): void
     {
-        $this->builder->where($this->searchColumn, 'like', "%{$value}%");
+        $builder->where($this->searchColumn, 'like', "%{$value}%");
     }
 }

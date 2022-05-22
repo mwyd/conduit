@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\CreateSteamMarketCsgoItemAction;
 use App\Http\Controllers\Controller;
-use App\Http\Filters\SteamMarketCsgoItemFilter;
+use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
 use App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest;
 use App\Models\SteamMarketCsgoItem;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -12,9 +12,9 @@ use Illuminate\Http\JsonResponse;
 
 class SteamMarketCsgoItemController extends Controller
 {
-    public function index(SteamMarketCsgoItemFilter $filter): JsonResponse
+    public function index(IndexSteamMarketCsgoItemRequest $request): JsonResponse
     {
-        $items = SteamMarketCsgoItem::filter($filter)->get();
+        $items = SteamMarketCsgoItem::filter($request->validated())->get();
 
         return response()->apiSuccess($items, 200);
     }

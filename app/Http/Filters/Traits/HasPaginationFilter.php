@@ -2,15 +2,19 @@
 
 namespace App\Http\Filters\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasPaginationFilter
 {
-    public function offset($value)
+    protected int $defaultLimit = 50;
+
+    public function offset(Builder $builder, ?int $value): void
     {
-        $this->builder->offset($value ?? 0);
+        $builder->offset($value ?? 0);
     }
 
-    public function limit($value)
+    public function limit(Builder $builder, ?int $value): void
     {
-        $this->builder->limit($value ?? 50);
+        $builder->limit($value ?? $this->defaultLimit);
     }
 }

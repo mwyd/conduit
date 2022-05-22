@@ -7,48 +7,47 @@ use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
 use App\Http\Filters\Traits\HasSearchFilter;
 use App\Http\Filters\Traits\HasSteamMarketCsgoItemFilter;
-use App\Http\Requests\Api\V1\IndexShadowpaySoldItemRequest;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
-class ShadowpaySoldItemFilter extends Filter
+class ShadowpaySoldItemFilter extends AbstractFilter
 {
     use HasSteamMarketCsgoItemFilter, HasSearchFilter, HasDateFilter, HasOrderFilter, HasPaginationFilter;
 
-    public function __construct(IndexShadowpaySoldItemRequest $request)
+    public function __construct()
     {
-        parent::__construct($request);
-
         $this->searchColumn = 'hash_name';
         $this->dateColumn = 'sold_at';
+
+        $this->orderDir = 'desc';
 
         $this->steamMarketCsgoItemRelation = true;
 
         $this->defaultFilters = [
-            'offset'        => null,
-            'limit'         => null,
-            'order_by'      => 'sold',
-            'order_dir'     => 'desc',
-            'date_start'    => Carbon::now()->subWeek()
+            'offset' => null,
+            'limit' => null,
+            'order_by' => 'sold',
+            'date_start' => Carbon::now()->subWeek()
         ];
     }
 
-    public function priceFrom($value)
+    public function priceFrom(Builder $builder, float $value): void
     {
-        $this->builder->having('avg_steam_price', '>=', $value);
+        $builder->having('avg_steam_price', '>=', $value);
     }
 
-    public function priceTo($value)
+    public function priceTo(Builder $builder, float $value): void
     {
-        $this->builder->having('avg_steam_price', '<=', $value);
+        $builder->having('avg_steam_price', '<=', $value);
     }
 
-    public function minSold($value)
+    public function minSold(Builder $builder, int $value): void
     {
-        $this->builder->having('sold', '>=', $value);
+        $builder->having('sold', '>=', $value);
     }
 
-    public function maxSold($value)
+    public function maxSold(Builder $builder, int $value): void
     {
-        $this->builder->having('sold', '<=', $value);
+        $builder->having('sold', '<=', $value);
     }
 }

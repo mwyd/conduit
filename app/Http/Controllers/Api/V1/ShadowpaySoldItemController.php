@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\ShadowpaySoldItemFilter;
-use App\Http\Filters\ShadowpaySoldItemShowFilter;
-use App\Http\Filters\ShadowpaySoldItemTrendFilter;
+use App\Http\Requests\Api\V1\IndexShadowpaySoldItemRequest;
+use App\Http\Requests\Api\V1\ShowShadowpaySoldItemRequest;
+use App\Http\Requests\Api\V1\ShowTrendShadowpaySoldItemRequest;
 use App\Http\Requests\Api\V1\UpsertShadowpaySoldItemRequest;
 use App\Models\ShadowpaySoldItem;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -13,12 +13,11 @@ use Illuminate\Http\JsonResponse;
 
 class ShadowpaySoldItemController extends Controller
 {
-    public function index(ShadowpaySoldItemFilter $filter): JsonResponse
+    public function index(IndexShadowpaySoldItemRequest $request): JsonResponse
     {
-        $items = ShadowpaySoldItem::rawItem()
+        $items = ShadowpaySoldItem::rawItem($request->validated())
             ->with('steamMarketCsgoItem')
             ->groupBy('hash_name')
-            ->filter($filter)
             ->get();
 
         return response()->apiSuccess($items, 200);
@@ -36,24 +35,22 @@ class ShadowpaySoldItemController extends Controller
         return response()->apiSuccess($item, 201);
     }
 
-    public function show(ShadowpaySoldItemShowFilter $filter, string $hashName): JsonResponse
+    public function show(ShowShadowpaySoldItemRequest $request, string $hashName): JsonResponse
     {
-        $item = ShadowpaySoldItem::rawItem()
+        $item = ShadowpaySoldItem::rawItem($request->validated())
             ->where('hash_name', $hashName)
             ->with('steamMarketCsgoItem')
             ->groupBy('hash_name')
-            ->filter($filter)
             ->firstOrFail();
 
         return response()->apiSuccess($item, 200);
     }
 
-    public function showTrend(ShadowpaySoldItemTrendFilter $filter, string $hashName): JsonResponse
+    public function showTrend(ShowTrendShadowpaySoldItemRequest $request, string $hashName): JsonResponse
     {
-        $trend = ShadowpaySoldItem::rawTrend()
+        $trend = ShadowpaySoldItem::rawTrend($request->validated())
             ->where('hash_name', $hashName)
             ->groupBy('date')
-            ->filter($filter)
             ->get();
 
         return response()->apiSuccess($trend, 200);

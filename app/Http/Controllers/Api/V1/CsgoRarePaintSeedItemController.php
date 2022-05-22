@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\CsgoRarePaintSeedItemFilter;
+use App\Http\Requests\Api\V1\IndexCsgoRarePaintSeedItemRequest;
 use App\Http\Requests\Api\V1\UpsertCsgoRarePaintSeedItemRequest;
 use App\Models\CsgoRarePaintSeedItem;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -11,9 +11,9 @@ use Illuminate\Http\JsonResponse;
 
 class CsgoRarePaintSeedItemController extends Controller
 {
-    public function index(CsgoRarePaintSeedItemFilter $filter): JsonResponse
+    public function index(IndexCsgoRarePaintSeedItemRequest $request): JsonResponse
     {
-        $items = CsgoRarePaintSeedItem::filter($filter)->get();
+        $items = CsgoRarePaintSeedItem::filter($request->validated())->get();
 
         return response()->apiSuccess($items, 200);
     }

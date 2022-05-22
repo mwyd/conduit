@@ -4,21 +4,19 @@ namespace App\Http\Filters;
 
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
-use App\Http\Requests\Api\V1\IndexShadowpayBotConfigRequest;
 
-class ShadowpayBotConfigFilter extends Filter
+class ShadowpayBotConfigFilter extends AbstractFilter
 {
     use HasOrderFilter, HasPaginationFilter;
 
-    public function __construct(IndexShadowpayBotConfigRequest $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        $this->orderDir = 'desc';
 
         $this->defaultFilters = [
-            'offset'    => null,
-            'limit'     => null,
-            'order_by'  => 'updated_at',
-            'oder_dir'  => 'desc'
+            'offset' => null,
+            'limit' => null,
+            'order_by' => 'updated_at'
         ];
     }
 }

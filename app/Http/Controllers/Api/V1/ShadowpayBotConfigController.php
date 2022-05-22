@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\ShadowpayBotConfigFilter;
+use App\Http\Requests\Api\V1\IndexShadowpayBotConfigRequest;
 use App\Http\Requests\Api\V1\UpsertShadowpayBotConfigRequest;
 use App\Models\ShadowpayBotConfig;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -11,10 +11,10 @@ use Illuminate\Http\JsonResponse;
 
 class ShadowpayBotConfigController extends Controller
 {
-    public function index(ShadowpayBotConfigFilter $filter): JsonResponse
+    public function index(IndexShadowpayBotConfigRequest $request): JsonResponse
     {
-        $configs = ShadowpayBotConfig::where('user_id', $filter->request()->user()->id)
-            ->filter($filter)
+        $configs = ShadowpayBotConfig::where('user_id', $request->user()->id)
+            ->filter($request->validated())
             ->get();
 
         return response()->apiSuccess($configs, 200);

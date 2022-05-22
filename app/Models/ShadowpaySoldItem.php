@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Filters\Traits\Filterable;
+use App\Http\Filters\ShadowpaySoldItemFilter;
+use App\Http\Filters\ShadowpaySoldItemTrendFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShadowpaySoldItem extends Model
 {
-    use HasFactory, HasSerializedDate, Filterable;
+    use HasFactory, HasSerializedDate;
 
     public $incrementing = false;
     public $timestamps = false;
@@ -43,25 +44,29 @@ class ShadowpaySoldItem extends Model
         return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
     }
 
-    public function scopeRawItem(Builder $query): Builder
+    public function scopeRawItem(Builder $builder, array $params): Builder
     {
-        return $query->selectRaw(
-            'hash_name, ' .
-            'count(hash_name) as sold, ' .
-            'round(avg(discount), 2) as avg_discount, ' .
-            'round(avg(suggested_price), 2) as avg_suggested_price, ' .
-            'round(avg(steam_price), 2) as avg_steam_price, ' .
-            'max(sold_at) as last_sold'
-        );
+        return (new ShadowpaySoldItemFilter())
+            ->apply($builder, $params)
+            ->selectRaw(
+                'hash_name, ' .
+                'count(hash_name) as sold, ' .
+                'round(avg(discount), 2) as avg_discount, ' .
+                'round(avg(suggested_price), 2) as avg_suggested_price, ' .
+                'round(avg(steam_price), 2) as avg_steam_price, ' .
+                'max(sold_at) as last_sold'
+            );
     }
 
-    public function scopeRawTrend(Builder $query): Builder
+    public function scopeRawTrend(Builder $builder, array $params): Builder
     {
-        return $query->selectRaw(
-            'date(sold_at) as date, ' .
-            'count(hash_name) as sold, ' .
-            'round(avg(suggested_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
-            'round(avg(steam_price), 2) as avg_steam_price'
-        );
+        return (new ShadowpaySoldItemTrendFilter())
+            ->apply($builder, $params)
+            ->selectRaw(
+                'date(sold_at) as date, ' .
+                'count(hash_name) as sold, ' .
+                'round(avg(suggested_price) * avg((100 - discount) / 100), 2) as avg_sell_price, ' .
+                'round(avg(steam_price), 2) as avg_steam_price'
+            );
     }
 }

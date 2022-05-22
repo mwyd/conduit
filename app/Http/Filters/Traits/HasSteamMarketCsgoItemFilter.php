@@ -2,45 +2,38 @@
 
 namespace App\Http\Filters\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasSteamMarketCsgoItemFilter
 {
-    protected $steamMarketCsgoItemRelation = false;
+    protected bool $steamMarketCsgoItemRelation = false;
 
-    public function isStattrak($value)
+    public function isStattrak(Builder $builder, bool $value): void
     {
-        if($this->steamMarketCsgoItemRelation)
-        {
-            $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->where('is_stattrak', $value));
-        }
-        else
-        {
-            $this->builder->where('is_stattrak', $value);
+        if ($this->steamMarketCsgoItemRelation) {
+            $builder->whereHas('steamMarketCsgoItem', fn($q) => $q->where('is_stattrak', $value));
+        } else {
+            $builder->where('is_stattrak', $value);
         }
     }
 
-    public function exteriors($value)
+    public function exteriors(Builder $builder, array $value): void
     {
-        if($this->steamMarketCsgoItemRelation)
-        {
-            $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->whereIn('exterior', $value));
-        }
-        else
-        {
-            $this->builder->whereIn('exterior', $value);
+        if ($this->steamMarketCsgoItemRelation) {
+            $builder->whereHas('steamMarketCsgoItem', fn($q) => $q->whereIn('exterior', $value));
+        } else {
+            $builder->whereIn('exterior', $value);
         }
     }
 
-    public function tags($value)
+    public function tags(Builder $builder, array $value): void
     {
         $tags = array_map(fn($tag) => ['type', 'like', "%$tag%"], $value);
 
-        if($this->steamMarketCsgoItemRelation)
-        {
-            $this->builder->whereHas('steamMarketCsgoItem', fn($q) => $q->where($tags));
-        }
-        else
-        {
-            $this->builder->where($tags);
+        if ($this->steamMarketCsgoItemRelation) {
+            $builder->whereHas('steamMarketCsgoItem', fn($q) => $q->where($tags));
+        } else {
+            $builder->where($tags);
         }
     }
 }

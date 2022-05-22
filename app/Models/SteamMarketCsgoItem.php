@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Http\Filters\Traits\Filterable;
+use App\Http\Filters\Filterable;
+use App\Http\Filters\SteamMarketCsgoItemFilter;
 use App\Models\Traits\HasSerializedDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SteamMarketCsgoItem extends Model
+class SteamMarketCsgoItem extends Model implements Filterable
 {
-    use HasFactory, HasSerializedDate, Filterable;
+    use HasFactory, HasSerializedDate;
 
     public $incrementing = false;
 
@@ -41,4 +43,9 @@ class SteamMarketCsgoItem extends Model
         'price' => 'float',
         'is_stattrak' => 'boolean'
     ];
+
+    public function scopeFilter(Builder $builder, array $params): Builder
+    {
+        return (new SteamMarketCsgoItemFilter())->apply($builder, $params);
+    }
 }

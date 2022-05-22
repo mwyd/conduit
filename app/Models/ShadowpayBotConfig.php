@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use App\Http\Filters\Traits\Filterable;
+use App\Http\Filters\Filterable;
+use App\Http\Filters\ShadowpayBotConfigFilter;
 use App\Models\Traits\HasSerializedDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShadowpayBotConfig extends Model
+class ShadowpayBotConfig extends Model implements Filterable
 {
-    use HasFactory, HasSerializedDate, Filterable;
-    
+    use HasFactory, HasSerializedDate;
+
     protected $hidden = [
         'user_id',
         'created_at'
@@ -24,4 +26,9 @@ class ShadowpayBotConfig extends Model
     protected $casts = [
         'config' => 'array'
     ];
+
+    public function scopeFilter(Builder $builder, array $params): Builder
+    {
+        return (new ShadowpayBotConfigFilter())->apply($builder, $params);
+    }
 }

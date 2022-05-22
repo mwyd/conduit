@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\ShadowpaySaleGuardItemFilter;
+use App\Http\Requests\Api\V1\IndexShadowpaySaleGuardItemRequest;
 use App\Http\Requests\Api\V1\UpsertShadowpaySaleGuardItemRequest;
 use App\Models\ShadowpaySaleGuardItem;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -11,11 +11,11 @@ use Illuminate\Http\JsonResponse;
 
 class ShadowpaySaleGuardItemController extends Controller
 {
-    public function index(ShadowpaySaleGuardItemFilter $filter): JsonResponse
+    public function index(IndexShadowpaySaleGuardItemRequest $request): JsonResponse
     {
-        $items = ShadowpaySaleGuardItem::where('user_id', $filter->request()->user()->id)
+        $items = ShadowpaySaleGuardItem::where('user_id', $request->user()->id)
             ->with('steamMarketCsgoItem')
-            ->filter($filter)
+            ->filter($request->validated())
             ->get();
 
         return response()->apiSuccess($items, 200);

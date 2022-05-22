@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Http\Filters\Traits\Filterable;
+use App\Http\Filters\Filterable;
+use App\Http\Filters\ShadowpayFriendFilter;
 use App\Models\Traits\HasSerializedDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShadowpayFriend extends Model
+class ShadowpayFriend extends Model implements Filterable
 {
-    use HasFactory, HasSerializedDate, Filterable;
+    use HasFactory, HasSerializedDate;
 
     protected $hidden = [
         'user_id',
@@ -25,4 +27,9 @@ class ShadowpayFriend extends Model
     protected $casts = [
         'shadowpay_user_id' => 'integer'
     ];
+
+    public function scopeFilter(Builder $builder, array $params): Builder
+    {
+        return (new ShadowpayFriendFilter())->apply($builder, $params);
+    }
 }

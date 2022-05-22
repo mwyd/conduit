@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Filters\BuffMarketCsgoItemFilter;
+use App\Http\Requests\Api\V1\IndexBuffMarketCsgoItemRequest;
 use App\Http\Requests\Api\V1\UpsertBuffMarketCsgoItemRequest;
 use App\Models\BuffMarketCsgoItem;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -11,9 +11,9 @@ use Illuminate\Http\JsonResponse;
 
 class BuffMarketCsgoItemController extends Controller
 {
-    public function index(BuffMarketCsgoItemFilter $filter): JsonResponse
+    public function index(IndexBuffMarketCsgoItemRequest $request): JsonResponse
     {
-        $items = BuffMarketCsgoItem::filter($filter)->get();
+        $items = BuffMarketCsgoItem::filter($request->validated())->get();
 
         return response()->apiSuccess($items, 200);
     }

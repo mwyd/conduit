@@ -2,17 +2,19 @@
 
 namespace App\Http\Filters\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasDateFilter
 {
-    protected $dateColumn;
+    protected string $dateColumn;
 
-    public function dateStart($value)
+    public function dateStart(Builder $builder, string $value): void
     {
-        $this->builder->whereDate($this->dateColumn, '>=', $value);
+        $builder->whereDate($this->dateColumn, '>=', $value);
     }
 
-    public function dateEnd($value)
+    public function dateEnd(Builder $builder, string $value): void
     {
-        $this->builder->whereDate($this->dateColumn, '<=', $value);
+        $builder->whereDate($this->dateColumn, '<=', $value);
     }
 }

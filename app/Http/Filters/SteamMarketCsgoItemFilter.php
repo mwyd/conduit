@@ -2,27 +2,25 @@
 
 namespace App\Http\Filters;
 
-use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
 use App\Http\Filters\Traits\HasSearchFilter;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
 use App\Http\Filters\Traits\HasSteamMarketCsgoItemFilter;
 
-class SteamMarketCsgoItemFilter extends Filter
+class SteamMarketCsgoItemFilter extends AbstractFilter
 {
     use HasSteamMarketCsgoItemFilter, HasSearchFilter, HasOrderFilter, HasPaginationFilter;
 
-    public function __construct(IndexSteamMarketCsgoItemRequest $request)
+    public function __construct()
     {
-        parent::__construct($request);
-
         $this->searchColumn = 'hash_name';
 
+        $this->orderDir = 'desc';
+
         $this->defaultFilters = [
-            'offset'    => null,
-            'limit'     => null,
-            'order_by'  => 'volume',
-            'order_dir' => 'desc'
+            'offset' => null,
+            'limit' => null,
+            'order_by' => 'volume'
         ];
     }
 }
