@@ -48,11 +48,11 @@ class CreateSteamMarketCsgoItemAction
     private function prepareData(array $formData): array
     {
         $data = [
-            ...$formData,
             'is_stattrak' => false,
             'exterior' => null,
             'name' => $formData['hash_name'],
-            'type_color' => $formData['name_color']
+            'type_color' => $formData['name_color'],
+            ...$formData
         ];
 
         if (str_contains($data['name'], $this->stattrakKeyword)) {
