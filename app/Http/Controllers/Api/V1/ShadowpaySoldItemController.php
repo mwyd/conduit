@@ -59,11 +59,10 @@ class ShadowpaySoldItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertShadowpaySoldItemRequest $request, string $transactionId): JsonResponse
+    public function update(UpsertShadowpaySoldItemRequest $request, ShadowpaySoldItem $item): JsonResponse
     {
         $this->authorize('api-update');
 
-        $item = ShadowpaySoldItem::findOrFail($transactionId);
         $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
@@ -72,11 +71,10 @@ class ShadowpaySoldItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(string $transactionId): JsonResponse
+    public function destroy(ShadowpaySoldItem $item): JsonResponse
     {
         $this->authorize('api-delete');
 
-        $item = ShadowpaySoldItem::findOrFail($transactionId);
         $item->delete();
 
         return response()->apiSuccess($item, 200);

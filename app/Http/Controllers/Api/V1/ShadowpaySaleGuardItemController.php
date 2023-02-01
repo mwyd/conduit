@@ -31,9 +31,9 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(int $id): JsonResponse
+    public function show(ShadowpaySaleGuardItem $item): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::with('steamMarketCsgoItem')->findOrFail($id);
+        $item->load('steamMarketCsgoItem');
 
         $this->authorize('view', $item);
 
@@ -43,10 +43,8 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertShadowpaySaleGuardItemRequest $request, int $id): JsonResponse
+    public function update(UpsertShadowpaySaleGuardItemRequest $request, ShadowpaySaleGuardItem $item): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::findOrFail($id);
-
         $this->authorize('update', $item);
 
         $item->update($request->validated());
@@ -57,10 +55,8 @@ class ShadowpaySaleGuardItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(ShadowpaySaleGuardItem $item): JsonResponse
     {
-        $item = ShadowpaySaleGuardItem::findOrFail($id);
-
         $this->authorize('delete', $item);
 
         $item->delete();

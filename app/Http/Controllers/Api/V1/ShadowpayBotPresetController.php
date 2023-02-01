@@ -30,10 +30,8 @@ class ShadowpayBotPresetController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(int $id): JsonResponse
+    public function show(ShadowpayBotPreset $preset): JsonResponse
     {
-        $preset = ShadowpayBotPreset::findOrFail($id);
-
         $this->authorize('view', $preset);
 
         return response()->apiSuccess($preset, 200);
@@ -42,10 +40,8 @@ class ShadowpayBotPresetController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertShadowpayBotPresetRequest $request, int $id): JsonResponse
+    public function update(UpsertShadowpayBotPresetRequest $request, ShadowpayBotPreset $preset): JsonResponse
     {
-        $preset = ShadowpayBotPreset::findOrFail($id);
-
         $this->authorize('update', $preset);
 
         $preset->update($request->validated());
@@ -56,10 +52,8 @@ class ShadowpayBotPresetController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(ShadowpayBotPreset $preset): JsonResponse
     {
-        $preset = ShadowpayBotPreset::findOrFail($id);
-
         $this->authorize('delete', $preset);
 
         $preset->delete();

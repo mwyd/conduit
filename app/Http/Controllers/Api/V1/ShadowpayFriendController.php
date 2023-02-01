@@ -30,10 +30,8 @@ class ShadowpayFriendController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(int $id): JsonResponse
+    public function show(ShadowpayFriend $friend): JsonResponse
     {
-        $friend = ShadowpayFriend::findOrFail($id);
-
         $this->authorize('view', $friend);
 
         return response()->apiSuccess($friend, 200);
@@ -42,10 +40,8 @@ class ShadowpayFriendController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertShadowpayFriendRequest $request, int $id): JsonResponse
+    public function update(UpsertShadowpayFriendRequest $request, ShadowpayFriend $friend): JsonResponse
     {
-        $friend = ShadowpayFriend::findOrFail($id);
-
         $this->authorize('update', $friend);
 
         $friend->update($request->validated());
@@ -56,10 +52,8 @@ class ShadowpayFriendController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(ShadowpayFriend $friend): JsonResponse
     {
-        $friend = ShadowpayFriend::findOrFail($id);
-
         $this->authorize('delete', $friend);
 
         $friend->delete();

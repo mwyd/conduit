@@ -22,40 +22,54 @@ use App\Http\Controllers\Api\V1\BuffMarketCsgoItemController;
 |
 */
 
-Route::prefix('v1')->group(function() {
-    Route::controller(SteamMarketCsgoItemController::class)->prefix('steam-market-csgo-items')->group(function() {
+Route::prefix('v1')->group(function () {
+    Route::controller(SteamMarketCsgoItemController::class)->prefix('steam-market-csgo-items')->group(function () {
         Route::get('/', 'index');
-        Route::get('/{hashName}', 'show');
+        Route::get('/{item}', 'show');
         Route::post('/', 'store')->middleware('auth:sanctum');
-        Route::put('/{hashName}', 'update')->middleware('auth:sanctum');
-        Route::delete('/{hashName}', 'destroy')->middleware('auth:sanctum');
+        Route::put('/{item}', 'update')->middleware('auth:sanctum');
+        Route::delete('/{item}', 'destroy')->middleware('auth:sanctum');
     });
 
-    Route::controller(ShadowpaySoldItemController::class)->prefix('shadowpay-sold-items')->group(function() {
+    Route::controller(ShadowpaySoldItemController::class)->prefix('shadowpay-sold-items')->group(function () {
         Route::get('/', 'index');
-        Route::get('/{hashName}', 'show');
-        Route::get('/{hashName}/trend', 'showTrend');
+        Route::get('/{hash_name}', 'show');
+        Route::get('/{hash_name}/trend', 'showTrend');
         Route::post('/', 'store')->middleware('auth:sanctum');
-        Route::put('/{transactionId}', 'update')->middleware('auth:sanctum');
-        Route::delete('/{transactionId}', 'destroy')->middleware('auth:sanctum');
+        Route::put('/{item}', 'update')->middleware('auth:sanctum');
+        Route::delete('/{item}', 'destroy')->middleware('auth:sanctum');
     });
 
-    Route::controller(BuffMarketCsgoItemController::class)->prefix('buff-market-csgo-items')->group(function() {
+    Route::controller(BuffMarketCsgoItemController::class)->prefix('buff-market-csgo-items')->group(function () {
         Route::get('/', 'index');
-        Route::get('/{hashName}', 'show');
+        Route::get('/{item}', 'show');
         Route::post('/', 'store')->middleware('auth:sanctum');
-        Route::put('/{hashName}', 'update')->middleware('auth:sanctum');
-        Route::delete('/{hashName}', 'destroy')->middleware('auth:sanctum');
+        Route::put('/{item}', 'update')->middleware('auth:sanctum');
+        Route::delete('/{item}', 'destroy')->middleware('auth:sanctum');
     });
-    
-    Route::middleware('auth:sanctum')->group(function() {
-        Route::apiResource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class);
-        Route::apiResource('shadowpay-bot-presets', ShadowpayBotPresetController::class);
-        Route::apiResource('shadowpay-bot-configs', ShadowpayBotConfigController::class);
-        Route::apiResource('shadowpay-friends', ShadowpayFriendController::class);
-        Route::apiResource('csgo-rare-paint-seed-items', CsgoRarePaintSeedItemController::class);
 
-        Route::get('/user', function(Request $request) {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class, [
+            'parameters' => ['shadowpay-sale-guard-items' => 'item']
+        ]);
+
+        Route::apiResource('shadowpay-bot-presets', ShadowpayBotPresetController::class, [
+            'parameters' => ['shadowpay-bot-presets' => 'preset']
+        ]);
+
+        Route::apiResource('shadowpay-bot-configs', ShadowpayBotConfigController::class, [
+            'parameters' => ['shadowpay-bot-configs' => 'config']
+        ]);
+
+        Route::apiResource('shadowpay-friends', ShadowpayFriendController::class, [
+            'parameters' => ['shadowpay-friends' => 'friend']
+        ]);
+
+        Route::apiResource('csgo-rare-paint-seed-items', CsgoRarePaintSeedItemController::class, [
+            'parameters' => ['csgo-rare-paint-seed-items' => 'item']
+        ]);
+
+        Route::get('/user', function (Request $request) {
             return response()->apiSuccess($request->user(), 200);
         });
     });

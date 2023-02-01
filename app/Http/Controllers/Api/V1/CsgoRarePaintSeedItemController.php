@@ -30,21 +30,18 @@ class CsgoRarePaintSeedItemController extends Controller
         return response()->apiSuccess($item, 201);
     }
 
-    public function show(int $id): JsonResponse
+    public function show(CsgoRarePaintSeedItem $item): JsonResponse
     {
-        $item = CsgoRarePaintSeedItem::findOrFail($id);
-
         return response()->apiSuccess($item, 200);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertCsgoRarePaintSeedItemRequest $request, int $id): JsonResponse
+    public function update(UpsertCsgoRarePaintSeedItemRequest $request, CsgoRarePaintSeedItem $item): JsonResponse
     {
         $this->authorize('api-update');
 
-        $item = CsgoRarePaintSeedItem::findOrFail($id);
         $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
@@ -53,11 +50,10 @@ class CsgoRarePaintSeedItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(CsgoRarePaintSeedItem $item): JsonResponse
     {
         $this->authorize('api-delete');
 
-        $item = CsgoRarePaintSeedItem::findOrFail($id);
         $item->delete();
 
         return response()->apiSuccess($item, 200);

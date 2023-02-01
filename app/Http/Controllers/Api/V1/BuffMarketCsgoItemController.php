@@ -30,21 +30,18 @@ class BuffMarketCsgoItemController extends Controller
         return response()->apiSuccess($item, 201);
     }
 
-    public function show(string $hashName): JsonResponse
+    public function show(BuffMarketCsgoItem $item): JsonResponse
     {
-        $item = BuffMarketCsgoItem::findOrFail($hashName);
-
         return response()->apiSuccess($item, 200);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertBuffMarketCsgoItemRequest $request, string $hashName): JsonResponse
+    public function update(UpsertBuffMarketCsgoItemRequest $request, BuffMarketCsgoItem $item): JsonResponse
     {
         $this->authorize('api-update');
 
-        $item = BuffMarketCsgoItem::findOrFail($hashName);
         $item->update($request->validated());
 
         return response()->apiSuccess($item, 200);
@@ -53,11 +50,10 @@ class BuffMarketCsgoItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(string $hashName): JsonResponse
+    public function destroy(BuffMarketCsgoItem $item): JsonResponse
     {
         $this->authorize('api-delete');
 
-        $item = BuffMarketCsgoItem::findOrFail($hashName);
         $item->delete();
 
         return response()->apiSuccess($item, 200);

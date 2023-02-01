@@ -30,10 +30,8 @@ class ShadowpayBotConfigController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(int $id): JsonResponse
+    public function show(ShadowpayBotConfig $config): JsonResponse
     {
-        $config = ShadowpayBotConfig::findOrFail($id);
-
         $this->authorize('view', $config);
 
         return response()->apiSuccess($config, 200);
@@ -42,10 +40,8 @@ class ShadowpayBotConfigController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function update(UpsertShadowpayBotConfigRequest $request, int $id): JsonResponse
+    public function update(UpsertShadowpayBotConfigRequest $request, ShadowpayBotConfig $config): JsonResponse
     {
-        $config = ShadowpayBotConfig::findOrFail($id);
-
         $this->authorize('update', $config);
 
         $config->update($request->validated());
@@ -56,10 +52,8 @@ class ShadowpayBotConfigController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(ShadowpayBotConfig $config): JsonResponse
     {
-        $config = ShadowpayBotConfig::findOrFail($id);
-
         $this->authorize('delete', $config);
 
         $config->delete();
