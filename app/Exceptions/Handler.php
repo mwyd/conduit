@@ -46,8 +46,6 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        $view = parent::render($request, $e);
-
         if ($request->expectsJson()) {
             $message = match ($e::class) {
                 ValidationException::class => ['wrong_params', 422],
@@ -58,9 +56,9 @@ class Handler extends ExceptionHandler
                 default => [config('app.debug') ? $e->getMessage() : 'internal_error', 500]
             };
 
-            $view = response()->apiFail(...$message);
+            return response()->apiFail(...$message);
         }
 
-        return $view;
+        return parent::render($request, $e);
     }
 }

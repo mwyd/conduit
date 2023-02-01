@@ -23,6 +23,8 @@ class UpsertBuffMarketCsgoItemRequest extends FormRequest
         ];
 
         if ($this->method() == self::METHOD_PUT) {
+            unset($rules['hash_name']);
+
             foreach ($rules as $key => $rule) {
                 $rules[$key] = str_replace('required', 'sometimes', $rule);
             }

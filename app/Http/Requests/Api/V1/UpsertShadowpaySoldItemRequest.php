@@ -25,6 +25,8 @@ class UpsertShadowpaySoldItemRequest extends FormRequest
         ];
 
         if ($this->method() == self::METHOD_PUT) {
+            unset($rules['transaction_id']);
+
             foreach ($rules as $key => $rule) {
                 $rules[$key] = str_replace('required', 'sometimes', $rule);
             }
