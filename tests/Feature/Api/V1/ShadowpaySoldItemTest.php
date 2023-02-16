@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ShadowpaySoldItemTest extends TestCase
@@ -16,7 +17,7 @@ class ShadowpaySoldItemTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function test_index_request_returns_valid_data()
+    public function test_index_request_returns_valid_data(): void
     {
         ShadowpaySoldItem::factory()
             ->count(10)
@@ -47,7 +48,7 @@ class ShadowpaySoldItemTest extends TestCase
             ]);
     }
 
-    public function test_single_request_returns_valid_data()
+    public function test_single_request_returns_valid_data(): void
     {
         $item = ShadowpaySoldItem::factory()->create();
 
@@ -59,7 +60,7 @@ class ShadowpaySoldItemTest extends TestCase
             ->assertJsonPath('data.hash_name', $item->hash_name);
     }
 
-    public function test_single_request_returns_not_found()
+    public function test_single_request_returns_not_found(): void
     {
         $hashName = $this->faker()->words(3, true);
 
@@ -68,12 +69,12 @@ class ShadowpaySoldItemTest extends TestCase
         $response
             ->assertStatus(404)
             ->assertJson([
-                'success'       => false,
+                'success' => false,
                 'error_message' => 'not_found'
             ]);
     }
 
-    public function test_single_trend_request_returns_valid_data()
+    public function test_single_trend_request_returns_valid_data(): void
     {
         $item = ShadowpaySoldItem::factory()->create();
 
@@ -94,10 +95,8 @@ class ShadowpaySoldItemTest extends TestCase
             ]);
     }
 
-    /**
-     * @dataProvider createItemDataProvider
-     */
-    public function test_authorized_user_can_create_item($formData)
+    #[DataProvider('createItemDataProvider')]
+    public function test_authorized_user_can_create_item($formData): void
     {
         Sanctum::actingAs(
             User::factory()->create(),
@@ -109,15 +108,13 @@ class ShadowpaySoldItemTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJson([
-                'success'   => true,
-                'data'      => $formData
+                'success' => true,
+                'data' => $formData
             ]);
     }
 
-    /**
-     * @dataProvider createItemDataProvider
-     */
-    public function test_unauthorized_user_cannot_create_item($formData)
+    #[DataProvider('createItemDataProvider')]
+    public function test_unauthorized_user_cannot_create_item($formData): void
     {
         Sanctum::actingAs(
             User::factory()->create()
@@ -126,17 +123,15 @@ class ShadowpaySoldItemTest extends TestCase
         $response = $this->json('POST', '/api/v1/shadowpay-sold-items', $formData);
 
         $response
-            ->assertStatus(401)
+            ->assertStatus(403)
             ->assertJson([
-                'success'       => false,
-                'error_message' => 'unauthorized'
+                'success' => false,
+                'error_message' => 'forbidden'
             ]);
     }
 
-    /**
-     * @dataProvider updateItemDataProvider
-     */
-    public function test_authorized_user_can_update_item($formData)
+    #[DataProvider('updateItemDataProvider')]
+    public function test_authorized_user_can_update_item($formData): void
     {
         $item = ShadowpaySoldItem::factory()->create();
 
@@ -150,15 +145,13 @@ class ShadowpaySoldItemTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'success'   => true,
-                'data'      => $formData + $item->toArray()
+                'success' => true,
+                'data' => $formData + $item->toArray()
             ]);
     }
 
-    /**
-     * @dataProvider updateItemDataProvider
-     */
-    public function test_unauthorized_user_cannot_update_item($formData)
+    #[DataProvider('updateItemDataProvider')]
+    public function test_unauthorized_user_cannot_update_item($formData): void
     {
         $item = ShadowpaySoldItem::factory()->create();
 
@@ -169,14 +162,14 @@ class ShadowpaySoldItemTest extends TestCase
         $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/' . $item->transaction_id, $formData);
 
         $response
-            ->assertStatus(401)
+            ->assertStatus(403)
             ->assertJson([
-                'success'       => false,
-                'error_message' => 'unauthorized'
+                'success' => false,
+                'error_message' => 'forbidden'
             ]);
     }
 
-    public function test_authorized_user_can_delete_item()
+    public function test_authorized_user_can_delete_item(): void
     {
         $item = ShadowpaySoldItem::factory()->create();
 
@@ -190,12 +183,12 @@ class ShadowpaySoldItemTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'success'   => true,
-                'data'      => $item->toArray()
+                'success' => true,
+                'data' => $item->toArray()
             ]);
     }
 
-    public function test_unauthorized_user_cannot_delete_item()
+    public function test_unauthorized_user_cannot_delete_item(): void
     {
         $item = ShadowpaySoldItem::factory()->create();
 
@@ -206,37 +199,37 @@ class ShadowpaySoldItemTest extends TestCase
         $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/' . $item->transaction_id);
 
         $response
-            ->assertStatus(401)
+            ->assertStatus(403)
             ->assertJson([
-                'success'       => false,
-                'error_message' => 'unauthorized'
+                'success' => false,
+                'error_message' => 'forbidden'
             ]);
     }
 
-    public function createItemDataProvider()
+    public static function createItemDataProvider(): array
     {
         return [
             'valid data' => [
                 [
-                    'transaction_id'    => Str::random(),
-                    'hash_name'         => 'AK-47 | Asiimov (Field-Tested)',
-                    'suggested_price'   => 70.11,
-                    'steam_price'       => 100.22,
-                    'discount'          => 70,
-                    'sold_at'           => date('Y-m-d H:i:s')
+                    'transaction_id' => Str::random(),
+                    'hash_name' => 'AK-47 | Asiimov (Field-Tested)',
+                    'suggested_price' => 70.11,
+                    'steam_price' => 100.22,
+                    'discount' => 70,
+                    'sold_at' => date('Y-m-d H:i:s')
                 ]
             ]
         ];
     }
 
-    public function updateItemDataProvider()
+    public static function updateItemDataProvider(): array
     {
         return [
             'valid data' => [
                 [
-                    'suggested_price'   => 50.11,
-                    'steam_price'       => 70.22,
-                    'discount'          => 71
+                    'suggested_price' => 50.11,
+                    'steam_price' => 70.22,
+                    'discount' => 71
                 ]
             ]
         ];
