@@ -2,37 +2,29 @@
 
 namespace App\Console;
 
+use App\Console\Commands\UpdateBuffMarketCsgoItems;
+use App\Console\Commands\UpdateSteamMarketCsgoDopplerItems;
+use App\Console\Commands\UpdateSteamMarketCsgoItems;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
+    protected $commands = [];
 
-    /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command(UpdateBuffMarketCsgoItems::class)
+            ->cron('0 0 * * 1,4');
+
+        $schedule->command(UpdateSteamMarketCsgoItems::class, ['--ignore-dopplers'])
+            ->cron('0 0,12 * * *');
+
+        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class)
+            ->cron('0 6 * * *');
     }
 
-    /**
-     * Register the commands for the application.
-     *
-     * @return void
-     */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
 

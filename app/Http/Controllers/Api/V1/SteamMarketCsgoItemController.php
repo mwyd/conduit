@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Actions\CreateSteamMarketCsgoItemAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexSteamMarketCsgoItemRequest;
 use App\Http\Requests\Api\V1\UpsertSteamMarketCsgoItemRequest;
 use App\Models\SteamMarketCsgoItem;
+use App\Services\SteamMarketCsgoItemService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
@@ -22,11 +22,11 @@ class SteamMarketCsgoItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function store(UpsertSteamMarketCsgoItemRequest $request, CreateSteamMarketCsgoItemAction $action): JsonResponse
+    public function store(UpsertSteamMarketCsgoItemRequest $request, SteamMarketCsgoItemService $service): JsonResponse
     {
         $this->authorize('api-create');
 
-        $item = $action->execute($request->validated());
+        $item = $service->createFromRequestData($request->validated());
 
         return response()->apiSuccess($item, 201);
     }

@@ -17,9 +17,9 @@ use App\Policies\ShadowpaySaleGuardItemPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
+     * The model to policy mappings for the application.
      *
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $policies = [
         ShadowpayBotConfig::class => ShadowpayBotConfigPolicy::class,
@@ -30,17 +30,15 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
-        Gate::define('api-create', fn(User $user) => $user->tokenCan('api:post'));
+        Gate::define('api-create', fn (User $user) => $user->tokenCan('api:post'));
 
-        Gate::define('api-update', fn(User $user) => $user->tokenCan('api:put'));
+        Gate::define('api-update', fn (User $user) => $user->tokenCan('api:put'));
 
-        Gate::define('api-delete', fn(User $user) => $user->tokenCan('api:delete'));
+        Gate::define('api-delete', fn (User $user) => $user->tokenCan('api:delete'));
     }
 }

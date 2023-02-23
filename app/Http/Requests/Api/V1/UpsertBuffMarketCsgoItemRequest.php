@@ -16,7 +16,7 @@ class UpsertBuffMarketCsgoItemRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'hash_name' => 'required|string',
+            'hash_name' => 'required|string|unique:buff_market_csgo_items',
             'volume' => 'required|integer',
             'price' => 'required|numeric',
             'good_id' => 'required|integer'

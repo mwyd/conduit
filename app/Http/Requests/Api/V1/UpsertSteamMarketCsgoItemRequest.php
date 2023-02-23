@@ -16,7 +16,7 @@ class UpsertSteamMarketCsgoItemRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'hash_name' => 'required|string',
+            'hash_name' => 'required|string|unique:steam_market_csgo_items',
             'volume' => 'required|integer',
             'price' => 'required|numeric',
             'icon' => 'required|string',

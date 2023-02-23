@@ -9,20 +9,16 @@ class ApiServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Response::macro('apiSuccess', function (mixed $data, int $httpCode = 200) {
             return Response::json([

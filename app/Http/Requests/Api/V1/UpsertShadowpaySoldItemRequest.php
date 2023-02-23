@@ -16,7 +16,7 @@ class UpsertShadowpaySoldItemRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'transaction_id' => 'required|string',
+            'transaction_id' => 'required|string|unique:shadowpay_sold_items',
             'hash_name' => 'required|string',
             'discount' => 'required|integer',
             'suggested_price' => 'sometimes|nullable|numeric',
