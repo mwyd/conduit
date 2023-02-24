@@ -15,13 +15,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command(UpdateBuffMarketCsgoItems::class)
-            ->cron('0 0 * * 1,4');
+            ->cron('0 0 * * 1,3,5');
 
         $schedule->command(UpdateSteamMarketCsgoItems::class, ['--ignore-dopplers'])
-            ->cron('0 0,12 * * *');
+            ->cron('0 12 * * *');
 
         $schedule->command(UpdateSteamMarketCsgoDopplerItems::class)
-            ->cron('0 6 * * *');
+            ->cron('0 0 * * *');
     }
 
     protected function commands(): void

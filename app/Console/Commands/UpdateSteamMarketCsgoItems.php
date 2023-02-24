@@ -8,39 +8,33 @@ use Illuminate\Console\Command;
 
 class UpdateSteamMarketCsgoItems extends Command
 {
-    protected $signature = 'steam-market-csgo-item:update-all {--ignore-dopplers}';
+    protected $signature = 'steam-market-csgo-item:update-all
+        {--page-limit=220}
+        {--per-page=100}
+        {--request-delay=15}
+        {--ignore-dopplers}';
 
     protected $description = 'Update all steam market csgo items';
 
     public function handle(SteamMarketCsgoItemService $steamMarketCsgoItemService, SteamApi $steamApi): void
     {
-        $pageLimit = 220;
-        $perPage = 100;
-
+        $pageLimit = (int) $this->option('page-limit');
+        $perPage = (int) $this->option('per-page');
+        $requestDelay = (int) $this->option('request-delay');
         $ignoreDopplers = $this->option('ignore-dopplers');
 
-        $this->output->info('Fetching items');
-
         $bar = $this->output->createProgressBar($pageLimit * $perPage);
+
+        $this->output->info('Fetching items');
 
         for ($i = 0; $i < $pageLimit; $i++) {
             $response = $steamApi->getMarketListings($i * $perPage, $perPage);
 
-            if ($response->status() == 429) {
-                sleep(60);
-                $i--;
-
-                continue;
+            if (!$response->ok()) {
+                break;
             }
 
-            $success = $response->json('success');
-            $totalCount = $response->json('searchdata.total_count');
-
-            if (!$success || $totalCount == 0) {
-                continue;
-            }
-
-            $listings = $response->json('results');
+            $listings = $response->json('results', []);
 
             foreach ($listings as $listing) {
                 if ($ignoreDopplers && str_contains($listing['hash_name'], 'Doppler (')) {
@@ -52,9 +46,13 @@ class UpdateSteamMarketCsgoItems extends Command
                 $bar->advance();
             }
 
-            if (count($listings) < $perPage) {
+            $totalCount = $response->json('searchdata.total_count', 0);
+
+            if ($totalCount != 0 && count($listings) < $perPage) {
                 break;
             }
+
+            sleep($requestDelay);
         }
 
         $bar->finish();

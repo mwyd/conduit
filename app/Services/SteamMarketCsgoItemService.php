@@ -98,7 +98,7 @@ class SteamMarketCsgoItemService
             }
 
             $grouped[$phase] = $items[$id] + [
-                'hash_name' => str_replace('(', "{$phase} (", $asset['market_hash_name']),
+                'hash_name' => $this->formatDopplerHashName($asset['market_hash_name'], $phase),
                 'asset_description' => [
                     'icon_url' => $icon,
                     'icon_url_large' => $iconLarge,
@@ -135,7 +135,7 @@ class SteamMarketCsgoItemService
             'volume' => $listing['sell_listings'],
             'price' => $listing['sell_price'] / 100,
             'icon' => $assetDescription['icon_url'],
-            'icon_large' => $assetDescription['icon_url_large'] ?? null,
+            'icon_large' => ($assetDescription['icon_url_large'] ?? '') ?: null,
             'name_color' => '#' . $assetDescription['name_color'],
             'type' => $assetDescription['type'],
             'phase' => $assetDescription['phase'] ?? null,
@@ -192,5 +192,10 @@ class SteamMarketCsgoItemService
         }
 
         return null;
+    }
+
+    private function formatDopplerHashName(string $hashName, string $phase): string
+    {
+        return str_replace('(', "{$phase} (", $hashName);
     }
 }
