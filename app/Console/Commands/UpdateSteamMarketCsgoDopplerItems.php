@@ -9,25 +9,33 @@ use Illuminate\Console\Command;
 class UpdateSteamMarketCsgoDopplerItems extends Command
 {
     protected $signature = 'steam-market-csgo-item:update-dopplers
+        {--chunk-id=0}
+        {--chunk-size=10}
         {--page-limit=2}
         {--per-page=100}
-        {--request-delay=180}';
+        {--request-delay=420}';
 
     protected $description = 'Update all steam market csgo doppler items';
 
     public function handle(SteamMarketCsgoItemService $steamMarketCsgoItemService, SteamApi $steamApi): void
     {
+        $chunkId = (int) $this->option('chunk-id');
+        $chunkSize = (int) $this->option('chunk-size');
         $pageLimit = (int) $this->option('page-limit');
         $perPage = (int) $this->option('per-page');
         $requestDelay = (int) $this->option('request-delay');
 
-        $dopplerMap = $steamMarketCsgoItemService->getDopplerMap();
+        $chunk = array_chunk(
+            $steamMarketCsgoItemService->getDopplerMap(),
+            $chunkSize,
+            true
+        )[$chunkId] ?? [];
 
-        $bar = $this->output->createProgressBar(count($dopplerMap));
+        $bar = $this->output->createProgressBar(count($chunk));
 
         $this->output->info('Fetching items');
 
-        foreach ($dopplerMap as $hashName => $icons) {
+        foreach ($chunk as $hashName => $icons) {
             $allListings = [];
             $allAssets = [];
 
