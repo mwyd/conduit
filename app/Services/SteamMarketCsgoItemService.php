@@ -85,7 +85,7 @@ class SteamMarketCsgoItemService
             $icon = $asset['icon_url'];
             $iconLarge = $asset['icon_url_large'];
 
-            $phase = $icons[$icon] ?? $icon[$iconLarge] ?? null;
+            $phase = $icons[$icon] ?? $icons[$iconLarge] ?? null;
 
             if (!$phase) {
                 continue;
