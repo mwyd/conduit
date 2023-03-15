@@ -2,13 +2,13 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,23 +50,22 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-    }
 
-    public function render($request, Throwable $e): Response
-    {
-        if ($request->expectsJson()) {
+        $this->renderable(function (Throwable $e, Request $request) {
+            if (!$request->is('api/*')) {
+                return null;
+            }
+
             $message = match ($e::class) {
                 ValidationException::class => [$e->getMessage(), 422],
-                ModelNotFoundException::class => ['not_found', 404],
+                NotFoundHttpException::class => ['not_found', 404],
                 AuthenticationException::class => ['unauthorized', 401],
-                AuthorizationException::class => ['forbidden', 403],
+                AccessDeniedHttpException::class => ['forbidden', 403],
                 HttpException::class => [$e->getMessage(), $e->getStatusCode()],
                 default => [config('app.debug') ? $e->getMessage() : 'internal_error', 500]
             };
 
             return response()->apiFail(...$message);
-        }
-
-        return parent::render($request, $e);
+        });
     }
 }

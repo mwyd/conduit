@@ -2,9 +2,11 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GenerateShadowpayWeeklySoldItemSparklines;
 use App\Console\Commands\UpdateBuffMarketCsgoItems;
 use App\Console\Commands\UpdateSteamMarketCsgoDopplerItems;
 use App\Console\Commands\UpdateSteamMarketCsgoItems;
+use App\Models\ShadowpayWeeklySoldItem;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,40 +21,16 @@ class Kernel extends ConsoleKernel
             ->runInBackground();
 
         $schedule->command(UpdateSteamMarketCsgoItems::class, ['--ignore-dopplers'])
-            ->cron('0 4 * * *');
+            ->cron('0 4 * * *')
+            ->runInBackground();
 
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=0'])
-            ->cron('0 12 * * 1');
+        $this->registerDopplerUpdates($schedule);
 
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=1'])
-            ->cron('0 20 * * 1');
+        $schedule->command(GenerateShadowpayWeeklySoldItemSparklines::class)
+            ->cron('0 * * * *');
 
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=2'])
-            ->cron('0 12 * * 2');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=3'])
-            ->cron('0 20 * * 2');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=4'])
-            ->cron('0 12 * * 3');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=5'])
-            ->cron('0 20 * * 3');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=6'])
-            ->cron('0 12 * * 4');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=7'])
-            ->cron('0 20 * * 4');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=8'])
-            ->cron('0 12 * * 5');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=9'])
-            ->cron('0 20 * * 5');
-
-        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=10'])
-            ->cron('0 12 * * 6');
+        $schedule->call(fn () => ShadowpayWeeklySoldItem::old()->delete())
+            ->cron('0 10,22 * * *');
     }
 
     protected function commands(): void
@@ -60,5 +38,26 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+    private function registerDopplerUpdates(Schedule $schedule): void
+    {
+        $day = 1;
+
+        for ($i = 0; $i < 10; $i += 2) {
+            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=' . $i])
+                ->cron('0 12 * * ' . $day)
+                ->runInBackground();
+
+            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=' . $i + 1])
+                ->cron('0 20 * * ' . $day)
+                ->runInBackground();
+
+            $day++;
+        }
+
+        $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=10'])
+            ->cron('0 20 * * ' . $day)
+            ->runInBackground();
     }
 }
