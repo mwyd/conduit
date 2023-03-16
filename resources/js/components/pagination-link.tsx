@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import classNames from "classnames";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 const linkClass = (isActive: boolean, hasUrl: boolean) => classNames([
   'py-2',

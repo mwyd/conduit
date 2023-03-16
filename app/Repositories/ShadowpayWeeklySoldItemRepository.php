@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class ShadowpayWeeklySoldItemRepository
 {
-    private const TABLE = 'shadowpay_weekly_sold_items';
-
     public function getItemsCount(\DateTimeInterface $start, \DateTimeInterface $end): int
     {
         return $this->withDateRange($start, $end)->count();
@@ -36,12 +34,21 @@ class ShadowpayWeeklySoldItemRepository
 
     public function getItemsSummary(\DateTimeInterface $start, \DateTimeInterface $end, int $perPage): LengthAwarePaginator
     {
-        return DB::table(self::TABLE, 'sp')
+        $groupedItems = DB::table('shadowpay_weekly_sold_items')
             ->select([
-                'sp.hash_name',
-                DB::raw('count(sp.hash_name) as sold'),
-                DB::raw('avg(sp.discount) as discount'),
-                DB::raw('avg(sp.price) as price'),
+                'hash_name',
+                DB::raw('count(hash_name) as sold'),
+                DB::raw('avg(discount) as discount'),
+                DB::raw('avg(price) as price')
+            ])
+            ->where('sold_at', '>=', $start)
+            ->where('sold_at', '<=', $end)
+            ->groupBy('hash_name')
+            ->orderBy('sold', 'desc');
+
+        return DB::table('steam_market_csgo_items', 'sm')
+            ->select([
+                'sp.*',
                 'sm.name',
                 'sm.icon',
                 'sm.exterior',
@@ -51,8 +58,9 @@ class ShadowpayWeeklySoldItemRepository
                 'bm.price as buff_price',
                 'bm.good_id as good_id'
             ])
-            ->join(
-                'steam_market_csgo_items as sm',
+            ->joinSub(
+                $groupedItems,
+                'sp',
                 'sm.hash_name',
                 '=',
                 'sp.hash_name'
@@ -63,10 +71,6 @@ class ShadowpayWeeklySoldItemRepository
                 '=',
                 'sp.hash_name'
             )
-            ->where('sold_at', '>=', $start)
-            ->where('sold_at', '<=', $end)
-            ->groupBy('sp.hash_name')
-            ->orderBy('sold', 'desc')
             ->paginate($perPage);
     }
 
@@ -75,7 +79,7 @@ class ShadowpayWeeklySoldItemRepository
      */
     public function getItemsPriceHistory(): Collection
     {
-        $items = DB::table(self::TABLE, 'sp')
+        $items = DB::table('shadowpay_weekly_sold_items')
             ->select([
                 'hash_name',
                 'price',

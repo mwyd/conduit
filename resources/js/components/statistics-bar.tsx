@@ -11,13 +11,13 @@ export default function StatisticsBar({ statistics: { count, sum, discount, star
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
       <Statistic
         difference={count.difference}
-        title="Sold items"
+        title="Transactions"
       >
         {count.value}
       </Statistic>
       <Statistic
         difference={sum.difference}
-        title="Sold value"
+        title="Transactions value"
       >
         <UnitValue
           value={sum.value}

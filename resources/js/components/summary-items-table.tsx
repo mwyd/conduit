@@ -19,7 +19,8 @@ const sortButtonClass = (isSelected: boolean, isAscending: boolean) => className
 const columns: Column<SummaryItem>[] = [
   {
     name: '#',
-    accessor: 'position'
+    accessor: 'position',
+    className: 'w-12'
   },
   {
     name: 'Item',
@@ -27,27 +28,33 @@ const columns: Column<SummaryItem>[] = [
   },
   {
     name: 'Discount',
-    accessor: 'discount'
+    accessor: 'discount',
+    className: 'w-28'
   },
   {
     name: 'Price',
-    accessor: 'price'
+    accessor: 'price',
+    className: 'w-28'
   },
   {
     name: 'Steam price',
-    accessor: 'steamPrice'
+    accessor: 'steamPrice',
+    className: 'w-28'
   },
   {
     name: 'Buff price',
-    accessor: 'buffPrice'
+    accessor: 'buffPrice',
+    className: 'w-28'
   },
   {
     name: 'Sold',
-    accessor: 'sold'
+    accessor: 'sold',
+    className: 'w-16'
   },
   {
     name: 'Last 7 days',
-    accessor: 'sparkline'
+    accessor: 'sparkline',
+    className: 'w-[120px]'
   }
 ];
 
@@ -69,7 +76,10 @@ export default function SummaryItemsTable({ paginator: { data, links } }: Props)
           <thead className="sticky h-16 top-0 bg-white text-left dark:bg-neutral-900 z-10">
             <tr>
               {columns.map(column =>
-                <th key={column.accessor}>
+                <th
+                  key={column.accessor}
+                  className={column.className}
+                >
                   <button
                     className={sortButtonClass(sortedField === column.accessor, sortedAscending)}
                     type="button"
@@ -87,7 +97,7 @@ export default function SummaryItemsTable({ paginator: { data, links } }: Props)
               className="h-16 hover:bg-gray-50 dark:hover:bg-neutral-800 border-t border-gray-200 dark:border-neutral-700"
               key={i}
             >
-              <td className="w-12">
+              <td>
                 {item.position}
               </td>
               <td>
@@ -103,13 +113,13 @@ export default function SummaryItemsTable({ paginator: { data, links } }: Props)
                   isStattrak={item.isStattrak}
                 />
               </td>
-              <td className="w-28">
+              <td>
                 <UnitValue
                   value={item.discount}
                   unit="%"
                 />
               </td>
-              <td className="w-28">
+              <td>
                 <Anchor
                   href={`https://shadowpay.com/en/csgo-items?search=${item.hashName}`}
                   title="shadowpay-market"
@@ -121,7 +131,7 @@ export default function SummaryItemsTable({ paginator: { data, links } }: Props)
                   />
                 </Anchor>
               </td>
-              <td className="w-28">
+              <td>
                 <Anchor
                   href={`https://steamcommunity.com/market/listings/730/${item.hashName}`}
                   title="steam-market"
@@ -133,7 +143,7 @@ export default function SummaryItemsTable({ paginator: { data, links } }: Props)
                   />
                 </Anchor>
               </td>
-              <td className="w-28">
+              <td>
                 {item.buffPrice
                   ? (
                     <Anchor
@@ -150,10 +160,10 @@ export default function SummaryItemsTable({ paginator: { data, links } }: Props)
                   : '-'
                 }
               </td>
-              <td className="w-16">
+              <td>
                 {item.sold}
               </td>
-              <td className="w-[120px]">
+              <td>
                 <Image
                   src={`storage/sparkline/7d/${item.sparkline}.svg`}
                   alt="7d-sparkline"

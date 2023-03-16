@@ -1,5 +1,5 @@
 import { DefaultLayout } from "../layouts/default-layout";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { MarketStatistics } from "../types/statistics";
 import { SummaryItem } from "../types/items";
 import StatisticsBar from "../components/statistics-bar";
