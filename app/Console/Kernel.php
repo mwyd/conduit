@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(GenerateShadowpayWeeklySoldItemSparklines::class)
             ->cron('0 * * * *');
 
-        $schedule->call(fn () => ShadowpayWeeklySoldItem::old()->delete())
+        $schedule->call(fn () => ShadowpayWeeklySoldItem::outdated()->delete())
             ->cron('0 10,22 * * *');
     }
 

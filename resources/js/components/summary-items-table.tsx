@@ -1,5 +1,4 @@
 import { SummaryItem } from "../types/items";
-import React from "react";
 import Image from "./image";
 import CompactItemName from "./compact-item-name";
 import Column from "../types/table";
@@ -9,6 +8,7 @@ import Anchor from "./anchor";
 import UnitValue from "./unit-value";
 import useTableSorter from "../hooks/use-table-sorter";
 import classNames from "classnames";
+import NoData from "./no-data";
 
 const sortButtonClass = (isSelected: boolean, isAscending: boolean) => classNames([
   'w-full',
@@ -56,6 +56,10 @@ interface Props {
 }
 
 export default function SummaryItemsTable({ paginator: { data, links } }: Props) {
+  if (data.length == 0) {
+    return <NoData />;
+  }
+
   const { sortedField, sortedAscending, sortedItems, sortByField } = useTableSorter(data);
 
   return (

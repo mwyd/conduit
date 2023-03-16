@@ -5,6 +5,7 @@
         <meta name="description" content="Shadowpay market csgo statistics viewer">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Conduit</title>
+        <link rel="icon" type="image/x-icon" href="{{ url('favicon.ico') }}">
         @viteReactRefresh
         @vite('resources/js/app.tsx')
         @inertiaHead

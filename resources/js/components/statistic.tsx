@@ -1,4 +1,3 @@
-import { MarketStatistic } from "../types/statistics";
 import classNames from "classnames";
 import { formatNumber } from "../utils";
 import { ReactNode } from "react";
@@ -32,7 +31,7 @@ interface Props {
 export default function Statistic({ difference, title, children }: Props) {
   const isNegative = difference < 0;
 
-  const differenceText = formatNumber(difference) + (isNegative ? ' 🡦' : ' 🡥');
+  const differenceText = formatNumber(difference) + '%' + (isNegative ? ' 🡦' : ' 🡥');
 
   return (
     <div className={containerClass(isNegative)}>

@@ -19,9 +19,9 @@ class ShadowpayWeeklySoldItem extends Model
         'price' => 'float'
     ];
 
-    public function scopeOld(Builder $builder): void
+    public function scopeOutdated(Builder $builder): void
     {
-        $builder->where('sold_at', '<', now()->modify('-7D'));
+        $builder->where('sold_at', '<', now()->modify('-7 days'));
     }
 
     public function steamMarketCsgoItem(): BelongsTo

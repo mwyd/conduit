@@ -1,14 +1,13 @@
 import { PaginatorLink } from "../types/pagination";
-import React from "react";
 import PaginationLink from "./pagination-link";
-import { normalizePaginatorLinks } from "../utils";
+import { scalePaginatorLinks } from "../utils";
 
 interface Props {
   links: PaginatorLink[];
 }
 
 export default function Pagination({ links }: Props) {
-  const [sm, md] = normalizePaginatorLinks(links);
+  const [sm, md] = scalePaginatorLinks(links);
 
   const renderer = (link: PaginatorLink, index: number) => {
     return (
