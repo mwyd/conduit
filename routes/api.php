@@ -33,8 +33,7 @@ Route::prefix('v1')->group(function () {
 
     Route::controller(ShadowpaySoldItemController::class)->prefix('shadowpay-sold-items')->group(function () {
         Route::get('/', 'index');
-        Route::get('/{hash_name}', 'show');
-        Route::get('/{hash_name}/trend', 'showTrend');
+        Route::get('/{item}', 'show');
         Route::post('/', 'store')->middleware('auth:sanctum');
         Route::put('/{item}', 'update')->middleware('auth:sanctum');
         Route::delete('/{item}', 'destroy')->middleware('auth:sanctum');

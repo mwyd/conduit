@@ -14,7 +14,6 @@ class ShadowpaySaleGuardItemController extends Controller
     public function index(IndexShadowpaySaleGuardItemRequest $request): JsonResponse
     {
         $items = ShadowpaySaleGuardItem::where('user_id', $request->user()->id)
-            ->with('steamMarketCsgoItem')
             ->filter($request->validated())
             ->get();
 
@@ -33,8 +32,6 @@ class ShadowpaySaleGuardItemController extends Controller
      */
     public function show(ShadowpaySaleGuardItem $item): JsonResponse
     {
-        $item->load('steamMarketCsgoItem');
-
         $this->authorize('view', $item);
 
         return response()->apiSuccess($item, 200);

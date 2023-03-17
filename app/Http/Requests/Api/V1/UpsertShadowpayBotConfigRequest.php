@@ -15,8 +15,8 @@ class UpsertShadowpayBotConfigRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if ($this->config) {
-            $this->merge(['config' => json_decode($this->config, true)]);
+        if ($this->has('config')) {
+            $this->merge(['config' => json_decode($this->input('config'), true)]);
         }
     }
 

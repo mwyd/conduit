@@ -6,12 +6,9 @@ use App\Domain\Nbp\NbpApi;
 
 class ExchangeRateService
 {
-    private NbpApi $nbpApi;
-
-    public function __construct(NbpApi $nbpApi)
-    {
-        $this->nbpApi = $nbpApi;
-    }
+    public function __construct(
+        private readonly NbpApi $nbpApi
+    ) {}
 
     public function getExchangeRate(string $from, string $to): ?float
     {

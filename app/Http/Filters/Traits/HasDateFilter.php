@@ -10,11 +10,11 @@ trait HasDateFilter
 
     public function dateStart(Builder $builder, string $value): void
     {
-        $builder->whereDate($this->dateColumn, '>=', $value);
+        $builder->where($this->dateColumn, '>=', $value);
     }
 
     public function dateEnd(Builder $builder, string $value): void
     {
-        $builder->whereDate($this->dateColumn, '<=', $value);
+        $builder->where($this->dateColumn, '<=', $value);
     }
 }

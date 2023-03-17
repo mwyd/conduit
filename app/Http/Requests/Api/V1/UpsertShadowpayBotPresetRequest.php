@@ -15,8 +15,8 @@ class UpsertShadowpayBotPresetRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if ($this->preset) {
-            $this->merge(['preset' => json_decode($this->preset, true)]);
+        if ($this->has('preset')) {
+            $this->merge(['preset' => json_decode($this->input('preset'), true)]);
         }
     }
 

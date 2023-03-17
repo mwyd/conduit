@@ -5,12 +5,11 @@ namespace App\Http\Requests\Api\V1;
 use App\Http\Validation\HasOrderRules;
 use App\Http\Validation\HasPaginationRules;
 use App\Http\Validation\HasSearchRules;
-use App\Http\Validation\HasSteamMarketCsgoItemRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexShadowpaySaleGuardItemRequest extends FormRequest
 {
-    use HasSteamMarketCsgoItemRules, HasSearchRules, HasOrderRules, HasPaginationRules;
+    use HasSearchRules, HasOrderRules, HasPaginationRules;
 
     protected $stopOnFirstFailure = true;
 
@@ -19,15 +18,9 @@ class IndexShadowpaySaleGuardItemRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->prepareSteamMarketCsgoItemRules($this);
-    }
-
     public function rules(): array
     {
         return [
-            ...$this->steamMarketCsgoItemRules(),
             ...$this->searchRules(),
             ...$this->orderRules([
                 'created_at',

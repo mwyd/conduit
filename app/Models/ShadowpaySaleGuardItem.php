@@ -8,7 +8,6 @@ use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShadowpaySaleGuardItem extends Model implements Filterable
 {
@@ -32,11 +31,6 @@ class ShadowpaySaleGuardItem extends Model implements Filterable
         'min_price' => 'float',
         'max_price' => 'float'
     ];
-
-    public function steamMarketCsgoItem(): BelongsTo
-    {
-        return $this->belongsTo(SteamMarketCsgoItem::class, 'hash_name');
-    }
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
