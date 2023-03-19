@@ -16,9 +16,7 @@ let theme: Theme = {
 
 let listeners: ThemeListener[] = [];
 
-window.addEventListener('DOMContentLoaded', () => {
-  updateTheme(loadThemeMode());
-});
+updateTheme(loadThemeMode());
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
   if (localStorage.getItem('theme') !== 'auto') {

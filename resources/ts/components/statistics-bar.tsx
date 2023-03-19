@@ -1,6 +1,8 @@
 import { MarketStatistics } from "../types/statistics";
 import Statistic from "./statistic";
-import UnitValue from "./unit-value";
+import { FormattedNumber } from "react-intl";
+import Price from "./intl/price";
+import Percentage from "./intl/percentage";
 
 interface Props {
   statistics: MarketStatistics;
@@ -13,31 +15,25 @@ export default function StatisticsBar({ statistics: { count, sum, discount, star
         difference={count.difference}
         title="Transactions"
       >
-        {count.value}
+        <FormattedNumber value={count.value} />
       </Statistic>
       <Statistic
         difference={sum.difference}
         title="Transactions value"
       >
-        <UnitValue
-          value={sum.value}
-          unit="$"
-        />
+        <Price value={sum.value} />
       </Statistic>
       <Statistic
         difference={discount.difference}
         title="Average discount"
       >
-        <UnitValue
-          value={discount.value}
-          unit="%"
-        />
+        <Percentage value={discount.value} />
       </Statistic>
       <Statistic
         difference={star.difference}
         title="Star items"
       >
-        {star.value}
+        <FormattedNumber value={star.value} />
       </Statistic>
     </div>
   );

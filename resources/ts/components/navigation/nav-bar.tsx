@@ -1,4 +1,4 @@
-import ThemeSwitch from "./theme-switch";
+import ThemeSwitch from "../theme-switch";
 import Logo from "./logo";
 import DocsButton from "./docs-button";
 

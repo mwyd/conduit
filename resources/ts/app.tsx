@@ -1,6 +1,8 @@
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
+import { IntlProvider } from "react-intl";
+import { getLocale } from "./utils";
 
 import '../css/app.css';
 
@@ -12,7 +14,9 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <StrictMode>
-        <App {...props} />
+        <IntlProvider locale={getLocale('en')}>
+          <App {...props} />
+        </IntlProvider>
       </StrictMode>
     );
   },

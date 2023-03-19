@@ -1,10 +1,6 @@
 import { ThemeColor, ThemeMode } from "../types/theme";
 import { PaginatorLink } from "../types/pagination";
 
-export function formatNumber(value: number, precision: number = 2): string {
-  return value.toFixed(precision);
-}
-
 export function scalePaginatorLinks(links: PaginatorLink[]): [PaginatorLink[], PaginatorLink[]] {
   if (links.length < 1) {
     return [links, links];
@@ -24,21 +20,22 @@ export function scalePaginatorLinks(links: PaginatorLink[]): [PaginatorLink[], P
     const first = sm[0];
     const last = sm[sm.length - 1];
 
-    let left = sm[activeIndex - 1];
-    let right = sm[activeIndex + 1];
-
-    if (left == first) {
-      sm = [sm[activeIndex], right, sm[activeIndex + 2]];
-    } else if (right == last) {
-      sm = [sm[activeIndex - 2], left, sm[activeIndex]];
+    if (activeIndex - 1 == 0) {
+      sm = sm.slice(activeIndex, activeIndex + 3);
+    } else if (activeIndex + 1 == sm.length - 1) {
+      sm = sm.slice(activeIndex - 2, activeIndex + 1);
     } else {
-      sm = [left, sm[activeIndex], right];
+      sm = sm.slice(activeIndex - 1, activeIndex + 2);
     }
 
     sm = [first, ...sm, last];
   }
 
   return [sm, links];
+}
+
+export function getLocale(fallback: string): string {
+  return document.querySelector('html')?.getAttribute('lang') ?? fallback;
 }
 
 export function detectThemeColor(): ThemeColor {

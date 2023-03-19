@@ -1,6 +1,6 @@
-import { PaginatorLink } from "../types/pagination";
+import { PaginatorLink } from "../../types/pagination";
 import PaginationLink from "./pagination-link";
-import { scalePaginatorLinks } from "../utils";
+import { scalePaginatorLinks } from "../../utils";
 
 interface Props {
   links: PaginatorLink[];

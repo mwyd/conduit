@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     "./resources/views/**/*.blade.php",
-    "./resources/js/**/*.{js,jsx,ts,tsx}"
+    "./resources/ts/**/*.{js,jsx,ts,tsx}"
   ],
   darkMode: 'class',
   theme: {

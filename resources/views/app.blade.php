@@ -7,7 +7,7 @@
         <title>Conduit</title>
         <link rel="icon" type="image/x-icon" href="{{ url('favicon.ico') }}">
         @viteReactRefresh
-        @vite('resources/js/app.tsx')
+        @vite('resources/ts/app.tsx')
         @inertiaHead
     </head>
     <body>
