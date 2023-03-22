@@ -13,7 +13,7 @@ class ShadowpayWeeklySoldItemService
 
     public function getStatistics(): Collection
     {
-        $now = new \DateTimeImmutable('2023-03-01');
+        $now = new \DateTimeImmutable();
 
         $todayStats = $this->buildStatistics(
             $now->modify('-1 day'),
@@ -30,7 +30,7 @@ class ShadowpayWeeklySoldItemService
 
     public function getItemsSummary(array $filters): Collection
     {
-        $now = new \DateTimeImmutable('2023-03-01');
+        $now = new \DateTimeImmutable();
 
         $paginator = $this->shadowpayWeeklySoldItemRepository->getItemsSummary(
             $now->modify('-7 day'),

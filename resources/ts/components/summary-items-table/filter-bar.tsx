@@ -5,7 +5,10 @@ import { router } from "@inertiajs/react";
 export default function FilterBar() {
   const handleChange = debounce((value: string) => {
     router.reload({
-      data: { search: value || undefined },
+      data: {
+        page: 1,
+        search: value || undefined
+      },
       replace: true,
     });
   }, 400);
