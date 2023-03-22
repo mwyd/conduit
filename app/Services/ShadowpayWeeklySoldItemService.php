@@ -13,7 +13,7 @@ class ShadowpayWeeklySoldItemService
 
     public function getStatistics(): Collection
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('2023-03-01');
 
         $todayStats = $this->buildStatistics(
             $now->modify('-1 day'),
@@ -28,15 +28,16 @@ class ShadowpayWeeklySoldItemService
         return $todayStats->map(fn ($stat, $key) => $this->transformStatistic($stat, $yesterdayStats[$key]));
     }
 
-    public function getItemsSummary(): Collection
+    public function getItemsSummary(array $filters): Collection
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('2023-03-01');
 
         $paginator = $this->shadowpayWeeklySoldItemRepository->getItemsSummary(
             $now->modify('-7 day'),
             $now,
+            $filters,
             100
-        );
+        )->withQueryString();
 
         $offset = ($paginator->currentPage() - 1) * $paginator->perPage();
 

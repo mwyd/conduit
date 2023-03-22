@@ -32,7 +32,7 @@ class ShadowpayWeeklySoldItemRepository
             ->count();
     }
 
-    public function getItemsSummary(\DateTimeInterface $start, \DateTimeInterface $end, int $perPage): LengthAwarePaginator
+    public function getItemsSummary(\DateTimeInterface $start, \DateTimeInterface $end, array $filters, int $perPage): LengthAwarePaginator
     {
         $groupedItems = DB::table('shadowpay_weekly_sold_items')
             ->select([
@@ -45,6 +45,13 @@ class ShadowpayWeeklySoldItemRepository
             ->where('sold_at', '<=', $end)
             ->groupBy('hash_name')
             ->orderBy('sold', 'desc');
+
+        //TODO: move to external filter class
+        $search = $filters['search'] ?? '';
+
+        if ($search) {
+            $groupedItems->where('hash_name', 'like', "%{$search}%");
+        }
 
         return DB::table('steam_market_csgo_items', 'sm')
             ->select([

@@ -55,7 +55,7 @@ type Props = Omit<ReturnType<typeof useTableSorter<SummaryItem>>, 'sortedItems'>
 
 export default function TableHead({ sortedField, sortedAscending, sortByField }: Props) {
   return (
-    <thead className="sticky h-16 top-0 bg-white text-left dark:bg-neutral-900 z-10">
+    <thead className="sticky h-12 top-0 bg-white text-left dark:bg-neutral-900 z-10">
       <tr>
         {columns.map(column =>
           <th

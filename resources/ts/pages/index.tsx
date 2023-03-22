@@ -25,7 +25,7 @@ function Index({ statistics, paginator }: Props) {
       <div className="mt-4">
         <StatisticsBar statistics={statistics} />
       </div>
-      <div className="mt-4">
+      <div className="mt-8">
         <SummaryItemsTable paginator={paginator} />
       </div>
     </section>

@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { ReactNode } from "react";
 import Percentage from "./intl/percentage";
+import { VscArrowDown, VscArrowUp } from "react-icons/vsc";
 
 const containerClass = (isNegative: boolean) => classNames([
   'shadow',
@@ -16,8 +17,10 @@ const differenceClass = (isNegative: boolean) => classNames([
   'top-0',
   'right-0',
   'text-sm',
-  'after:ml-1',
-  isNegative ? "text-red-500 after:content-['🡦']" : "text-green-500 after:content-['🡥']"
+  'flex',
+  'items-center',
+  'gap-1',
+  isNegative ? 'text-red-500' : 'text-green-500'
 ]);
 
 interface Props {
@@ -28,6 +31,8 @@ interface Props {
 
 export default function Statistic({ difference, title, children }: Props) {
   const isNegative = difference < 0;
+
+  const Icon = isNegative ? VscArrowDown : VscArrowUp;
 
   return (
     <div className={containerClass(isNegative)}>
@@ -40,6 +45,7 @@ export default function Statistic({ difference, title, children }: Props) {
         </p>
         <span className={differenceClass(isNegative)}>
           <Percentage value={difference} />
+          <Icon size={16} />
         </span>
       </div>
     </div>

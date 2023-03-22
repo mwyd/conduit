@@ -3,17 +3,22 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\IndexRequest;
 use App\Services\ShadowpayWeeklySoldItemService;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class IndexController extends Controller
 {
-    public function __invoke(ShadowpayWeeklySoldItemService $shadowpayWeeklySoldItemService): Response
+    public function __construct(
+        private readonly ShadowpayWeeklySoldItemService $service
+    ) {}
+
+    public function __invoke(IndexRequest $request): Response
     {
         return Inertia::render('index', [
-            'statistics' => $shadowpayWeeklySoldItemService->getStatistics(),
-            'paginator' => $shadowpayWeeklySoldItemService->getItemsSummary()
+            'statistics' => $this->service->getStatistics(),
+            'paginator' => $this->service->getItemsSummary($request->validated())
         ]);
     }
 }
