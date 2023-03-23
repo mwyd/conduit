@@ -46,7 +46,6 @@ class ShadowpayWeeklySoldItemRepository
             ->groupBy('hash_name')
             ->orderBy('sold', 'desc');
 
-        //TODO: move to external filter class
         $search = $filters['search'] ?? '';
 
         if ($search) {

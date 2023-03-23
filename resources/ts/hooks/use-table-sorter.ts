@@ -17,9 +17,7 @@ export default function useTableSorter<T extends Object>(items: T[]) {
         return 0;
       }
 
-      const modifier = b[sortedField] < a[sortedField] ? 1 : -1;
-
-      return modifier * (sortedAscending ? 1 : -1);
+      return (b[sortedField] < a[sortedField] ? 1 : -1) * (sortedAscending ? 1 : -1);
     });
   }, [items, sortedField, sortedAscending]);
 

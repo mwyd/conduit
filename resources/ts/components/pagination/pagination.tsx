@@ -15,6 +15,7 @@ export default function Pagination({ links }: Props) {
         key={index}
         active={link.active}
         url={link.url}
+        preserveState={true}
       >
         {link.label}
       </PaginationLink>

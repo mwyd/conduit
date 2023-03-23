@@ -16,10 +16,12 @@ const linkClass = (isActive: boolean, hasUrl: boolean) => classNames([
 interface Props {
   active: boolean;
   url: string | null;
+  preserveState?: boolean;
+  preserveScroll?: boolean;
   children: ReactNode;
 }
 
-export default function PaginationLink({ active, url, children }: Props) {
+export default function PaginationLink({ active, url, preserveState, preserveScroll, children }: Props) {
   if (!url) {
     return (
       <button
@@ -35,6 +37,8 @@ export default function PaginationLink({ active, url, children }: Props) {
     <Link
       className={linkClass(active, true)}
       href={url}
+      preserveState={preserveState}
+      preserveScroll={preserveScroll}
     >
       {children}
     </Link>
