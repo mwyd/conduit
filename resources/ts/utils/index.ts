@@ -1,4 +1,3 @@
-import { ThemeColor, ThemeMode } from "../types/theme";
 import { PaginatorLink } from "../types/pagination";
 import { isEqual, reduce } from "lodash";
 
@@ -55,18 +54,4 @@ export function scalePaginatorLinks(links: PaginatorLink[]): [PaginatorLink[], P
 
 export function getLocale(fallback: string): string {
   return document.querySelector('html')?.getAttribute('lang') ?? fallback;
-}
-
-export function detectThemeColor(): ThemeColor {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-export function loadThemeMode(): ThemeMode {
-  let theme = localStorage.getItem('theme');
-
-  if (theme === null) {
-    theme = 'auto';
-  }
-
-  return theme as ThemeMode;
 }

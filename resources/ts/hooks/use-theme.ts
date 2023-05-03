@@ -1,6 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { Theme, ThemeMode, ThemeIcon, ThemeListener } from "../types/theme";
-import { detectThemeColor, loadThemeMode } from "../utils";
+import { Theme, ThemeMode, ThemeIcon, ThemeListener, ThemeColor } from "../types/theme";
 
 const themeCases: Record<ThemeMode, ThemeIcon> = {
   'light': "☀️",
@@ -74,4 +73,18 @@ function emitChange() {
   for (const listener of listeners) {
     listener();
   }
+}
+
+function detectThemeColor(): ThemeColor {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function loadThemeMode(): ThemeMode {
+  let theme = localStorage.getItem('theme');
+
+  if (theme === null) {
+    theme = 'auto';
+  }
+
+  return theme as ThemeMode;
 }

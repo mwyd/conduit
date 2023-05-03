@@ -1,6 +1,7 @@
 import ThemeSwitch from "../theme-switch";
 import Logo from "./logo";
 import DocsButton from "./docs-button";
+import CurrencySelect from "../currency-select";
 
 export default function NavBar() {
   return (
@@ -8,6 +9,7 @@ export default function NavBar() {
       <div className="max-w-7xl h-full mx-auto py-2 px-4 flex items-center justify-between">
         <Logo />
         <div className="flex">
+          <CurrencySelect />
           <ThemeSwitch />
           <DocsButton />
         </div>

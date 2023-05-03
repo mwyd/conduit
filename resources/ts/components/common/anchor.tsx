@@ -6,11 +6,12 @@ interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children: ReactNode;
 }
 
-export default function Anchor({ href, title, children, ...reset }: Props) {
+export default function Anchor({ href, title, children, rel = 'noreferrer', ...reset }: Props) {
   return (
     <a
       title={title}
       href={href}
+      rel={rel}
       {...reset}
     >
       {children}
