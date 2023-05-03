@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
-export default function useTableSorter<T extends Object>(items: T[]) {
+export default function useTableSorter<T extends object>(items: T[]) {
   const [sortedField, setSortedField] = useState<keyof T>();
 
   const [sortedAscending, setSortedAscending] = useState(true);
