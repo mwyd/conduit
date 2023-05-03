@@ -25,6 +25,12 @@ function filterSummaryItems(filters: Record<string, FormDataConvertable>) {
 
 const debouncedFilterSummaryItems = debounce(filterSummaryItems, 700);
 
+function getFilterIcon(isEmpty: boolean) {
+  const Icon = isEmpty ? VscFilter : VscFilterFilled;
+
+  return <Icon className="mx-auto" />;
+}
+
 const dateStart = dateFormat(Date.now() - time.day * 8, masks.isoDate);
 const dateEnd = dateFormat(Date.now() + time.day, masks.isoDate);
 
@@ -118,7 +124,7 @@ export default function SummaryItemsFiltersBar({ initialFilters }: Props) {
         onClick={handleModalOpen}
         variant="secondary"
       >
-        {isEmpty(changedFilters.current) ? <VscFilter className="mx-auto" /> : <VscFilterFilled className="mx-auto" />}
+        {getFilterIcon(isEmpty(changedFilters.current))}
       </Button>
       <Modal
         title="Filters"

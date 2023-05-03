@@ -1,13 +1,17 @@
-import classNames from "classnames";
 import Column from "../../types/table";
 import { SummaryItem } from "../../types/items";
 import useTableSorter from "../../hooks/use-table-sorter";
+import { VscTriangleDown, VscTriangleUp } from "react-icons/all";
 
-const sortButtonClass = (isSelected: boolean, isAscending: boolean) => classNames([
-  'w-full',
-  'text-left',
-  isSelected ? `after:ml-1 ${isAscending ? "after:content-['🠡']" : "after:content-['🠣']"}` : ''
-]);
+function getSortIcon(isSelected: boolean, isAscending: boolean) {
+  if (!isSelected) {
+    return null;
+  }
+
+  const Icon = isAscending ? VscTriangleUp : VscTriangleDown;
+
+  return <Icon className="inline-block ml-1" size={8} />;
+}
 
 const columns: Column<SummaryItem>[] = [
   {
@@ -63,11 +67,14 @@ export default function TableHead({ sortedField, sortedAscending, sortByField }:
             className={column.className}
           >
             <button
-              className={sortButtonClass(sortedField == column.accessor, sortedAscending)}
+              className="w-full text-left"
               type="button"
               onClick={() => sortByField(column.accessor)}
             >
-              {column.name}
+              <span>
+                {column.name}
+              </span>
+              {getSortIcon(sortedField == column.accessor, sortedAscending)}
             </button>
           </th>
         )}
