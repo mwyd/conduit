@@ -20,7 +20,7 @@ const differenceClass = (isNegative: boolean) => classNames([
   'flex',
   'items-center',
   'gap-1',
-  isNegative ? 'text-red-500' : 'text-green-500'
+  isNegative ? 'text-red-450' : 'text-green-450'
 ]);
 
 interface Props {

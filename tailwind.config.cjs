@@ -9,6 +9,10 @@ module.exports = {
     extend: {
       backgroundColor: {
         "semi-transparent": "rgba(0, 0, 0, 0.4)"
+      },
+      colors: {
+        "red-450": "#ed5565",
+        "green-450": "#57bd0f",
       }
     },
   },

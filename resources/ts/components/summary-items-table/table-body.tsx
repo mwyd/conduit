@@ -5,6 +5,11 @@ import Anchor from "../common/anchor";
 import Price from "../intl/price";
 import { SummaryItem } from "../../types/items";
 import { FormattedNumber } from "react-intl";
+import classNames from "classnames";
+
+const profitablePriceClass = (isProfitable : boolean) => classNames([
+  isProfitable ? 'text-green-450' : 'text-red-450'
+]);
 
 interface Props {
   items: SummaryItem[];
@@ -48,6 +53,7 @@ export default function TableBody({ items }: Props) {
           </td>
           <td>
             <Anchor
+              className={profitablePriceClass(item.steamPrice < item.price)}
               href={`https://steamcommunity.com/market/listings/730/${item.hashName}`}
               title="steam-market"
               target="_blank"
@@ -59,6 +65,7 @@ export default function TableBody({ items }: Props) {
             {item.buffPrice
               ? (
                 <Anchor
+                  className={profitablePriceClass(item.buffPrice > item.price)}
                   href={`https://buff.163.com/goods/${item.goodId}`}
                   title="buff-market"
                   target="_blank"
