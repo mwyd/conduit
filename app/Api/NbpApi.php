@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Nbp;
+namespace App\Api;
 
 use Illuminate\Support\Facades\Http;
 

@@ -17,8 +17,9 @@ class IndexController extends Controller
     public function __invoke(IndexRequest $request): Response
     {
         return Inertia::render('index', [
+            'filters' => fn () => $request->validated(),
             'statistics' => fn () => $this->service->getStatistics(),
-            'paginator' => $this->service->getItemsSummary($request->validated())
+            'paginator' => $this->service->getItemsSummary($request->validated()),
         ]);
     }
 }

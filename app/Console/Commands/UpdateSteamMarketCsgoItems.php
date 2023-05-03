@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Domain\Steam\SteamApi;
+use App\Api\SteamApi;
 use App\Services\SteamMarketCsgoItemService;
 use Illuminate\Console\Command;
 

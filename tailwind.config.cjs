@@ -6,7 +6,11 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        "semi-transparent": "rgba(0, 0, 0, 0.4)"
+      }
+    },
   },
   plugins: [],
 }

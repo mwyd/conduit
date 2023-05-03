@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Api;
 
-use App\Domain\Nbp\NbpApi;
+use App\Api\NbpApi;
 use Tests\TestCase;
 
 class NbpApiTest extends TestCase

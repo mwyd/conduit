@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Steam;
+namespace App\Api;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;

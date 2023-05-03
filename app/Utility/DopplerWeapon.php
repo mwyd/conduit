@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Steam;
+namespace App\Utility;
 
 final class DopplerWeapon
 {

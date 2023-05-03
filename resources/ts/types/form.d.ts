@@ -1,0 +1,1 @@
+export type FormDataConvertable = string | string[] | boolean | undefined;

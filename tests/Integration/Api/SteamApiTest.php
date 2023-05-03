@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Api;
 
-use App\Domain\Steam\SteamApi;
+use App\Api\SteamApi;
 use Tests\TestCase;
 
 class SteamApiTest extends TestCase

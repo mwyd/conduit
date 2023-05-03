@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Domain\Buff\BuffApi;
+use App\Api\BuffApi;
 use App\Models\BuffMarketCsgoItem;
 use App\Services\ExchangeRateService;
 use Illuminate\Console\Command;

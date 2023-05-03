@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Api;
 
-use App\Domain\Buff\BuffApi;
+use App\Api\BuffApi;
 use Tests\TestCase;
 
 class BuffApiTest extends TestCase

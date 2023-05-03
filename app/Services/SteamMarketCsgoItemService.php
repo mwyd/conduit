@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Domain\Steam\DopplerKnife;
-use App\Domain\Steam\DopplerWeapon;
 use App\Models\SteamMarketCsgoItem;
+use App\Utility\DopplerKnife;
+use App\Utility\DopplerWeapon;
 
 class SteamMarketCsgoItemService
 {

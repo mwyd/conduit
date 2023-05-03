@@ -1,17 +1,19 @@
 import { DefaultLayout } from "../layouts/default-layout";
 import { ReactNode } from "react";
 import { MarketStatistics } from "../types/statistics";
-import { SummaryItem } from "../types/items";
+import { SummaryItem, SummaryItemFilters } from "../types/items";
 import StatisticsBar from "../components/statistics-bar";
 import SummaryItemsTable from "../components/summary-items-table";
 import { Paginator } from "../types/pagination";
+import SummaryItemsFiltersBar from "../components/summary-items-filters-bar";
 
 interface Props {
+  filters: Partial<SummaryItemFilters>;
   statistics: MarketStatistics;
   paginator: Paginator<SummaryItem>;
 }
 
-function Index({ statistics, paginator }: Props) {
+function Index({ filters, statistics, paginator }: Props) {
   return (
     <section className="py-4">
       <header>
@@ -26,6 +28,7 @@ function Index({ statistics, paginator }: Props) {
         <StatisticsBar statistics={statistics} />
       </div>
       <div className="mt-8">
+        <SummaryItemsFiltersBar initialFilters={filters} />
         <SummaryItemsTable paginator={paginator} />
       </div>
     </section>

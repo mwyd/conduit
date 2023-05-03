@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Buff;
+namespace App\Api;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;

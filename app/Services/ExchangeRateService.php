@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Domain\Nbp\NbpApi;
+use App\Api\NbpApi;
 
 class ExchangeRateService
 {

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Filters\SummaryItemFilter;
 use App\Models\ShadowpayWeeklySoldItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -37,6 +38,7 @@ class ShadowpayWeeklySoldItemRepository
         $groupedItems = DB::table('shadowpay_weekly_sold_items')
             ->select([
                 'hash_name',
+                'sold_at',
                 DB::raw('count(hash_name) as sold'),
                 DB::raw('avg(discount) as discount'),
                 DB::raw('avg(price) as price')
@@ -46,13 +48,7 @@ class ShadowpayWeeklySoldItemRepository
             ->groupBy('hash_name')
             ->orderBy('sold', 'desc');
 
-        $search = $filters['search'] ?? '';
-
-        if ($search) {
-            $groupedItems->where('hash_name', 'like', "%{$search}%");
-        }
-
-        return DB::table('steam_market_csgo_items', 'sm')
+        $query = DB::table('steam_market_csgo_items', 'sm')
             ->select([
                 'sp.*',
                 'sm.name',
@@ -76,8 +72,9 @@ class ShadowpayWeeklySoldItemRepository
                 'bm.hash_name',
                 '=',
                 'sp.hash_name'
-            )
-            ->paginate($perPage);
+            );
+
+        return (new SummaryItemFilter())->apply($query, $filters)->paginate($perPage);
     }
 
     /**

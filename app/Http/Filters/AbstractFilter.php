@@ -2,13 +2,19 @@
 
 namespace App\Http\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Str;
 
 abstract class AbstractFilter
 {
     protected array $defaultFilters = [];
 
+    /**
+     * @template T of Builder
+     *
+     * @param T $builder
+     * @return T
+     */
     public function apply(Builder $builder, array $params): Builder
     {
         $filters = [...$this->defaultFilters, ...$params];
