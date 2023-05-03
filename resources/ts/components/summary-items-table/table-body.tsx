@@ -52,20 +52,10 @@ export default function TableBody({ items }: Props) {
             </Anchor>
           </td>
           <td>
-            <Anchor
-              className={profitablePriceClass(item.steamPrice < item.price)}
-              href={`https://steamcommunity.com/market/listings/730/${item.hashName}`}
-              title="steam-market"
-              target="_blank"
-            >
-              <Price value={item.steamPrice} />
-            </Anchor>
-          </td>
-          <td>
             {item.buffPrice
               ? (
                 <Anchor
-                  className={profitablePriceClass(item.buffPrice > item.price)}
+                  className={profitablePriceClass(item.buffPrice / item.price < 0.8)}
                   href={`https://buff.163.com/goods/${item.goodId}`}
                   title="buff-market"
                   target="_blank"
@@ -75,6 +65,16 @@ export default function TableBody({ items }: Props) {
               )
               : '-'
             }
+          </td>
+          <td>
+            <Anchor
+              className={profitablePriceClass(item.steamPrice < item.price)}
+              href={`https://steamcommunity.com/market/listings/730/${item.hashName}`}
+              title="steam-market"
+              target="_blank"
+            >
+              <Price value={item.steamPrice} />
+            </Anchor>
           </td>
           <td>
             <FormattedNumber value={item.sold} />

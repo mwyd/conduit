@@ -34,13 +34,13 @@ const columns: Column<SummaryItem>[] = [
     className: 'w-28'
   },
   {
-    name: 'Steam price',
-    accessor: 'steamPrice',
+    name: 'Buff price',
+    accessor: 'buffPrice',
     className: 'w-28'
   },
   {
-    name: 'Buff price',
-    accessor: 'buffPrice',
+    name: 'Steam price',
+    accessor: 'steamPrice',
     className: 'w-28'
   },
   {
