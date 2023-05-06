@@ -1,8 +1,8 @@
 import { createPortal } from "react-dom";
 import { ReactNode, useEffect } from "react";
 import { VscClose } from "react-icons/all";
-import { getYScrollBarWidth } from "../../utils";
-import Button from "./button";
+import { getYScrollBarWidth } from "@/utils";
+import Button from "@/components/common/button";
 
 interface Props {
   title: string;

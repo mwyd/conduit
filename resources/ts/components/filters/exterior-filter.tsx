@@ -1,6 +1,6 @@
-import FilterWrapper from "./filter-wrapper";
-import { Exterior } from "../../types/items";
-import CheckboxFilter from "./checkbox-filter";
+import FilterWrapper from "@/components/filters/filter-wrapper";
+import CheckboxFilter from "@/components/filters/checkbox-filter";
+import { Exterior } from "@/types/items";
 
 const exteriors: Record<Exterior, string> = {
   FN: 'Factory New',

@@ -1,4 +1,4 @@
-import useTheme, { toggleTheme } from "../hooks/use-theme";
+import useTheme, { toggleTheme } from "@/hooks/use-theme";
 
 export default function ThemeSwitch() {
   const { icon: themeIcon } = useTheme();

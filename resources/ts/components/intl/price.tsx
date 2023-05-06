@@ -1,5 +1,5 @@
 import { FormattedNumber } from "react-intl";
-import useCurrency from "../../hooks/use-currency";
+import useCurrency from "@/hooks/use-currency";
 
 interface Props {
   value: number;

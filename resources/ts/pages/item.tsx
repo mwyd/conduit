@@ -1,8 +1,8 @@
-import { DefaultLayout } from "../layouts/default-layout";
 import { ReactNode } from "react";
-import { Paginator } from "../types/pagination";
-import { SummaryItemHistory } from "../types/items";
-import SummaryItemHistoryTable from "../components/summary-item-history-table";
+import { Paginator } from "@/types/pagination";
+import { SummaryItemHistory } from "@/types/items";
+import { DefaultLayout } from "@/layouts/default-layout";
+import SummaryItemHistoryTable from "@/components/summary-item-history-table";
 
 interface Props {
   hashName: string;

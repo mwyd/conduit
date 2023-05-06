@@ -1,5 +1,5 @@
-import { PaginatorLink } from "../../types/pagination";
-import PaginationLink from "./pagination-link";
+import { PaginatorLink } from "@/types/pagination";
+import PaginationLink from "@/components/pagination/pagination-link";
 
 function scalePaginatorLinks(links: PaginatorLink[]): [PaginatorLink[], PaginatorLink[]] {
   if (links.length < 1) {

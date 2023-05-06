@@ -1,7 +1,7 @@
-import TableHead from "./table-head";
-import TableBody from "./table-body";
-import useTableSorter from "../../hooks/use-table-sorter";
-import { SummaryItemHistory } from "../../types/items";
+import TableHead from "@/components/summary-item-history-table/table-head";
+import TableBody from "@/components/summary-item-history-table/table-body";
+import useTableSorter from "@/hooks/use-table-sorter";
+import { SummaryItemHistory } from "@/types/items";
 
 interface Props {
   items: SummaryItemHistory[];

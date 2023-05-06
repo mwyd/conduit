@@ -1,8 +1,8 @@
-import { SummaryItem } from "../../types/items";
-import { Paginator } from "../../types/pagination";
-import Pagination from "../pagination/pagination";
-import Table from "./table";
-import NoData from "../common/no-data";
+import { SummaryItem } from "@/types/items";
+import { Paginator } from "@/types/pagination";
+import Pagination from "@/components/pagination/pagination";
+import Table from "@/components/summary-items-table/table";
+import NoData from "@/components/common/no-data";
 
 interface Props {
   paginator: Paginator<SummaryItem>;

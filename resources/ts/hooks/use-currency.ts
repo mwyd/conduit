@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { Currency, CurrencyListener } from "../types/currency";
+import { Currency, CurrencyListener } from "@/types/currency";
 
 let currency = loadCurrency();
 

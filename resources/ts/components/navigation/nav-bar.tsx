@@ -1,7 +1,7 @@
-import ThemeSwitch from "../theme-switch";
-import Logo from "./logo";
-import DocsButton from "./docs-button";
-import CurrencySelect from "../currency-select";
+import ThemeSwitch from "@/components/theme-switch";
+import Logo from "@/components/navigation/logo";
+import DocsButton from "@/components/navigation/docs-button";
+import CurrencySelect from "@/components/currency-select";
 
 export default function NavBar() {
   return (

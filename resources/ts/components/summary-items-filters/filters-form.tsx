@@ -1,10 +1,10 @@
-import RangeFilter from "../filters/range-filter";
-import ExteriorFilter from "../filters/exterior-filter";
-import FilterWrapper from "../filters/filter-wrapper";
-import CheckboxFilter from "../filters/checkbox-filter";
-import Button from "../common/button";
+import RangeFilter from "@/components/filters/range-filter";
+import ExteriorFilter from "@/components/filters/exterior-filter";
+import FilterWrapper from "@/components/filters/filter-wrapper";
+import CheckboxFilter from "@/components/filters/checkbox-filter";
+import Button from "@/components/common/button";
+import { SummaryItemFilters } from "@/types/items";
 import { VscCircleSlash } from "react-icons/vsc";
-import { SummaryItemFilters } from "../../types/items";
 import { FormEvent } from "react";
 
 interface Props {

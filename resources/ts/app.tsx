@@ -2,7 +2,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 import { IntlProvider } from "react-intl";
-import { getLocale } from "./utils";
+import { getLocale } from "@/utils";
 
 import '../css/app.css';
 

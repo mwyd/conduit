@@ -1,8 +1,8 @@
-import { SummaryItemHistory } from "../../types/items";
-import { Paginator } from "../../types/pagination";
-import Pagination from "../pagination/pagination";
-import Table from "./table";
-import NoData from "../common/no-data";
+import { SummaryItemHistory } from "@/types/items";
+import { Paginator } from "@/types/pagination";
+import Pagination from "@/components/pagination/pagination";
+import Table from "@/components/summary-item-history-table/table";
+import NoData from "@/components/common/no-data";
 
 interface Props {
   paginator: Paginator<SummaryItemHistory>;

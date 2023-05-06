@@ -1,6 +1,6 @@
-import Column from "../../types/table";
-import { SummaryItem } from "../../types/items";
-import useTableSorter from "../../hooks/use-table-sorter";
+import Column from "@/types/table";
+import { SummaryItem } from "@/types/items";
+import useTableSorter from "@/hooks/use-table-sorter";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/all";
 
 function getSortIcon(isSelected: boolean, isAscending: boolean) {

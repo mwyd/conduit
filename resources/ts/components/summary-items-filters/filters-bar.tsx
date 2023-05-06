@@ -1,15 +1,15 @@
 import { VscFilter, VscFilterFilled, VscSearch } from "react-icons/vsc";
 import { debounce, isEmpty } from "lodash";
-import Input from "../common/input";
-import Button from "../common/button";
 import { FormEvent, useRef, useState } from "react";
-import Modal from "../common/modal";
-import { objectDifference, time } from "../../utils";
-import { SummaryItemFilters } from "../../types/items";
-import { FormDataConvertable } from "../../types/form";
+import Input from "@/components/common/input";
+import Button from "@/components/common/button";
+import Modal from "@/components/common/modal";
+import SummaryItemsFiltersForm from "@/components/summary-items-filters/filters-form";
+import { objectDifference, time } from "@/utils";
+import { SummaryItemFilters } from "@/types/items";
+import { FormDataConvertable } from "@/types/form";
 import { router } from "@inertiajs/react";
 import dateFormat, { masks } from "dateformat";
-import SummaryItemsFiltersForm from "./filters-form";
 
 function filterSummaryItems(filters: Record<string, FormDataConvertable>) {
   router.get('/', filters, {

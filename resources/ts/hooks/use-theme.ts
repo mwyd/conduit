@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { Theme, ThemeMode, ThemeIcon, ThemeListener, ThemeColor } from "../types/theme";
+import { Theme, ThemeMode, ThemeIcon, ThemeListener, ThemeColor } from "@/types/theme";
 
 const themeCases: Record<ThemeMode, ThemeIcon> = {
   'light': "☀️",

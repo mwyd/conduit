@@ -1,5 +1,5 @@
-import Input from "../common/input";
-import FilterWrapper from "./filter-wrapper";
+import Input from "@/components/common/input";
+import FilterWrapper from "@/components/filters/filter-wrapper";
 
 interface Props {
   title: string;

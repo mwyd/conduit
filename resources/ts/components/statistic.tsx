@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { ReactNode } from "react";
-import Percentage from "./intl/percentage";
+import Percentage from "@/components/intl/percentage";
 import { VscArrowDown, VscArrowUp } from "react-icons/vsc";
 
 const containerClass = (isNegative: boolean) => classNames([

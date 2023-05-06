@@ -1,9 +1,9 @@
-import Image from "../common/image";
-import CompactItemName from "../compact-item-name";
-import Percentage from "../intl/percentage";
-import Anchor from "../common/anchor";
-import Price from "../intl/price";
-import { SummaryItem } from "../../types/items";
+import Image from "@/components/common/image";
+import CompactItemName from "@/components/compact-item-name";
+import Anchor from "@/components/common/anchor";
+import Percentage from "@/components/intl/percentage";
+import Price from "@/components/intl/price";
+import { SummaryItem } from "@/types/items";
 import { FormattedNumber } from "react-intl";
 import classNames from "classnames";
 import { Link } from "@inertiajs/react";

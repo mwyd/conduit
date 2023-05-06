@@ -1,5 +1,5 @@
 import { usePage } from "@inertiajs/react";
-import useCurrency, { updateCurrency } from "../hooks/use-currency";
+import useCurrency, { updateCurrency } from "@/hooks/use-currency";
 
 export default function CurrencySelect() {
   const { props: { currencies } } = usePage() as { props: { currencies: Record<string, number> } };

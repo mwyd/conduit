@@ -1,8 +1,8 @@
-import { MarketStatistics } from "../types/statistics";
-import Statistic from "./statistic";
+import { MarketStatistics } from "@/types/statistics";
+import Statistic from "@/components/statistic";
+import Price from "@/components/intl/price";
+import Percentage from "@/components/intl/percentage";
 import { FormattedNumber } from "react-intl";
-import Price from "./intl/price";
-import Percentage from "./intl/percentage";
 
 interface Props {
   statistics: MarketStatistics;

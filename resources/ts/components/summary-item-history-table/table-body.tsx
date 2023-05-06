@@ -1,6 +1,6 @@
-import Percentage from "../intl/percentage";
-import Price from "../intl/price";
-import { SummaryItemHistory } from "../../types/items";
+import Percentage from "@/components/intl/percentage";
+import Price from "@/components/intl/price";
+import { SummaryItemHistory } from "@/types/items";
 
 interface Props {
   items: SummaryItemHistory[];

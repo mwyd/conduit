@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Phase } from "../types/items";
+import { Phase } from "@/types/items";
 
 const phaseColor: Record<string, string> = {
   'Ruby': 'text-red-500',
