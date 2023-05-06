@@ -42,11 +42,11 @@ export function toggleTheme() {
 function updateTheme(mode: ThemeMode) {
   theme = {
     mode,
-    color: mode === 'auto' ? detectThemeColor() : mode,
+    color: mode == 'auto' ? detectThemeColor() : mode,
     icon: themeCases[mode]
   }
 
-  if (theme.color === 'dark') {
+  if (theme.color == 'dark') {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
@@ -82,7 +82,7 @@ function detectThemeColor(): ThemeColor {
 function loadThemeMode(): ThemeMode {
   let theme = localStorage.getItem('theme');
 
-  if (theme === null) {
+  if (theme == null) {
     theme = 'auto';
   }
 

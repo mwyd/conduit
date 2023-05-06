@@ -1,10 +1,10 @@
 import TableHead from "./table-head";
 import TableBody from "./table-body";
 import useTableSorter from "../../hooks/use-table-sorter";
-import { SummaryItem } from "../../types/items";
+import { SummaryItemHistory } from "../../types/items";
 
 interface Props {
-  items: SummaryItem[];
+  items: SummaryItemHistory[];
 }
 
 export default function Table({ items }: Props) {

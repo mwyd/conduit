@@ -5,7 +5,7 @@ import { SummaryItem, SummaryItemFilters } from "../types/items";
 import StatisticsBar from "../components/statistics-bar";
 import SummaryItemsTable from "../components/summary-items-table";
 import { Paginator } from "../types/pagination";
-import SummaryItemsFiltersBar from "../components/summary-items-filters-bar";
+import SummaryItemsFiltersBar from "../components/summary-items-filters/filters-bar";
 
 interface Props {
   filters: Partial<SummaryItemFilters>;
@@ -21,7 +21,7 @@ function Index({ filters, statistics, paginator }: Props) {
           Shadowpay market status
         </h1>
         <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm">
-          Statistics <b>aslo includes</b> transactions that have been marked as <i>cancelled</i>.
+          Statistics <b>also include</b> transactions that have been marked as <i>cancelled</i>.
         </p>
       </header>
       <div className="mt-4">

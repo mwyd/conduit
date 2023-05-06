@@ -1,11 +1,11 @@
-import { SummaryItem } from "../../types/items";
+import { SummaryItemHistory } from "../../types/items";
 import { Paginator } from "../../types/pagination";
 import Pagination from "../pagination/pagination";
 import Table from "./table";
 import NoData from "../common/no-data";
 
 interface Props {
-  paginator: Paginator<SummaryItem>;
+  paginator: Paginator<SummaryItemHistory>;
 }
 
 export default function SummaryItemsTable({ paginator }: Props) {

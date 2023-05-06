@@ -38,7 +38,7 @@ function emitChange() {
 function loadCurrency(): Currency {
   const currency = localStorage.getItem('currency');
 
-  if (currency === null) {
+  if (currency == null) {
     return { iso: 'USD', ratio: 1 }
   }
 

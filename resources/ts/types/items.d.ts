@@ -19,6 +19,15 @@ export interface SummaryItem {
   sparkline: string;
 }
 
+export interface SummaryItemHistory {
+  position: number,
+  transactionId: string;
+  discount: number;
+  price: number | null;
+  date: string;
+  dateDifference: string;
+}
+
 export interface SummaryItemFilters {
   search: string;
   price_from: string;

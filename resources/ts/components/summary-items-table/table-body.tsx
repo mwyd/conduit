@@ -6,6 +6,7 @@ import Price from "../intl/price";
 import { SummaryItem } from "../../types/items";
 import { FormattedNumber } from "react-intl";
 import classNames from "classnames";
+import { Link } from "@inertiajs/react";
 
 const profitablePriceClass = (isProfitable : boolean) => classNames([
   isProfitable ? 'text-green-450' : 'text-red-450'
@@ -27,17 +28,22 @@ export default function TableBody({ items }: Props) {
             {item.position}
           </td>
           <td>
-            <Image
-              className="w-12 inline-block mr-2"
-              src={`https://community.cloudflare.steamstatic.com/economy/image/${item.icon}`}
-              alt="item-image"
-            />
-            <CompactItemName
-              name={item.name}
-              exterior={item.exterior}
-              phase={item.phase}
-              isStattrak={item.isStattrak}
-            />
+            <Link
+              className="inline-block"
+              href={`/${item.hashName}`}
+            >
+              <Image
+                className="w-12 inline-block mr-2"
+                src={`https://community.cloudflare.steamstatic.com/economy/image/${item.icon}`}
+                alt="item-image"
+              />
+              <CompactItemName
+                name={item.name}
+                exterior={item.exterior}
+                phase={item.phase}
+                isStattrak={item.isStattrak}
+              />
+            </Link>
           </td>
           <td>
             <Percentage value={item.discount} />

@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
+use App\Repositories\ShadowpaySoldItemRepository;
 use App\Repositories\ShadowpayWeeklySoldItemRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-class ShadowpayWeeklySoldItemService
+class SummaryItemService
 {
     public function __construct(
-        private readonly ShadowpayWeeklySoldItemRepository $shadowpayWeeklySoldItemRepository
+        private readonly ShadowpayWeeklySoldItemRepository $shadowpayWeeklySoldItemRepository,
+        private readonly ShadowpaySoldItemRepository $shadowpaySoldItemRepository
     ) {}
 
     public function getStatistics(): Collection
@@ -44,6 +47,18 @@ class ShadowpayWeeklySoldItemService
         return collect([
             'links' => $paginator->onEachSide(2)->linkCollection(),
             'data' => $paginator->map(fn ($item, $index) => $this->transformSummaryItem($item, $index + $offset))
+        ]);
+    }
+
+    public function getItemHistory(string $hashName): Collection
+    {
+        $paginator = $this->shadowpaySoldItemRepository->getItemHistory($hashName, 100)->withQueryString();
+
+        $offset = ($paginator->currentPage() - 1) * $paginator->perPage();
+
+        return collect([
+            'links' => $paginator->onEachSide(2)->linkCollection(),
+            'data' => $paginator->map(fn ($item, $index) => $this->transformItemHistory($item, $index + $offset))
         ]);
     }
 
@@ -90,6 +105,18 @@ class ShadowpayWeeklySoldItemService
             'goodId' => $item->good_id,
             'sold' => $item->sold,
             'sparkline' => md5($item->hash_name)
+        ];
+    }
+
+    private function transformItemHistory(object $item, int $position): array
+    {
+        return [
+            'position' => $position + 1,
+            'transactionId' => $item->transaction_id,
+            'discount' => (int) $item->discount,
+            'price' => is_null($item->price) ? null : (float) $item->price,
+            'date' => $item->sold_at,
+            'dateDifference' => Carbon::create($item->sold_at)->diffForHumans()
         ];
     }
 }

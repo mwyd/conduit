@@ -32,7 +32,7 @@ class UpdateBuffMarketCsgoItems extends Command
             $response = $buffApi->getSellOrders($item->good_id);
 
             if (!$response->ok()) {
-                break;
+                continue;
             }
 
             $code = $response->json('code');
