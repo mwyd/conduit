@@ -29,7 +29,9 @@ function Index({ filters, statistics, paginator }: Props) {
       </div>
       <div className="mt-8">
         <SummaryItemsFiltersBar initialFilters={filters} />
-        <SummaryItemsTable paginator={paginator} />
+        <div className="mt-4">
+          <SummaryItemsTable paginator={paginator} />
+        </div>
       </div>
     </section>
   );
