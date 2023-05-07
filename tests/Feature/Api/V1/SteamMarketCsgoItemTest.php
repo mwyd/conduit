@@ -30,7 +30,7 @@ class SteamMarketCsgoItemTest extends TestCase
                 'success' => true,
                 'data' => usort($items, function ($a, $b) {
                     return $a['volume'] - $b['volume'];
-                })
+                }),
             ]);
     }
 
@@ -38,13 +38,13 @@ class SteamMarketCsgoItemTest extends TestCase
     {
         $item = SteamMarketCsgoItem::factory()->create();
 
-        $response = $this->json('GET', '/api/v1/steam-market-csgo-items/' . $item->hash_name);
+        $response = $this->json('GET', '/api/v1/steam-market-csgo-items/'.$item->hash_name);
 
         $response
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'data' => $item->toArray()
+                'data' => $item->toArray(),
             ]);
     }
 
@@ -52,13 +52,13 @@ class SteamMarketCsgoItemTest extends TestCase
     {
         $hashName = $this->faker()->words(3, true);
 
-        $response = $this->json('GET', '/api/v1/steam-market-csgo-items/' . $hashName);
+        $response = $this->json('GET', '/api/v1/steam-market-csgo-items/'.$hashName);
 
         $response
             ->assertStatus(404)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'not_found'
+                'error_message' => 'not_found',
             ]);
     }
 
@@ -76,7 +76,7 @@ class SteamMarketCsgoItemTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'success' => true,
-                'data' => $formData
+                'data' => $formData,
             ]);
     }
 
@@ -93,7 +93,7 @@ class SteamMarketCsgoItemTest extends TestCase
             ->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'forbidden'
+                'error_message' => 'forbidden',
             ]);
     }
 
@@ -107,13 +107,13 @@ class SteamMarketCsgoItemTest extends TestCase
             ['api:put']
         );
 
-        $response = $this->json('PUT', '/api/v1/steam-market-csgo-items/' . $item->hash_name, $formData);
+        $response = $this->json('PUT', '/api/v1/steam-market-csgo-items/'.$item->hash_name, $formData);
 
         $response
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'data' => $formData + $item->toArray()
+                'data' => $formData + $item->toArray(),
             ]);
     }
 
@@ -126,13 +126,13 @@ class SteamMarketCsgoItemTest extends TestCase
             User::factory()->create()
         );
 
-        $response = $this->json('PUT', '/api/v1/steam-market-csgo-items/' . $item->hash_name, $formData);
+        $response = $this->json('PUT', '/api/v1/steam-market-csgo-items/'.$item->hash_name, $formData);
 
         $response
             ->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'forbidden'
+                'error_message' => 'forbidden',
             ]);
     }
 
@@ -145,13 +145,13 @@ class SteamMarketCsgoItemTest extends TestCase
             ['api:delete']
         );
 
-        $response = $this->json('DELETE', '/api/v1/steam-market-csgo-items/' . $item->hash_name);
+        $response = $this->json('DELETE', '/api/v1/steam-market-csgo-items/'.$item->hash_name);
 
         $response
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'data' => $item->toArray()
+                'data' => $item->toArray(),
             ]);
     }
 
@@ -163,13 +163,13 @@ class SteamMarketCsgoItemTest extends TestCase
             User::factory()->create()
         );
 
-        $response = $this->json('DELETE', '/api/v1/steam-market-csgo-items/' . $item->hash_name);
+        $response = $this->json('DELETE', '/api/v1/steam-market-csgo-items/'.$item->hash_name);
 
         $response
             ->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'forbidden'
+                'error_message' => 'forbidden',
             ]);
     }
 
@@ -185,9 +185,9 @@ class SteamMarketCsgoItemTest extends TestCase
                     'icon_large' => '-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV092lnYmGmOHLPr7Vn35c18lwmO7Eu92milbl-BZsZGiiLNKdJFc8Mg7V_1S_xuzshZK97c_In3pruCJx4X_D30vgyZM--n4',
                     'name_color' => '#D2D2D2',
                     'type' => 'Covert Rifle',
-                    'collection' => 'The Danger Zone Collection'
-                ]
-            ]
+                    'collection' => 'The Danger Zone Collection',
+                ],
+            ],
         ];
     }
 
@@ -197,9 +197,9 @@ class SteamMarketCsgoItemTest extends TestCase
             'valid data' => [
                 [
                     'volume' => 21,
-                    'price' => 25.71
-                ]
-            ]
+                    'price' => 25.71,
+                ],
+            ],
         ];
     }
 }

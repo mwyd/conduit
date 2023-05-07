@@ -2,9 +2,9 @@
 
 namespace App\Http\Filters;
 
-use App\Http\Filters\Traits\HasSearchFilter;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
+use App\Http\Filters\Traits\HasSearchFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class SteamMarketCsgoItemFilter extends AbstractFilter
@@ -20,7 +20,7 @@ class SteamMarketCsgoItemFilter extends AbstractFilter
         $this->defaultFilters = [
             'offset' => null,
             'limit' => null,
-            'order_by' => 'volume'
+            'order_by' => 'volume',
         ];
     }
 

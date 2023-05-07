@@ -16,23 +16,24 @@ class BuffMarketCsgoItem extends Model implements Filterable
     public $incrementing = false;
 
     protected $keyType = 'string';
+
     protected $primaryKey = 'hash_name';
 
     protected $hidden = [
-        'created_at'
+        'created_at',
     ];
 
     protected $fillable = [
         'hash_name',
         'volume',
         'price',
-        'good_id'
+        'good_id',
     ];
 
     protected $casts = [
         'volume' => 'integer',
         'price' => 'float',
-        'good_id' => 'integer'
+        'good_id' => 'integer',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

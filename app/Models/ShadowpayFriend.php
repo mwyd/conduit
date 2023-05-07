@@ -15,17 +15,17 @@ class ShadowpayFriend extends Model implements Filterable
 
     protected $hidden = [
         'user_id',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $fillable = [
         'name',
         'shadowpay_user_id',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [
-        'shadowpay_user_id' => 'integer'
+        'shadowpay_user_id' => 'integer',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

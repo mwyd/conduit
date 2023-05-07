@@ -15,16 +15,16 @@ class ShadowpayBotPreset extends Model implements Filterable
 
     protected $hidden = [
         'user_id',
-        'created_at'
+        'created_at',
     ];
 
     protected $fillable = [
         'user_id',
-        'preset'
+        'preset',
     ];
 
     protected $casts = [
-        'preset' => 'array'
+        'preset' => 'array',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

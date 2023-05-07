@@ -1,15 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\V1\BuffMarketCsgoItemController;
+use App\Http\Controllers\Api\V1\CsgoRarePaintSeedItemController;
+use App\Http\Controllers\Api\V1\ShadowpayBotConfigController;
+use App\Http\Controllers\Api\V1\ShadowpayBotPresetController;
+use App\Http\Controllers\Api\V1\ShadowpayFriendController;
+use App\Http\Controllers\Api\V1\ShadowpaySaleGuardItemController;
+use App\Http\Controllers\Api\V1\ShadowpaySoldItemController;
+use App\Http\Controllers\Api\V1\SteamMarketCsgoItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\SteamMarketCsgoItemController;
-use App\Http\Controllers\Api\V1\ShadowpaySoldItemController;
-use App\Http\Controllers\Api\V1\ShadowpaySaleGuardItemController;
-use App\Http\Controllers\Api\V1\ShadowpayBotPresetController;
-use App\Http\Controllers\Api\V1\ShadowpayBotConfigController;
-use App\Http\Controllers\Api\V1\ShadowpayFriendController;
-use App\Http\Controllers\Api\V1\CsgoRarePaintSeedItemController;
-use App\Http\Controllers\Api\V1\BuffMarketCsgoItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,23 +49,23 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('shadowpay-sale-guard-items', ShadowpaySaleGuardItemController::class, [
-            'parameters' => ['shadowpay-sale-guard-items' => 'item']
+            'parameters' => ['shadowpay-sale-guard-items' => 'item'],
         ]);
 
         Route::apiResource('shadowpay-bot-presets', ShadowpayBotPresetController::class, [
-            'parameters' => ['shadowpay-bot-presets' => 'preset']
+            'parameters' => ['shadowpay-bot-presets' => 'preset'],
         ]);
 
         Route::apiResource('shadowpay-bot-configs', ShadowpayBotConfigController::class, [
-            'parameters' => ['shadowpay-bot-configs' => 'config']
+            'parameters' => ['shadowpay-bot-configs' => 'config'],
         ]);
 
         Route::apiResource('shadowpay-friends', ShadowpayFriendController::class, [
-            'parameters' => ['shadowpay-friends' => 'friend']
+            'parameters' => ['shadowpay-friends' => 'friend'],
         ]);
 
         Route::apiResource('csgo-rare-paint-seed-items', CsgoRarePaintSeedItemController::class, [
-            'parameters' => ['csgo-rare-paint-seed-items' => 'item']
+            'parameters' => ['csgo-rare-paint-seed-items' => 'item'],
         ]);
 
         Route::get('/user', function (Request $request) {

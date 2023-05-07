@@ -10,7 +10,7 @@ trait HasOrderRules
     {
         return [
             'order_by' => ['sometimes', Rule::in($orderBy)],
-            'order_dir' => ['sometimes', Rule::in(['desc', 'asc'])]
+            'order_dir' => ['sometimes', Rule::in(['desc', 'asc'])],
         ];
     }
 }

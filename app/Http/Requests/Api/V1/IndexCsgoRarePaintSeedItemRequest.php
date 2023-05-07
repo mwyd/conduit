@@ -27,9 +27,9 @@ class IndexCsgoRarePaintSeedItemRequest extends FormRequest
             ...$this->orderRules([
                 'name',
                 'paint_seed',
-                'updated_at'
+                'updated_at',
             ]),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

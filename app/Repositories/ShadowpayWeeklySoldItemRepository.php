@@ -41,7 +41,7 @@ class ShadowpayWeeklySoldItemRepository
                 'sold_at',
                 DB::raw('count(hash_name) as sold'),
                 DB::raw('avg(discount) as discount'),
-                DB::raw('avg(price) as price')
+                DB::raw('avg(price) as price'),
             ])
             ->where('sold_at', '>=', $start)
             ->where('sold_at', '<=', $end)
@@ -58,7 +58,7 @@ class ShadowpayWeeklySoldItemRepository
                 'sm.is_stattrak',
                 'sm.price as steam_price',
                 'bm.price as buff_price',
-                'bm.good_id as good_id'
+                'bm.good_id as good_id',
             ])
             ->joinSub(
                 $groupedItems,
@@ -86,7 +86,7 @@ class ShadowpayWeeklySoldItemRepository
             ->select([
                 'hash_name',
                 'price',
-                'sold_at'
+                'sold_at',
             ])
             ->orderBy('sold_at')
             ->get();

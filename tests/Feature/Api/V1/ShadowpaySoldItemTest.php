@@ -42,9 +42,9 @@ class ShadowpaySoldItemTest extends TestCase
                         'avg_suggested_price',
                         'avg_steam_price',
                         'last_sold',
-                        'steam_market_csgo_item'
-                    ]
-                ]
+                        'steam_market_csgo_item',
+                    ],
+                ],
             ]);
     }
 
@@ -52,7 +52,7 @@ class ShadowpaySoldItemTest extends TestCase
     {
         $item = ShadowpaySoldItem::factory()->create();
 
-        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/' . $item->hash_name);
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/'.$item->hash_name);
 
         $response
             ->assertStatus(200)
@@ -64,13 +64,13 @@ class ShadowpaySoldItemTest extends TestCase
     {
         $hashName = $this->faker()->words(3, true);
 
-        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/' . $hashName);
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/'.$hashName);
 
         $response
             ->assertStatus(404)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'not_found'
+                'error_message' => 'not_found',
             ]);
     }
 
@@ -78,7 +78,7 @@ class ShadowpaySoldItemTest extends TestCase
     {
         $item = ShadowpaySoldItem::factory()->create();
 
-        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/' . $item->hash_name . '/trend');
+        $response = $this->json('GET', '/api/v1/shadowpay-sold-items/'.$item->hash_name.'/trend');
 
         $response
             ->assertStatus(200)
@@ -89,9 +89,9 @@ class ShadowpaySoldItemTest extends TestCase
                         'date',
                         'sold',
                         'avg_sell_price',
-                        'avg_steam_price'
-                    ]
-                ]
+                        'avg_steam_price',
+                    ],
+                ],
             ]);
     }
 
@@ -109,7 +109,7 @@ class ShadowpaySoldItemTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'success' => true,
-                'data' => $formData
+                'data' => $formData,
             ]);
     }
 
@@ -126,7 +126,7 @@ class ShadowpaySoldItemTest extends TestCase
             ->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'forbidden'
+                'error_message' => 'forbidden',
             ]);
     }
 
@@ -140,13 +140,13 @@ class ShadowpaySoldItemTest extends TestCase
             ['api:put']
         );
 
-        $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/' . $item->transaction_id, $formData);
+        $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/'.$item->transaction_id, $formData);
 
         $response
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'data' => $formData + $item->toArray()
+                'data' => $formData + $item->toArray(),
             ]);
     }
 
@@ -159,13 +159,13 @@ class ShadowpaySoldItemTest extends TestCase
             User::factory()->create()
         );
 
-        $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/' . $item->transaction_id, $formData);
+        $response = $this->json('PUT', '/api/v1/shadowpay-sold-items/'.$item->transaction_id, $formData);
 
         $response
             ->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'forbidden'
+                'error_message' => 'forbidden',
             ]);
     }
 
@@ -178,13 +178,13 @@ class ShadowpaySoldItemTest extends TestCase
             ['api:delete']
         );
 
-        $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/' . $item->transaction_id);
+        $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/'.$item->transaction_id);
 
         $response
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'data' => $item->toArray()
+                'data' => $item->toArray(),
             ]);
     }
 
@@ -196,13 +196,13 @@ class ShadowpaySoldItemTest extends TestCase
             User::factory()->create()
         );
 
-        $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/' . $item->transaction_id);
+        $response = $this->json('DELETE', '/api/v1/shadowpay-sold-items/'.$item->transaction_id);
 
         $response
             ->assertStatus(403)
             ->assertJson([
                 'success' => false,
-                'error_message' => 'forbidden'
+                'error_message' => 'forbidden',
             ]);
     }
 
@@ -216,9 +216,9 @@ class ShadowpaySoldItemTest extends TestCase
                     'suggested_price' => 70.11,
                     'steam_price' => 100.22,
                     'discount' => 70,
-                    'sold_at' => date('Y-m-d H:i:s')
-                ]
-            ]
+                    'sold_at' => date('Y-m-d H:i:s'),
+                ],
+            ],
         ];
     }
 
@@ -229,9 +229,9 @@ class ShadowpaySoldItemTest extends TestCase
                 [
                     'suggested_price' => 50.11,
                     'steam_price' => 70.22,
-                    'discount' => 71
-                ]
-            ]
+                    'discount' => 71,
+                ],
+            ],
         ];
     }
 }

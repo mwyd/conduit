@@ -12,7 +12,7 @@ abstract class AbstractFilter
     /**
      * @template T of Builder
      *
-     * @param T $builder
+     * @param  T  $builder
      * @return T
      */
     public function apply(Builder $builder, array $params): Builder
@@ -22,7 +22,7 @@ abstract class AbstractFilter
         foreach ($filters as $name => $value) {
             $name = Str::camel($name);
 
-            if (!method_exists($this, $name)) {
+            if (! method_exists($this, $name)) {
                 continue;
             }
 

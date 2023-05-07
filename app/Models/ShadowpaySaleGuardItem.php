@@ -15,7 +15,7 @@ class ShadowpaySaleGuardItem extends Model implements Filterable
 
     protected $hidden = [
         'user_id',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $fillable = [
@@ -23,13 +23,13 @@ class ShadowpaySaleGuardItem extends Model implements Filterable
         'hash_name',
         'shadowpay_offer_id',
         'min_price',
-        'max_price'
+        'max_price',
     ];
 
     protected $casts = [
         'shadowpay_offer_id' => 'integer',
         'min_price' => 'float',
-        'max_price' => 'float'
+        'max_price' => 'float',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

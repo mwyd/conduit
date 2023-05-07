@@ -26,9 +26,9 @@ class IndexShadowpaySaleGuardItemRequest extends FormRequest
                 'created_at',
                 'shadowpay_offer_id',
                 'min_price',
-                'max_price'
+                'max_price',
             ]),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

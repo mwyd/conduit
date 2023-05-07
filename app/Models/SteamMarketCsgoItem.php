@@ -16,10 +16,11 @@ class SteamMarketCsgoItem extends Model implements Filterable
     public $incrementing = false;
 
     protected $keyType = 'string';
+
     protected $primaryKey = 'hash_name';
 
     protected $hidden = [
-        'created_at'
+        'created_at',
     ];
 
     protected $fillable = [
@@ -35,13 +36,13 @@ class SteamMarketCsgoItem extends Model implements Filterable
         'phase',
         'collection',
         'type',
-        'type_color'
+        'type_color',
     ];
 
     protected $casts = [
         'volume' => 'integer',
         'price' => 'float',
-        'is_stattrak' => 'boolean'
+        'is_stattrak' => 'boolean',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

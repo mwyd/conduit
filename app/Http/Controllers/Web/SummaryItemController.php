@@ -12,7 +12,8 @@ class SummaryItemController extends Controller
 {
     public function __construct(
         private readonly SummaryItemService $service
-    ) {}
+    ) {
+    }
 
     public function index(IndexRequest $request): Response
     {
@@ -27,7 +28,7 @@ class SummaryItemController extends Controller
     {
         return Inertia::render('item', [
             'hashName' => $hashName,
-            'paginator' => $this->service->getItemHistory($hashName)
+            'paginator' => $this->service->getItemHistory($hashName),
         ]);
     }
 }

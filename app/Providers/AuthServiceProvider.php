@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
-use App\Models\User;
 use App\Models\ShadowpayBotConfig;
 use App\Models\ShadowpayBotPreset;
 use App\Models\ShadowpayFriend;
 use App\Models\ShadowpaySaleGuardItem;
+use App\Models\User;
 use App\Policies\ShadowpayBotConfigPolicy;
 use App\Policies\ShadowpayBotPresetPolicy;
 use App\Policies\ShadowpayFriendPolicy;
 use App\Policies\ShadowpaySaleGuardItemPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         ShadowpayBotConfig::class => ShadowpayBotConfigPolicy::class,
         ShadowpayBotPreset::class => ShadowpayBotPresetPolicy::class,
         ShadowpayFriend::class => ShadowpayFriendPolicy::class,
-        ShadowpaySaleGuardItem::class => ShadowpaySaleGuardItemPolicy::class
+        ShadowpaySaleGuardItem::class => ShadowpaySaleGuardItemPolicy::class,
     ];
 
     /**

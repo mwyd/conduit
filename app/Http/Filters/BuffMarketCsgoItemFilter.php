@@ -2,9 +2,9 @@
 
 namespace App\Http\Filters;
 
-use App\Http\Filters\Traits\HasSearchFilter;
 use App\Http\Filters\Traits\HasOrderFilter;
 use App\Http\Filters\Traits\HasPaginationFilter;
+use App\Http\Filters\Traits\HasSearchFilter;
 
 class BuffMarketCsgoItemFilter extends AbstractFilter
 {
@@ -17,7 +17,7 @@ class BuffMarketCsgoItemFilter extends AbstractFilter
         $this->defaultFilters = [
             'offset' => null,
             'limit' => null,
-            'order_by' => 'good_id'
+            'order_by' => 'good_id',
         ];
     }
 }

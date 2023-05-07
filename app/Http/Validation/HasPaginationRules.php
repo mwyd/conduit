@@ -8,7 +8,7 @@ trait HasPaginationRules
     {
         return [
             'offset' => 'sometimes|integer|min:0',
-            'limit' => 'sometimes|integer|between:1,50'
+            'limit' => 'sometimes|integer|between:1,50',
         ];
     }
 }

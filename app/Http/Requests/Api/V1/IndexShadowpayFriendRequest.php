@@ -24,9 +24,9 @@ class IndexShadowpayFriendRequest extends FormRequest
             ...$this->searchRules(),
             ...$this->orderRules([
                 'created_at',
-                'name'
+                'name',
             ]),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

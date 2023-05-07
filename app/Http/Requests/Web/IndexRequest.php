@@ -25,7 +25,7 @@ class IndexRequest extends FormRequest
             'is_stattrak' => 'sometimes|boolean',
             'exteriors' => 'sometimes|array|max:5',
             ...$this->searchRules(),
-            ...$this->dateRules()
+            ...$this->dateRules(),
         ];
     }
 }

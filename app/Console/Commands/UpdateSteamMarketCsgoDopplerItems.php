@@ -42,7 +42,7 @@ class UpdateSteamMarketCsgoDopplerItems extends Command
             for ($i = 0; $i < $pageLimit; $i++) {
                 $response = $steamApi->getMarketItemListings($hashName, $i * $perPage, $perPage);
 
-                if (!$response->ok()) {
+                if (! $response->ok()) {
                     break;
                 }
 

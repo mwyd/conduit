@@ -18,7 +18,7 @@ class UpsertCsgoRarePaintSeedItemRequest extends FormRequest
         $rules = [
             'name' => 'required|string',
             'paint_seed' => 'required|integer',
-            'variant' => 'required|string'
+            'variant' => 'required|string',
         ];
 
         if ($this->method() == self::METHOD_PUT) {

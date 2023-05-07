@@ -31,7 +31,7 @@ class UpdateBuffMarketCsgoItems extends Command
         foreach ($items as $item) {
             $response = $buffApi->getSellOrders($item->good_id);
 
-            if (!$response->ok()) {
+            if (! $response->ok()) {
                 continue;
             }
 

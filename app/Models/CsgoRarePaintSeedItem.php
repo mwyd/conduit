@@ -14,17 +14,17 @@ class CsgoRarePaintSeedItem extends Model implements Filterable
     use HasFactory, HasSerializedDate;
 
     protected $hidden = [
-        'created_at'
+        'created_at',
     ];
 
     protected $fillable = [
         'name',
         'paint_seed',
-        'variant'
+        'variant',
     ];
 
     protected $casts = [
-        'paint_seed' => 'integer'
+        'paint_seed' => 'integer',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

@@ -21,7 +21,7 @@ class UpsertShadowpaySoldItemRequest extends FormRequest
             'discount' => 'required|integer',
             'suggested_price' => 'sometimes|nullable|numeric',
             'steam_price' => 'sometimes|nullable|numeric',
-            'sold_at' => 'required|date'
+            'sold_at' => 'required|date',
         ];
 
         if ($this->method() == self::METHOD_PUT) {

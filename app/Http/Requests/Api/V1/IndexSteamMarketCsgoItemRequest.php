@@ -48,9 +48,9 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
                 'hash_name',
                 'updated_at',
                 'volume',
-                'price'
+                'price',
             ]),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

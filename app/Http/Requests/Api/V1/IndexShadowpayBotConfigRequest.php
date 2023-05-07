@@ -21,7 +21,7 @@ class IndexShadowpayBotConfigRequest extends FormRequest
     {
         return [
             ...$this->orderRules(['updated_at']),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

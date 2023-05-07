@@ -8,7 +8,8 @@ class ExchangeRateService
 {
     public function __construct(
         private readonly NbpApi $nbpApi
-    ) {}
+    ) {
+    }
 
     public function getExchangeRate(string $from, string $to): ?float
     {

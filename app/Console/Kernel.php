@@ -49,19 +49,19 @@ class Kernel extends ConsoleKernel
         $day = 1;
 
         for ($i = 0; $i < 10; $i += 2) {
-            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=' . $i])
-                ->cron('0 12 * * ' . $day)
+            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id='.$i])
+                ->cron('0 12 * * '.$day)
                 ->runInBackground();
 
-            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=' . $i + 1])
-                ->cron('0 20 * * ' . $day)
+            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id='.$i + 1])
+                ->cron('0 20 * * '.$day)
                 ->runInBackground();
 
             $day++;
         }
 
         $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id=10'])
-            ->cron('0 20 * * ' . $day)
+            ->cron('0 20 * * '.$day)
             ->runInBackground();
     }
 }

@@ -32,13 +32,13 @@ class UpdateSteamMarketCsgoItems extends Command
         for ($i = $pageStart; $i < $pageLimit; $i++) {
             $response = $steamApi->getMarketListings($i * $perPage, $perPage);
 
-            if (!$response->ok()) {
+            if (! $response->ok()) {
                 continue;
             }
 
             $listings = $response->json('results');
 
-            if (!$listings) {
+            if (! $listings) {
                 continue;
             }
 

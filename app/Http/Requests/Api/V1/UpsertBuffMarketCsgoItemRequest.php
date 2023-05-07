@@ -19,7 +19,7 @@ class UpsertBuffMarketCsgoItemRequest extends FormRequest
             'hash_name' => 'required|string|unique:buff_market_csgo_items',
             'volume' => 'required|integer',
             'price' => 'required|numeric',
-            'good_id' => 'required|integer'
+            'good_id' => 'required|integer',
         ];
 
         if ($this->method() == self::METHOD_PUT) {

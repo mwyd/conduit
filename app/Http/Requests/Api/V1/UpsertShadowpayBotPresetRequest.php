@@ -23,7 +23,7 @@ class UpsertShadowpayBotPresetRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'preset' => 'required|array'
+            'preset' => 'required|array',
         ];
 
         if ($this->method() == self::METHOD_PUT) {

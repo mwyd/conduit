@@ -25,7 +25,7 @@ class IndexShadowpaySoldItemRequest extends FormRequest
             ...$this->searchRules(),
             ...$this->dateRules(),
             ...$this->orderRules(['sold_at']),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

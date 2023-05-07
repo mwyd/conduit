@@ -23,7 +23,7 @@ class UpsertShadowpayBotConfigRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'config' => 'required|array'
+            'config' => 'required|array',
         ];
 
         if ($this->method() == self::METHOD_PUT) {

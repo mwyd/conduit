@@ -33,7 +33,7 @@ class SteamMarketCsgoItemFactory extends Factory
             'phase' => null,
             'collection' => null,
             'type' => $this->faker->words(3, true),
-            'type_color' => $this->faker->hexColor()
+            'type_color' => $this->faker->hexColor(),
         ];
     }
 }

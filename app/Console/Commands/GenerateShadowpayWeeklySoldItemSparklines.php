@@ -34,7 +34,7 @@ class GenerateShadowpayWeeklySoldItemSparklines extends Command
                 ->render();
 
             Storage::put(
-                'public/sparkline/7d/' . md5($hashName) . '.svg',
+                'public/sparkline/7d/'.md5($hashName).'.svg',
                 $sparkline
             );
 

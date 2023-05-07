@@ -17,7 +17,7 @@ class ShadowpayFriendFilter extends AbstractFilter
         $this->defaultFilters = [
             'offset' => null,
             'limit' => null,
-            'order_by' => 'name'
+            'order_by' => 'name',
         ];
     }
 }

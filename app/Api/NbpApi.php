@@ -16,9 +16,9 @@ final class NbpApi
             return 1;
         }
 
-        $response = Http::get(self::URL . "/rates/A/{$iso}?format=json");
+        $response = Http::get(self::URL."/rates/A/{$iso}?format=json");
 
-        if (!$response->ok()) {
+        if (! $response->ok()) {
             return null;
         }
 

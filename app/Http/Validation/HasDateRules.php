@@ -8,7 +8,7 @@ trait HasDateRules
     {
         return [
             'date_start' => 'sometimes|date',
-            'date_end' => 'sometimes|date'
+            'date_end' => 'sometimes|date',
         ];
     }
 }

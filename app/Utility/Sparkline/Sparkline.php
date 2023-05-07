@@ -16,7 +16,8 @@ class Sparkline
 
     public function __construct(
         private readonly Collection $data
-    ) {}
+    ) {
+    }
 
     public static function make(Collection $data): self
     {
@@ -103,7 +104,7 @@ class Sparkline
 
         $reducedHeight = $this->height - ($this->strokeWidth / 2);
 
-        $points = $this->data->map(fn ($value, $i) => $i * $step . ' ' . $reducedHeight - $scale * ($value - $min));
+        $points = $this->data->map(fn ($value, $i) => $i * $step.' '.$reducedHeight - $scale * ($value - $min));
 
         return $this->renderTemplate(
             $points->join(',')
@@ -119,7 +120,7 @@ class Sparkline
 
         ob_start();
 
-        include __DIR__ . '/template.php';
+        include __DIR__.'/template.php';
 
         $data = ob_get_contents();
 

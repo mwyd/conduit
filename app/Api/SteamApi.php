@@ -11,7 +11,7 @@ final class SteamApi
 
     public function getMarketListings(int $start, int $count): Response
     {
-        return Http::get(self::URL . '/search/render/', [
+        return Http::get(self::URL.'/search/render/', [
             'query' => '',
             'start' => $start,
             'count' => $count,
@@ -20,18 +20,18 @@ final class SteamApi
             'sort_dir' => 'desc',
             'appid' => 730,
             'norender' => 1,
-            'l' => 'english'
+            'l' => 'english',
         ]);
     }
 
     public function getMarketItemListings(string $hashName, int $start, int $count): Response
     {
-        return Http::get(self::URL . "/listings/730/{$hashName}/render/", [
+        return Http::get(self::URL."/listings/730/{$hashName}/render/", [
             'query' => '',
             'start' => $start,
             'count' => $count,
             'currency' => 1,
-            'language' => 'english'
+            'language' => 'english',
         ]);
     }
 }

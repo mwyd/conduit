@@ -12,7 +12,8 @@ class SummaryItemService
     public function __construct(
         private readonly ShadowpayWeeklySoldItemRepository $shadowpayWeeklySoldItemRepository,
         private readonly ShadowpaySoldItemRepository $shadowpaySoldItemRepository
-    ) {}
+    ) {
+    }
 
     public function getStatistics(): Collection
     {
@@ -46,7 +47,7 @@ class SummaryItemService
 
         return collect([
             'links' => $paginator->onEachSide(2)->linkCollection(),
-            'data' => $paginator->map(fn ($item, $index) => $this->transformSummaryItem($item, $index + $offset))
+            'data' => $paginator->map(fn ($item, $index) => $this->transformSummaryItem($item, $index + $offset)),
         ]);
     }
 
@@ -58,7 +59,7 @@ class SummaryItemService
 
         return collect([
             'links' => $paginator->onEachSide(2)->linkCollection(),
-            'data' => $paginator->map(fn ($item, $index) => $this->transformItemHistory($item, $index + $offset))
+            'data' => $paginator->map(fn ($item, $index) => $this->transformItemHistory($item, $index + $offset)),
         ]);
     }
 
@@ -68,7 +69,7 @@ class SummaryItemService
             'count' => $this->shadowpayWeeklySoldItemRepository->getItemsCount($start, $end),
             'sum' => $this->shadowpayWeeklySoldItemRepository->getItemsValue($start, $end),
             'discount' => $this->shadowpayWeeklySoldItemRepository->getItemsAverageDiscount($start, $end),
-            'star' => $this->shadowpayWeeklySoldItemRepository->getStarItemsCount($start, $end)
+            'star' => $this->shadowpayWeeklySoldItemRepository->getStarItemsCount($start, $end),
         ]);
     }
 
@@ -76,7 +77,7 @@ class SummaryItemService
     {
         return [
             'value' => $fresh,
-            'difference' => $fresh != 0 ? 100 - ($old / $fresh * 100) : 0
+            'difference' => $fresh != 0 ? 100 - ($old / $fresh * 100) : 0,
         ];
     }
 
@@ -104,7 +105,7 @@ class SummaryItemService
             'buffPrice' => is_null($item->buff_price) ? null : (float) $item->buff_price,
             'goodId' => $item->good_id,
             'sold' => $item->sold,
-            'sparkline' => md5($item->hash_name)
+            'sparkline' => md5($item->hash_name),
         ];
     }
 
@@ -117,7 +118,7 @@ class SummaryItemService
             'price' => is_null($item->price) ? null : (float) $item->price,
             'steamPrice' => $item->steam_price,
             'date' => $item->sold_at,
-            'dateDifference' => Carbon::create($item->sold_at)->diffForHumans()
+            'dateDifference' => Carbon::create($item->sold_at)->diffForHumans(),
         ];
     }
 }

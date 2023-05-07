@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Traits\HasSerializedDate;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ShadowpayWeeklySoldItem extends Model
 {
@@ -15,7 +15,7 @@ class ShadowpayWeeklySoldItem extends Model
 
     protected $casts = [
         'discount' => 'integer',
-        'price' => 'float'
+        'price' => 'float',
     ];
 
     public function scopeOutdated(Builder $builder): void

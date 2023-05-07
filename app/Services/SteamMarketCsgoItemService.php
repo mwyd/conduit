@@ -20,7 +20,7 @@ class SteamMarketCsgoItemService
         'Holo' => ' (Holo)',
         'Gold' => ' (Gold)',
         'Blue' => ' (Blue)',
-        'Red' => ' (Red)'
+        'Red' => ' (Red)',
     ];
 
     private array $typeColors = [
@@ -39,7 +39,7 @@ class SteamMarketCsgoItemService
         'Distinguished' => '#4B69FF',
         'Industrial Grade' => '#5E98D9',
         'Consumer Grade' => '#B0C3D9',
-        'Base Grade' => '#B0C3D9'
+        'Base Grade' => '#B0C3D9',
     ];
 
     public function getDopplerMap(): array
@@ -72,7 +72,7 @@ class SteamMarketCsgoItemService
 
             $items[$id] = [
                 'sell_listings' => 1,
-                'sell_price' => ($listing['converted_price'] ?? 0) + ($listing['converted_fee'] ?? 0)
+                'sell_price' => ($listing['converted_price'] ?? 0) + ($listing['converted_fee'] ?? 0),
             ];
         }
 
@@ -87,7 +87,7 @@ class SteamMarketCsgoItemService
 
             $phase = $icons[$icon] ?? $icons[$iconLarge] ?? null;
 
-            if (!$phase) {
+            if (! $phase) {
                 continue;
             }
 
@@ -105,8 +105,8 @@ class SteamMarketCsgoItemService
                     'name_color' => $asset['name_color'],
                     'type' => $asset['type'],
                     'phase' => $phase,
-                    'descriptions' => $asset['descriptions']
-                ]
+                    'descriptions' => $asset['descriptions'],
+                ],
             ];
         }
 
@@ -136,10 +136,10 @@ class SteamMarketCsgoItemService
             'price' => $listing['sell_price'] / 100,
             'icon' => $assetDescription['icon_url'],
             'icon_large' => ($assetDescription['icon_url_large'] ?? '') ?: null,
-            'name_color' => '#' . $assetDescription['name_color'],
+            'name_color' => '#'.$assetDescription['name_color'],
             'type' => $assetDescription['type'],
             'phase' => $assetDescription['phase'] ?? null,
-            'collection' => $this->getCollectionFromDescriptions($assetDescription['descriptions'] ?? [])
+            'collection' => $this->getCollectionFromDescriptions($assetDescription['descriptions'] ?? []),
         ]);
     }
 
@@ -155,7 +155,7 @@ class SteamMarketCsgoItemService
             'exterior' => null,
             'name' => $requestData['hash_name'],
             'type_color' => $requestData['name_color'],
-            ...$requestData
+            ...$requestData,
         ];
 
         if (str_contains($data['name'], $this->stattrakKeyword)) {

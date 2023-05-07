@@ -25,7 +25,7 @@ class ShadowpaySoldItemFactory extends Factory
             'suggested_price' => $this->faker->randomFloat(2, 1, 100),
             'steam_price' => $this->faker->randomFloat(2, 1, 100),
             'discount' => $this->faker->numberBetween(0, 100),
-            'sold_at' => date('Y-m-d H:i:s')
+            'sold_at' => date('Y-m-d H:i:s'),
         ];
     }
 }

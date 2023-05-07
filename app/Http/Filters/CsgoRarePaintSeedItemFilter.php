@@ -20,7 +20,7 @@ class CsgoRarePaintSeedItemFilter extends AbstractFilter
         $this->defaultFilters = [
             'offset' => null,
             'limit' => null,
-            'order_by' => 'paint_seed'
+            'order_by' => 'paint_seed',
         ];
     }
 

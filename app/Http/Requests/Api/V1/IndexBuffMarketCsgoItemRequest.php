@@ -27,9 +27,9 @@ class IndexBuffMarketCsgoItemRequest extends FormRequest
                 'updated_at',
                 'volume',
                 'price',
-                'good_id'
+                'good_id',
             ]),
-            ...$this->paginationRules()
+            ...$this->paginationRules(),
         ];
     }
 }

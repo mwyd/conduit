@@ -22,7 +22,7 @@ class ShadowpaySoldItemFilter extends AbstractFilter
         $this->defaultFilters = [
             'offset' => null,
             'limit' => null,
-            'order_by' => 'sold_at'
+            'order_by' => 'sold_at',
         ];
     }
 }

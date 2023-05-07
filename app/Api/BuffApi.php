@@ -11,14 +11,14 @@ final class BuffApi
 
     public function getSellOrders(int $goodId): Response
     {
-        return Http::get(self::URL . '/market/goods/sell_order', [
+        return Http::get(self::URL.'/market/goods/sell_order', [
             'game' => 'csgo',
             'goods_id' => $goodId,
             'page_num' => 1,
             'sort_by' => 'default',
             'mode' => '',
             'allow_tradable_cooldown' => 1,
-            '_' => time()
+            '_' => time(),
         ]);
     }
 }
