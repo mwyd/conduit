@@ -9,6 +9,7 @@ class ShadowpaySoldItemRepository
 {
     public function getItemHistory(string $hashName, int $perPage): LengthAwarePaginator
     {
+        /** @phpstan-ignore-next-line */
         return DB::table('shadowpay_sold_items')
             ->select([
                 'transaction_id',

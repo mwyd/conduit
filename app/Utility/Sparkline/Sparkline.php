@@ -75,7 +75,7 @@ class Sparkline
         return $clone;
     }
 
-    public function getColor(): int
+    public function getColor(): string
     {
         return $this->color;
     }
@@ -104,7 +104,7 @@ class Sparkline
 
         $reducedHeight = $this->height - ($this->strokeWidth / 2);
 
-        $points = $this->data->map(fn ($value, $i) => $i * $step.' '.$reducedHeight - $scale * ($value - $min));
+        $points = $this->data->map(fn ($value, $i) => ($i * $step).' '.($reducedHeight - $scale * ($value - $min)));
 
         return $this->renderTemplate(
             $points->join(',')

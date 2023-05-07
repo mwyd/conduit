@@ -74,6 +74,7 @@ class ShadowpayWeeklySoldItemRepository
                 'sp.hash_name'
             );
 
+        /** @phpstan-ignore-next-line */
         return (new SummaryItemFilter())->apply($query, $filters)->paginate($perPage);
     }
 

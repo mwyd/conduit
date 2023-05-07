@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
                 ->cron('0 12 * * '.$day)
                 ->runInBackground();
 
-            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id='.$i + 1])
+            $schedule->command(UpdateSteamMarketCsgoDopplerItems::class, ['--chunk-id='.($i + 1)])
                 ->cron('0 20 * * '.$day)
                 ->runInBackground();
 
