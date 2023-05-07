@@ -24,7 +24,7 @@ export interface SummaryItemHistory {
   transactionId: string;
   discount: number;
   price: number | null;
-  steamPrice: number;
+  steamPrice: number | null;
   date: string;
   dateDifference: string;
 }

@@ -26,7 +26,7 @@ export default function Row({ item }: Props) {
       <td className="px-2">
         {item.price
           ? (
-            <span className={profitablePriceClass(item.steamPrice * 0.95 < item.price)}>
+            <span className={profitablePriceClass(item.steamPrice != null && item.steamPrice * 0.95 < item.price)}>
               <Price value={item.price} />
             </span>
           )
@@ -34,7 +34,10 @@ export default function Row({ item }: Props) {
         }
       </td>
       <td className="px-2">
-        <Price value={item.steamPrice} />
+        {item.steamPrice
+          ? <Price value={item.steamPrice} />
+          : '-'
+        }
       </td>
       <td className="pl-2">
         <span
