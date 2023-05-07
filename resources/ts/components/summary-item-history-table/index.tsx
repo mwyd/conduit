@@ -28,6 +28,11 @@ const columns: Column<SummaryItemHistory>[] = [
     className: 'w-28 px-2'
   },
   {
+    name: 'Steam price',
+    accessor: 'steamPrice',
+    className: 'w-28 px-2'
+  },
+  {
     name: 'Date',
     accessor: 'date',
     className: 'w-28 pl-2'

@@ -1,6 +1,11 @@
 import { SummaryItemHistory } from "@/types/items";
 import Percentage from "@/components/intl/percentage";
 import Price from "@/components/intl/price";
+import classNames from "classnames";
+
+const profitablePriceClass = (isProfitable: boolean) => classNames([
+  isProfitable ? 'text-green-450' : 'text-red-450'
+]);
 
 interface Props {
   item: SummaryItemHistory;
@@ -20,9 +25,16 @@ export default function Row({ item }: Props) {
       </td>
       <td className="px-2">
         {item.price
-          ? <Price value={item.price} />
+          ? (
+            <span className={profitablePriceClass(item.steamPrice * 0.95 < item.price)}>
+              <Price value={item.price} />
+            </span>
+          )
           : '-'
         }
+      </td>
+      <td className="px-2">
+        <Price value={item.steamPrice} />
       </td>
       <td className="pl-2">
         <span

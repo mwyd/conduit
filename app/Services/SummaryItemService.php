@@ -115,6 +115,7 @@ class SummaryItemService
             'transactionId' => $item->transaction_id,
             'discount' => (int) $item->discount,
             'price' => is_null($item->price) ? null : (float) $item->price,
+            'steamPrice' => $item->steam_price,
             'date' => $item->sold_at,
             'dateDifference' => Carbon::create($item->sold_at)->diffForHumans()
         ];

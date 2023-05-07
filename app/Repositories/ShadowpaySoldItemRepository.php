@@ -14,6 +14,7 @@ class ShadowpaySoldItemRepository
                 'transaction_id',
                 'discount',
                 DB::raw('suggested_price * (100 - discount) / 100 as price'),
+                'steam_price',
                 'sold_at'
             ])
             ->where('hash_name', '=', $hashName)

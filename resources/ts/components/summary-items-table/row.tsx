@@ -69,7 +69,7 @@ export default function Row({ item }: Props) {
       </td>
       <td className="px-2">
         <Anchor
-          className={profitablePriceClass(item.steamPrice < item.price)}
+          className={profitablePriceClass(item.steamPrice * 0.95 < item.price)}
           href={`https://steamcommunity.com/market/listings/730/${item.hashName}`}
           title="steam-market"
           target="_blank"
