@@ -13,7 +13,7 @@ import dateFormat, { masks } from "dateformat";
 
 function filterSummaryItems(filters: Record<string, FormDataConvertable>) {
   router.get('/', filters, {
-    only: ['paginator'],
+    only: ['paginator', 'filters'],
     preserveState: true,
     preserveScroll: true,
     replace: true
@@ -125,7 +125,7 @@ export default function SummaryItemsFiltersBar({ initialFilters }: Props) {
       <Modal
         title="Filters"
         isOpen={isModalOpen}
-        handleClose={handleModalClose}
+        onClose={handleModalClose}
       >
         <SummaryItemsFiltersForm
           dateStart={dateStart}

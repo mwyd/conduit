@@ -7,11 +7,11 @@ import Button from "@/components/common/button";
 interface Props {
   title: string;
   isOpen: boolean;
-  handleClose: () => void;
+  onClose: () => void;
   children: ReactNode;
 }
 
-export default function Modal({ title, isOpen, handleClose, children }: Props) {
+export default function Modal({ title, isOpen, onClose, children }: Props) {
   useEffect(() => {
     const body = document.body;
 
@@ -34,7 +34,7 @@ export default function Modal({ title, isOpen, handleClose, children }: Props) {
         <div className="flex items-center justify-between gap-2 font-semibold">
           <h1>{title}</h1>
           <Button
-            onClick={handleClose}
+            onClick={onClose}
             variant="transparent"
             title="Close"
           >
