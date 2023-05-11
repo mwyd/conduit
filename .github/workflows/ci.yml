@@ -1,18 +1,38 @@
-name: 'backend'
+name: 'ci'
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
+  workflow_call:
 
 permissions:
   contents: read
 
 jobs:
-  quality:
+  frontend:
+    runs-on: ubuntu-latest
+    env:
+      node-version: '18'
+    steps:
+      - name: Checkout to the repository
+        uses: actions/checkout@v3
+
+      - name: Set node version to ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run eslint
+        run: npm run lint
+
+      - name: Create build
+        run: npm run build
+
+  backend:
     runs-on: ubuntu-latest
     env:
       php-version: '8.1'
