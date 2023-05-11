@@ -7,6 +7,7 @@ import { getLocale } from "@/utils";
 import '../css/app.css';
 
 createInertiaApp({
+  title: title => `Conduit - ${title}`,
   resolve: name => {
     const pages = import.meta.glob('./pages/**/*.tsx', { eager: true });
     return pages[`./pages/${name}.tsx`];

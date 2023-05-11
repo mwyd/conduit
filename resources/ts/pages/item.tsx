@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Head } from "@inertiajs/react";
 import { Paginator } from "@/types/pagination";
 import { SummaryItemHistory } from "@/types/items";
 import { DefaultLayout } from "@/layouts/default-layout";
@@ -12,6 +13,7 @@ interface Props {
 function Item({ hashName, paginator }: Props) {
   return (
     <section className="py-4">
+      <Head title={hashName} />
       <header>
         <h1 className="text-2xl font-semibold">
           {hashName}

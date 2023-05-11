@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Head } from "@inertiajs/react";
 import { MarketStatistics } from "@/types/statistics";
 import { SummaryItem, SummaryItemFilters } from "@/types/items";
 import { Paginator } from "@/types/pagination";
@@ -16,6 +17,7 @@ interface Props {
 function Index({ filters, statistics, paginator }: Props) {
   return (
     <section className="py-4">
+      <Head title="Shadowpay market status" />
       <header>
         <h1 className="text-2xl font-semibold">
           Shadowpay market status
