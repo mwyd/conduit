@@ -161,12 +161,12 @@ class SteamMarketCsgoItemService
             ...$requestData,
         ];
 
-        if (str_starts_with($data['name'], $this->stattrakKeyword)) {
+        if (str_contains($data['name'], $this->stattrakKeyword)) {
             $data['name'] = str_replace($this->stattrakKeyword, '', $data['name']);
             $data['is_stattrak'] = true;
         }
 
-        if (str_starts_with($data['name'], $this->souvenirKeyword)) {
+        if (str_contains($data['name'], $this->souvenirKeyword)) {
             $data['name'] = str_replace($this->souvenirKeyword, '', $data['name']);
             $data['is_souvenir'] = true;
         }
