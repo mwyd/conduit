@@ -27,6 +27,7 @@ class SteamMarketCsgoItemFactory extends Factory
             'icon' => Str::random(64),
             'icon_large' => Str::random(64),
             'is_stattrak' => $this->faker->numberBetween(0, 1),
+            'is_souvenir' => $this->faker->numberBetween(0, 1),
             'name' => $this->faker->words(2, true),
             'name_color' => $this->faker->hexColor(),
             'exterior' => null,

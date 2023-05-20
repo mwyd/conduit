@@ -40,7 +40,8 @@ const defaultFilters: SummaryItemFilters = {
   date_start: dateStart,
   date_end: dateEnd,
   exteriors: [],
-  is_stattrak: '0'
+  is_stattrak: '0',
+  is_souvenir: '0'
 }
 
 interface Props {

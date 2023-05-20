@@ -37,6 +37,7 @@ export default function Row({ item }: Props) {
             exterior={item.exterior}
             phase={item.phase}
             isStattrak={item.isStattrak}
+            isSouvenir={item.isSouvenir}
           />
         </Link>
       </td>

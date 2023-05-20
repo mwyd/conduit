@@ -23,6 +23,7 @@ class IndexRequest extends FormRequest
             'quantity_from' => 'sometimes|integer',
             'quantity_to' => 'sometimes|integer',
             'is_stattrak' => 'sometimes|boolean',
+            'is_souvenir' => 'sometimes|boolean',
             'exteriors' => 'sometimes|array|max:5',
             ...$this->searchRules(),
             ...$this->dateRules(),

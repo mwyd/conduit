@@ -10,6 +10,7 @@ export interface SummaryItem {
   exterior: Exterior | null;
   phase: Phase | null;
   isStattrak: boolean;
+  isSouvenir: boolean;
   discount: number;
   price: number;
   steamPrice: number;
@@ -39,4 +40,5 @@ export interface SummaryItemFilters {
   date_end: string;
   exteriors: string[];
   is_stattrak: string;
+  is_souvenir: string;
 }

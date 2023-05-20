@@ -67,6 +67,13 @@ export default function SummaryItemsFiltersForm({ dateStart, filters, onFilterCh
               onChange={() => onFilterChange('is_stattrak', filters.is_stattrak == '0' ? '1' : '0')}
             />
           </div>
+          <div className="my-1">
+            <CheckboxFilter
+              label="Souvenir"
+              value={filters.is_souvenir == '1'}
+              onChange={() => onFilterChange('is_souvenir', filters.is_souvenir == '0' ? '1' : '0')}
+            />
+          </div>
         </FilterWrapper>
       </div>
       <div className="mt-4">

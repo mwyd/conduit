@@ -42,6 +42,11 @@ class SummaryItemFilter extends AbstractFilter
         $builder->where('sm.is_stattrak', $value);
     }
 
+    public function isSouvenir(Builder $builder, bool $value): void
+    {
+        $builder->where('sm.is_souvenir', $value);
+    }
+
     public function exteriors(Builder $builder, array $value): void
     {
         $builder->whereIn('sm.exterior', $value);

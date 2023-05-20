@@ -56,6 +56,7 @@ class ShadowpayWeeklySoldItemRepository
                 'sm.exterior',
                 'sm.phase',
                 'sm.is_stattrak',
+                'sm.is_souvenir',
                 'sm.price as steam_price',
                 'bm.price as buff_price',
                 'bm.good_id as good_id',

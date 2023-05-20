@@ -26,6 +26,10 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
             $params['is_stattrak'] = $this->boolean('is_stattrak');
         }
 
+        if ($this->has('is_souvenir')) {
+            $params['is_souvenir'] = $this->boolean('is_souvenir');
+        }
+
         if ($this->has('exteriors')) {
             $params['exteriors'] = explode(',', $this->input('exteriors'));
         }
@@ -41,6 +45,7 @@ class IndexSteamMarketCsgoItemRequest extends FormRequest
     {
         return [
             'is_stattrak' => 'sometimes|boolean',
+            'is_souvenir' => 'sometimes|boolean',
             'exteriors' => 'sometimes|array|max:5',
             'tags' => 'sometimes|array|max:3',
             ...$this->searchRules(),

@@ -18,26 +18,44 @@ interface Props {
   exterior: string | null;
   phase: Phase | null;
   isStattrak: boolean;
+  isSouvenir: boolean;
 }
 
-export default function CompactItemName({ name, exterior, phase, isStattrak }: Props) {
+export default function CompactItemName({ name, exterior, phase, isStattrak, isSouvenir }: Props) {
   return (
     <span className="align-middle text-xs">
       <span className="dark:text-gray-200">
         {name}
       </span>
       {exterior && (
-        <span className="ml-2 text-gray-400">
+        <span
+          className="ml-2 text-gray-400"
+          title="Exterior"
+        >
           {exterior}
         </span>
       )}
       {isStattrak && (
-        <span className="ml-2 text-orange-400">
+        <span
+          className="ml-2 text-orange-400"
+          title="Stattrak"
+        >
           ST
         </span>
       )}
+      {isSouvenir && (
+        <span
+          className="ml-2 text-amber-400"
+          title="Souvenir"
+        >
+          SV
+        </span>
+      )}
       {phase && (
-        <span className={phaseClass(phase)}>
+        <span
+          className={phaseClass(phase)}
+          title="Phase"
+        >
           {phase}
         </span>
       )}

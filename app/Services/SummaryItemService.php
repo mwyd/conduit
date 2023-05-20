@@ -99,6 +99,7 @@ class SummaryItemService
             'exterior' => $item->exterior,
             'phase' => $item->phase,
             'isStattrak' => (bool) $item->is_stattrak,
+            'isSouvenir' => (bool) $item->is_souvenir,
             'discount' => (float) $item->discount,
             'price' => (float) $item->price,
             'steamPrice' => (float) $item->steam_price,

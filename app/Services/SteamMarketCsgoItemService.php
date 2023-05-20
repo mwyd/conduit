@@ -10,6 +10,8 @@ class SteamMarketCsgoItemService
 {
     private string $stattrakKeyword = 'StatTrak™ ';
 
+    private string $souvenirKeyword = 'Souvenir ';
+
     private array $exteriors = [
         'FN' => ' (Factory New)',
         'MW' => ' (Minimal Wear)',
@@ -152,15 +154,21 @@ class SteamMarketCsgoItemService
     {
         $data = [
             'is_stattrak' => false,
+            'is_souvenir' => false,
             'exterior' => null,
             'name' => $requestData['hash_name'],
             'type_color' => $requestData['name_color'],
             ...$requestData,
         ];
 
-        if (str_contains($data['name'], $this->stattrakKeyword)) {
+        if (str_starts_with($data['name'], $this->stattrakKeyword)) {
             $data['name'] = str_replace($this->stattrakKeyword, '', $data['name']);
             $data['is_stattrak'] = true;
+        }
+
+        if (str_starts_with($data['name'], $this->souvenirKeyword)) {
+            $data['name'] = str_replace($this->souvenirKeyword, '', $data['name']);
+            $data['is_souvenir'] = true;
         }
 
         foreach ($this->exteriors as $short => $exterior) {

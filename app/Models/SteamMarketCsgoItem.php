@@ -30,6 +30,7 @@ class SteamMarketCsgoItem extends Model implements Filterable
         'icon',
         'icon_large',
         'is_stattrak',
+        'is_souvenir',
         'name',
         'name_color',
         'exterior',
@@ -43,6 +44,7 @@ class SteamMarketCsgoItem extends Model implements Filterable
         'volume' => 'integer',
         'price' => 'float',
         'is_stattrak' => 'boolean',
+        'is_souvenir' => 'boolean',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder
