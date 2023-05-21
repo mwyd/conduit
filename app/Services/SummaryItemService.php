@@ -36,12 +36,10 @@ class SummaryItemService
     {
         $now = new \DateTimeImmutable();
 
-        $paginator = $this->shadowpayWeeklySoldItemRepository->getItemsSummary(
-            $now->modify('-7 day'),
-            $now,
-            $filters,
-            100
-        )->withQueryString();
+        $filters['date_start'] ??= $now->modify('-7 day');
+        $filters['date_end'] ??= $now;
+
+        $paginator = $this->shadowpayWeeklySoldItemRepository->getItemsSummary($filters, 100)->withQueryString();
 
         $offset = ($paginator->currentPage() - 1) * $paginator->perPage();
 

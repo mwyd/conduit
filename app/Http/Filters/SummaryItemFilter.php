@@ -2,19 +2,16 @@
 
 namespace App\Http\Filters;
 
-use App\Http\Filters\Traits\HasDateFilter;
 use App\Http\Filters\Traits\HasSearchFilter;
 use Illuminate\Contracts\Database\Query\Builder;
 
 class SummaryItemFilter extends AbstractFilter
 {
-    use HasSearchFilter, HasDateFilter;
+    use HasSearchFilter;
 
     public function __construct()
     {
         $this->searchColumn = 'sp.hash_name';
-
-        $this->dateColumn = 'sp.sold_at';
     }
 
     public function priceFrom(Builder $builder, float $value): void

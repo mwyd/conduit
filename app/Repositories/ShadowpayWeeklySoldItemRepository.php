@@ -33,7 +33,7 @@ class ShadowpayWeeklySoldItemRepository
             ->count();
     }
 
-    public function getItemsSummary(\DateTimeInterface $start, \DateTimeInterface $end, array $filters, int $perPage): LengthAwarePaginator
+    public function getItemsSummary(array $filters, int $perPage): LengthAwarePaginator
     {
         $groupedItems = DB::table('shadowpay_weekly_sold_items')
             ->select([
@@ -43,8 +43,8 @@ class ShadowpayWeeklySoldItemRepository
                 DB::raw('avg(discount) as discount'),
                 DB::raw('avg(price) as price'),
             ])
-            ->where('sold_at', '>=', $start)
-            ->where('sold_at', '<=', $end)
+            ->where('sold_at', '>=', $filters['date_start'])
+            ->where('sold_at', '<=', $filters['date_end'])
             ->groupBy('hash_name')
             ->orderBy('sold', 'desc');
 
