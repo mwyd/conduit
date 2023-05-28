@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ShadowpaySoldItemRepository;
 use App\Repositories\ShadowpayWeeklySoldItemRepository;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
 class SummaryItemService
@@ -17,16 +17,16 @@ class SummaryItemService
 
     public function getStatistics(): Collection
     {
-        $now = new \DateTimeImmutable();
+        $now = CarbonImmutable::now();
 
         $todayStats = $this->buildStatistics(
-            $now->modify('-1 day'),
+            $now->subDay(),
             $now
         );
 
         $yesterdayStats = $this->buildStatistics(
-            $now->modify('-2 days'),
-            $now->modify('-1 day')
+            $now->subDays(2),
+            $now->subDay(),
         );
 
         return $todayStats->map(fn ($stat, $key) => $this->transformStatistic($stat, $yesterdayStats[$key]));
@@ -34,10 +34,7 @@ class SummaryItemService
 
     public function getItemsSummary(array $filters): Collection
     {
-        $now = new \DateTimeImmutable();
-
-        $filters['date_start'] ??= $now->modify('-7 day');
-        $filters['date_end'] ??= $now;
+        $filters['date_start'] ??= CarbonImmutable::now()->subWeek();
 
         $paginator = $this->shadowpayWeeklySoldItemRepository->getItemsSummary($filters, 100)->withQueryString();
 
@@ -117,7 +114,7 @@ class SummaryItemService
             'price' => is_null($item->price) ? null : (float) $item->price,
             'steamPrice' => is_null($item->steam_price) ? null : (float) $item->steam_price,
             'date' => $item->sold_at,
-            'dateDifference' => Carbon::create($item->sold_at)->diffForHumans(),
+            'dateDifference' => CarbonImmutable::create($item->sold_at)->diffForHumans(),
         ];
     }
 }

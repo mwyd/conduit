@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Http\Filters\SummaryItemFilter;
+use App\Http\Filters\SummaryItemShadowpayFilter;
+use App\Http\Filters\SummaryItemSteamFilter;
 use App\Models\ShadowpayWeeklySoldItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -35,7 +36,7 @@ class ShadowpayWeeklySoldItemRepository
 
     public function getItemsSummary(array $filters, int $perPage): LengthAwarePaginator
     {
-        $groupedItems = DB::table('shadowpay_weekly_sold_items')
+        $subQuery = DB::table('shadowpay_weekly_sold_items')
             ->select([
                 'hash_name',
                 'sold_at',
@@ -43,10 +44,10 @@ class ShadowpayWeeklySoldItemRepository
                 DB::raw('avg(discount) as discount'),
                 DB::raw('avg(price) as price'),
             ])
-            ->where('sold_at', '>=', $filters['date_start'])
-            ->where('sold_at', '<=', $filters['date_end'])
             ->groupBy('hash_name')
             ->orderBy('sold', 'desc');
+
+        $subQuery = (new SummaryItemShadowpayFilter())->apply($subQuery, $filters);
 
         $query = DB::table('steam_market_csgo_items', 'sm')
             ->select([
@@ -62,7 +63,7 @@ class ShadowpayWeeklySoldItemRepository
                 'bm.good_id as good_id',
             ])
             ->joinSub(
-                $groupedItems,
+                $subQuery,
                 'sp',
                 'sm.hash_name',
                 '=',
@@ -76,7 +77,7 @@ class ShadowpayWeeklySoldItemRepository
             );
 
         /** @phpstan-ignore-next-line */
-        return (new SummaryItemFilter())->apply($query, $filters)->paginate($perPage);
+        return (new SummaryItemSteamFilter())->apply($query, $filters)->paginate($perPage);
     }
 
     /**
