@@ -4,7 +4,7 @@ import Column from "@/types/table";
 import Pagination from "@/components/pagination/pagination";
 import NoData from "@/components/common/no-data";
 import SortableTable from "@/components/common/sortable-table";
-import Row from "@/components/summary-items-table/row";
+import Row from "@/components/summary-items/table-row";
 
 const columns: Column<SummaryItem>[] = [
   {
@@ -20,22 +20,22 @@ const columns: Column<SummaryItem>[] = [
   {
     name: 'Discount',
     accessor: 'discount',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Price',
     accessor: 'price',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Buff price',
     accessor: 'buffPrice',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Steam price',
     accessor: 'steamPrice',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Sold',

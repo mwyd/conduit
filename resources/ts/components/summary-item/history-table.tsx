@@ -4,7 +4,7 @@ import Column from "@/types/table";
 import Pagination from "@/components/pagination/pagination";
 import NoData from "@/components/common/no-data";
 import SortableTable from "@/components/common/sortable-table";
-import Row from "@/components/summary-item-history-table/row";
+import Row from "@/components/summary-item/history-table-row";
 
 const columns: Column<SummaryItemHistory>[] = [
   {
@@ -20,22 +20,22 @@ const columns: Column<SummaryItemHistory>[] = [
   {
     name: 'Discount',
     accessor: 'discount',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Price',
     accessor: 'price',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Steam price',
     accessor: 'steamPrice',
-    className: 'w-28 px-2'
+    className: 'w-29 px-2'
   },
   {
     name: 'Date',
     accessor: 'date',
-    className: 'w-28 pl-2'
+    className: 'w-29 pl-2'
   }
 ];
 

@@ -12,7 +12,10 @@ module.exports = {
       },
       colors: {
         "red-450": "#ed5565",
-        "green-450": "#57bd0f",
+        "green-450": "#57bd0f"
+      },
+      spacing: {
+        "29": "7.25rem"
       }
     },
   },

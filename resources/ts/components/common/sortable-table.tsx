@@ -10,7 +10,7 @@ function getSortIcon(isSelected: boolean, isAscending: boolean) {
 
   const Icon = isAscending ? VscTriangleUp : VscTriangleDown;
 
-  return <Icon className="inline-block ml-1" size={8} />;
+  return <Icon className="inline-block" size={8} />;
 }
 
 interface Props<T extends object> {
@@ -33,7 +33,7 @@ export default function SortableTable<T extends object>({ columns, items, render
                 className={column.className}
               >
                 <button
-                  className="w-full text-left"
+                  className="w-full flex items-center gap-1"
                   type="button"
                   onClick={() => sortByField(column.accessor)}
                 >

@@ -5,8 +5,8 @@ import { SummaryItem, SummaryItemFilters } from "@/types/items";
 import { Paginator } from "@/types/pagination";
 import { DefaultLayout } from "@/layouts/default-layout";
 import StatisticsBar from "@/components/statistics-bar";
-import SummaryItemsTable from "@/components/summary-items-table";
-import SummaryItemsFiltersBar from "@/components/summary-items-filters/filters-bar";
+import SummaryItemsTable from "@/components/summary-items/table";
+import SummaryItemsFiltersBar from "@/components/summary-items/filters-bar";
 
 interface Props {
   filters: Partial<SummaryItemFilters>;

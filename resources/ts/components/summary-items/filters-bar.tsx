@@ -4,7 +4,7 @@ import { FormEvent, useRef, useState } from "react";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
 import Modal from "@/components/common/modal";
-import SummaryItemsFiltersForm from "@/components/summary-items-filters/filters-form";
+import SummaryItemsFiltersForm from "@/components/summary-items/filters-form";
 import { objectDifference, time } from "@/utils";
 import { SummaryItemFilters } from "@/types/items";
 import { FormDataConvertable } from "@/types/form";

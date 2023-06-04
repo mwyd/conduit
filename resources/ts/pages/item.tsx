@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import { Paginator } from "@/types/pagination";
 import { SummaryItemHistory } from "@/types/items";
 import { DefaultLayout } from "@/layouts/default-layout";
-import SummaryItemHistoryTable from "@/components/summary-item-history-table";
+import SummaryItemHistoryTable from "@/components/summary-item/history-table";
 
 interface Props {
   hashName: string;
