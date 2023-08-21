@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { VscTriangleDown, VscTriangleUp } from "react-icons/all";
+import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import Column from "@/types/table";
 import useTableSorter from "@/hooks/use-table-sorter";
 
