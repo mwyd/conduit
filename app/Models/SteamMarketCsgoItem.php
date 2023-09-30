@@ -32,6 +32,7 @@ class SteamMarketCsgoItem extends Model implements Filterable
         'is_stattrak',
         'is_souvenir',
         'name',
+        'name_id',
         'name_color',
         'exterior',
         'phase',
@@ -45,6 +46,7 @@ class SteamMarketCsgoItem extends Model implements Filterable
         'price' => 'float',
         'is_stattrak' => 'boolean',
         'is_souvenir' => 'boolean',
+        'name_id' => 'integer',
     ];
 
     public function scopeFilter(Builder $builder, array $params): Builder

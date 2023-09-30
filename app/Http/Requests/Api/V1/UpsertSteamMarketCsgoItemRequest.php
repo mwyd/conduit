@@ -21,6 +21,7 @@ class UpsertSteamMarketCsgoItemRequest extends FormRequest
             'price' => 'required|numeric',
             'icon' => 'required|string',
             'icon_large' => 'sometimes|nullable',
+            'name_id' => 'sometimes|nullable|unique:steam_market_csgo_items',
             'name_color' => 'required|string',
             'type' => 'required|string',
             'phase' => 'sometimes|nullable',
