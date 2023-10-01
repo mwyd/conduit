@@ -40,7 +40,7 @@ class UpdateBuffMarketCsgoItems extends Command
 
             if ($code == 'OK' && count($orders['items']) > 0) {
                 $item->volume = $orders['total_count'];
-                $item->price = round($orders['items'][0]['price'] * $exchangeRate, 2);
+                $item->price = max(0.01, round($orders['items'][0]['price'] * $exchangeRate, 2));
 
                 $item->save();
             }
