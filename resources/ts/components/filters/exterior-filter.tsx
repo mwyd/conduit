@@ -12,7 +12,8 @@ const exteriors: Record<Exterior, string> = {
   Holo: 'Holo',
   Gold: 'Gold',
   Blue: 'Blue',
-  Red: 'Red'
+  Red: 'Red',
+  Glitter: 'Glitter'
 }
 
 interface Props {

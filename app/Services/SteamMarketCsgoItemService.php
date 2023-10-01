@@ -23,6 +23,7 @@ class SteamMarketCsgoItemService
         'Gold' => ' (Gold)',
         'Blue' => ' (Blue)',
         'Red' => ' (Red)',
+        'Glitter' => ' (Glitter)',
     ];
 
     private array $typeColors = [

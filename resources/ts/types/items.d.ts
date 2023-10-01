@@ -1,6 +1,6 @@
 export type Phase = 'Phase 1' | 'Phase 2' | 'Phase 3' | 'Phase 4' | 'Ruby' | 'Emerald' | 'Sapphire' | 'Black Pearl';
 
-export type Exterior = 'FN' | 'MW' | 'FT' | 'BS' | 'WW' | 'Foil' | 'Holo' | 'Gold' | 'Blue' | 'Red';
+export type Exterior = 'FN' | 'MW' | 'FT' | 'BS' | 'WW' | 'Foil' | 'Holo' | 'Gold' | 'Blue' | 'Red' | 'Glitter';
 
 export interface SummaryItem {
   position: number;
