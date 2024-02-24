@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class IndexRequest extends FormRequest
 {
-    use HasSearchRules, HasDateRules;
+    use HasDateRules, HasSearchRules;
 
     public function authorize(): bool
     {

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class IndexShadowpaySoldItemRequest extends FormRequest
 {
-    use HasSearchRules, HasDateRules, HasOrderRules, HasPaginationRules;
+    use HasDateRules, HasOrderRules, HasPaginationRules, HasSearchRules;
 
     protected $stopOnFirstFailure = true;
 

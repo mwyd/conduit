@@ -9,7 +9,7 @@ use App\Http\Filters\Traits\HasSearchFilter;
 
 class ShadowpaySoldItemFilter extends AbstractFilter
 {
-    use HasSearchFilter, HasDateFilter, HasOrderFilter, HasPaginationFilter;
+    use HasDateFilter, HasOrderFilter, HasPaginationFilter, HasSearchFilter;
 
     public function __construct()
     {

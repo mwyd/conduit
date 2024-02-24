@@ -91,6 +91,7 @@ class ShadowpayWeeklySoldItemRepository
                 'price',
                 'sold_at',
             ])
+            ->whereNotNull('price')
             ->orderBy('sold_at')
             ->get();
 

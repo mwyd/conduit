@@ -8,7 +8,7 @@ use App\Http\Filters\Traits\HasSearchFilter;
 
 class BuffMarketCsgoItemFilter extends AbstractFilter
 {
-    use HasSearchFilter, HasOrderFilter, HasPaginationFilter;
+    use HasOrderFilter, HasPaginationFilter, HasSearchFilter;
 
     public function __construct()
     {

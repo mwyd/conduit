@@ -8,7 +8,7 @@ use Illuminate\Contracts\Database\Query\Builder;
 
 class SummaryItemShadowpayFilter extends AbstractFilter
 {
-    use HasSearchFilter, HasDateFilter;
+    use HasDateFilter, HasSearchFilter;
 
     public function __construct()
     {
