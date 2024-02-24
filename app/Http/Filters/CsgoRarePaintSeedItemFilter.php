@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CsgoRarePaintSeedItemFilter extends AbstractFilter
 {
-    use HasSearchFilter, HasOrderFilter, HasPaginationFilter;
+    use HasOrderFilter, HasPaginationFilter, HasSearchFilter;
 
     public function __construct()
     {

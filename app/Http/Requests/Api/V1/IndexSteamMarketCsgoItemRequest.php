@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class IndexSteamMarketCsgoItemRequest extends FormRequest
 {
-    use HasSearchRules, HasOrderRules, HasPaginationRules;
+    use HasOrderRules, HasPaginationRules, HasSearchRules;
 
     protected $stopOnFirstFailure = true;
 

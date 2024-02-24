@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Repositories\ShadowpayWeeklySoldItemRepository;
 use App\Utility\Sparkline\Sparkline;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class GenerateShadowpayWeeklySoldItemSparklines extends Command
@@ -22,7 +23,7 @@ class GenerateShadowpayWeeklySoldItemSparklines extends Command
         $this->output->info('Generating sparklines');
 
         foreach ($history as $hashName => $rows) {
-            $prices = $rows->pluck('price');
+            $prices = $this->reducePrices($rows, 8);
 
             $first = $prices->first();
             $last = $prices->last();
@@ -45,5 +46,26 @@ class GenerateShadowpayWeeklySoldItemSparklines extends Command
 
         $this->output->newLine(2);
         $this->output->info('Done');
+    }
+
+    /**
+     * @param  Collection<int, object>  $rows
+     * @return Collection<int, float>
+     */
+    private function reducePrices(Collection $rows, int $chunkSize): Collection
+    {
+        $result = collect();
+
+        $groupedByDate = $rows->groupBy(fn ($item) => substr($item->sold_at, 0, strpos($item->sold_at, ' ')));
+
+        foreach ($groupedByDate as $prices) {
+            $size = (int) ceil(count($prices) / $chunkSize);
+
+            $values = $prices->chunk($size)->map(fn ($chunk) => $chunk->avg('price'));
+
+            $result->push(...$values);
+        }
+
+        return $result;
     }
 }

@@ -8,7 +8,7 @@ class Sparkline
 {
     private int $width = 120;
 
-    private int $height = 20;
+    private int $height = 30;
 
     private float $strokeWidth = 1.2;
 
