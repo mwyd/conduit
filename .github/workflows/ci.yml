@@ -35,7 +35,7 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     env:
-      php-version: '8.1'
+      php-version: '8.2'
     steps:
       - name: Checkout to the repository
         uses: actions/checkout@v3
