@@ -86,9 +86,8 @@ class SteamMarketCsgoItemService
         foreach ($assets as $asset) {
             $id = $asset['id'];
             $icon = $asset['icon_url'];
-            $iconLarge = $asset['icon_url_large'];
 
-            $phase = $icons[$icon] ?? $icons[$iconLarge] ?? null;
+            $phase = $icons[$icon] ?? null;
 
             if (! $phase) {
                 continue;
@@ -104,7 +103,7 @@ class SteamMarketCsgoItemService
                 'hash_name' => $this->formatDopplerHashName($asset['market_hash_name'], $phase),
                 'asset_description' => [
                     'icon_url' => $icon,
-                    'icon_url_large' => $iconLarge,
+                    'icon_url_large' => null,
                     'name_color' => $asset['name_color'],
                     'type' => $asset['type'],
                     'phase' => $phase,
