@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('shadowpay_sale_guard_items', function (Blueprint $table) {
-            $table->bigInteger('shadowpay_offer_id')->unique()->change();
+            $table->bigInteger('shadowpay_offer_id')->change();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('shadowpay_sale_guard_items', function (Blueprint $table) {
-            $table->integer('shadowpay_offer_id')->unique()->change();
+            $table->integer('shadowpay_offer_id')->change();
         });
     }
 };
