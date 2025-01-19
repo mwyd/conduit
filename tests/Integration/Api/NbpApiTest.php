@@ -27,7 +27,7 @@ class NbpApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->nbpApi = new NbpApi();
+        $this->nbpApi = new NbpApi;
     }
 
     protected function tearDown(): void

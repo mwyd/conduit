@@ -29,6 +29,6 @@ class ShadowpayBotConfig extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new ShadowpayBotConfigFilter())->apply($builder, $params);
+        return (new ShadowpayBotConfigFilter)->apply($builder, $params);
     }
 }

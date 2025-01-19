@@ -16,8 +16,7 @@ class Sparkline
 
     public function __construct(
         private readonly Collection $data
-    ) {
-    }
+    ) {}
 
     public static function make(Collection $data): self
     {

@@ -12,8 +12,7 @@ class SummaryItemService
     public function __construct(
         private readonly ShadowpayWeeklySoldItemRepository $shadowpayWeeklySoldItemRepository,
         private readonly ShadowpaySoldItemRepository $shadowpaySoldItemRepository
-    ) {
-    }
+    ) {}
 
     public function getStatistics(): Collection
     {

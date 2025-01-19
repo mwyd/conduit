@@ -39,7 +39,7 @@ class BuffApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->buffApi = new BuffApi();
+        $this->buffApi = new BuffApi;
     }
 
     protected function tearDown(): void

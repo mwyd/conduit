@@ -51,6 +51,6 @@ class SteamMarketCsgoItem extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new SteamMarketCsgoItemFilter())->apply($builder, $params);
+        return (new SteamMarketCsgoItemFilter)->apply($builder, $params);
     }
 }

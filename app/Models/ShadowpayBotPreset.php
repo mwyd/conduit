@@ -29,6 +29,6 @@ class ShadowpayBotPreset extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new ShadowpayBotPresetFilter())->apply($builder, $params);
+        return (new ShadowpayBotPresetFilter)->apply($builder, $params);
     }
 }

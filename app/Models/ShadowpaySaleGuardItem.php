@@ -34,6 +34,6 @@ class ShadowpaySaleGuardItem extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new ShadowpaySaleGuardItemFilter())->apply($builder, $params);
+        return (new ShadowpaySaleGuardItemFilter)->apply($builder, $params);
     }
 }

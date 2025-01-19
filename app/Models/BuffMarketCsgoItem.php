@@ -38,6 +38,6 @@ class BuffMarketCsgoItem extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new BuffMarketCsgoItemFilter())->apply($builder, $params);
+        return (new BuffMarketCsgoItemFilter)->apply($builder, $params);
     }
 }

@@ -47,7 +47,7 @@ class ShadowpayWeeklySoldItemRepository
             ->groupBy('hash_name')
             ->orderBy('sold', 'desc');
 
-        $subQuery = (new SummaryItemShadowpayFilter())->apply($subQuery, $filters);
+        $subQuery = (new SummaryItemShadowpayFilter)->apply($subQuery, $filters);
 
         $query = DB::table('steam_market_csgo_items', 'sm')
             ->select([
@@ -77,7 +77,7 @@ class ShadowpayWeeklySoldItemRepository
             );
 
         /** @phpstan-ignore-next-line */
-        return (new SummaryItemSteamFilter())->apply($query, $filters)->paginate($perPage);
+        return (new SummaryItemSteamFilter)->apply($query, $filters)->paginate($perPage);
     }
 
     /**

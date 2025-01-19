@@ -12,8 +12,7 @@ class SummaryItemController extends Controller
 {
     public function __construct(
         private readonly SummaryItemService $service
-    ) {
-    }
+    ) {}
 
     public function index(IndexRequest $request): Response
     {

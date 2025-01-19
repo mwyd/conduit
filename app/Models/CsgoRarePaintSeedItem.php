@@ -29,6 +29,6 @@ class CsgoRarePaintSeedItem extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new CsgoRarePaintSeedItemFilter())->apply($builder, $params);
+        return (new CsgoRarePaintSeedItemFilter)->apply($builder, $params);
     }
 }

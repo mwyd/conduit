@@ -30,6 +30,6 @@ class ShadowpayFriend extends Model implements Filterable
 
     public function scopeFilter(Builder $builder, array $params): Builder
     {
-        return (new ShadowpayFriendFilter())->apply($builder, $params);
+        return (new ShadowpayFriendFilter)->apply($builder, $params);
     }
 }

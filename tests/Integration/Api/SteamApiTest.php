@@ -75,7 +75,7 @@ class SteamApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->steamApi = new SteamApi();
+        $this->steamApi = new SteamApi;
     }
 
     protected function tearDown(): void
