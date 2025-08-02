@@ -10,7 +10,7 @@ class UpdateSteamMarketCsgoItems extends Command
 {
     protected $signature = 'steam-market-csgo-item:update-all
         {--page-start=0}
-        {--page-limit=220}
+        {--page-limit=250}
         {--per-page=100}
         {--request-delay=15}
         {--ignore-dopplers}';
@@ -29,8 +29,10 @@ class UpdateSteamMarketCsgoItems extends Command
 
         $this->output->info('Fetching items');
 
+        $offset = 0;
+
         for ($i = $pageStart; $i < $pageLimit; $i++) {
-            $response = $steamApi->getMarketListings($i * $perPage, $perPage);
+            $response = $steamApi->getMarketListings($offset, $perPage);
 
             if (! $response->ok()) {
                 continue;
@@ -51,6 +53,8 @@ class UpdateSteamMarketCsgoItems extends Command
 
                 $bar->advance();
             }
+
+            $offset += count($listings);
 
             sleep($requestDelay);
         }

@@ -3,7 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\GenerateShadowpayWeeklySoldItemSparklines;
-use App\Console\Commands\UpdateBuffMarketCsgoItems;
+// use App\Console\Commands\UpdateBuffMarketCsgoItems;
 use App\Console\Commands\UpdateCurrencies;
 use App\Console\Commands\UpdateSteamMarketCsgoDopplerItems;
 use App\Console\Commands\UpdateSteamMarketCsgoItems;
@@ -20,9 +20,10 @@ class Kernel extends ConsoleKernel
         $schedule->command(UpdateCurrencies::class)
             ->cron('0 12 * * *');
 
-        $schedule->command(UpdateBuffMarketCsgoItems::class)
-            ->cron('0 0 * * 1,3,5')
-            ->runInBackground();
+        //        @see https://buff.163.com/developer/documentation
+        //        $schedule->command(UpdateBuffMarketCsgoItems::class)
+        //            ->cron('0 0 * * 1,3,5')
+        //            ->runInBackground();
 
         $schedule->command(UpdateSteamMarketCsgoItems::class, ['--ignore-dopplers'])
             ->cron('0 4 * * *')
